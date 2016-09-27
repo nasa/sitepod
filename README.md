@@ -4,10 +4,18 @@
 
 Sitepod; A Sitemap Generator for [NASA JPL's PO.DAAC](http://podaac.jpl.nasa.gov)
 
+# Installation and Configuration
+
+See the [Project Wiki](https://github.com/lewismc/sitepod/wiki)
+
+# Community, Support and Development
+Please open a ticket in the [Sitepod issue tracker](https://github.com/lewismc/sitepod/issues).
+Please use labels to classify your issue.
+
 # License
 This code has been forked from the now unmaintained [phpSitemapNG](http://enarion.net/tools/phpsitemapng/)
 The code is licensed permissively under the [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.en.html) which respects the origin authors work e.g. Tobias Kluge, enarion.net.
-A cope of the GPLv3 License can be found below and also included as part of this software.
+A copy of the GPLv3 License can be found below and also included as part of this software.
 ```
 This file is part of Sitepod.
 
