@@ -1,5 +1,11 @@
 # Sitepod
 
+[![Latest Stable Version](https://poser.pugx.org/nasa/sitepod/v/stable)](https://packagist.org/packages/nasa/sitepod)
+[![Total Downloads](https://poser.pugx.org/nasa/sitepod/downloads)](https://packagist.org/packages/nasa/sitepod)
+[![Latest Unstable Version](https://poser.pugx.org/nasa/sitepod/v/unstable)](https://packagist.org/packages/nasa/sitepod)
+[![License](https://poser.pugx.org/nasa/sitepod/license)](https://packagist.org/packages/nasa/sitepod)
+[![composer.lock](https://poser.pugx.org/nasa/sitepod/composerlock)](https://packagist.org/packages/nasa/sitepod)
+
 Sitepod; A Sitemap Generator written in PHP
 
 # Installation and Configuration
