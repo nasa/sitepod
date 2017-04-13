@@ -1,0 +1,19 @@
+{
+    "name": "nasa/sitepod",
+    "type": "library",
+    "description": "A sitemap generator written in PHP",
+    "keywords": ["sitemap-generator","search-engine","php","sitemap"],
+    "homepage": "https://github.com/nasa/sitepod",
+    "license": "gpl3",
+    "authors": [
+        {
+            "name": "Lewis John McGibbney",
+            "email": "lewis.j.mcgibbney@jpl.nasa.gov",
+            "homepage": "http://home.apache.org/~lewismc/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+}
