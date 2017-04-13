@@ -1,6 +1,6 @@
 # Sitepod
 
-Sitepod; A Sitemap Generator.
+Sitepod; A Sitemap Generator written in PHP
 
 # Installation and Configuration
 
