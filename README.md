@@ -8,7 +8,15 @@
 
 Sitepod; A Sitemap Generator written in PHP
 
-# Installation and Configuration
+# Installation fro Package Manager (composer)
+Sitemap can be installed using the [Composer](https://getcomposer.org/) 
+dependency manager for PHP aa follows
+```
+$ composer require nasa/sitepod
+```
+Alternatively, you can install the master branch from source
+
+# Installation and Configuration from Source
 
 See the [Project Wiki](https://github.com/nasa/sitepod/wiki)
 
