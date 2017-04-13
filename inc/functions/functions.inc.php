@@ -95,10 +95,8 @@ function init() {
 	session_start();
 
 	// set layout engine
-	$LAYOUT = new LayoutEngine("phpSitemapNG");
-	$LAYOUT->addContentFooter('<div align="center"><p>Copyright by enarion.net. This script is licensed under GPL and can be downloaded from
-					<a target="_blank" href="http://enarion.net/google/">enarion.net/google/</a></p></div>');
-	$LAYOUT->setTitle("create your personal google sitemap file");
+	$LAYOUT = new LayoutEngine("Sitepod");
+	$LAYOUT->setTitle("Welcome to Sitepod; a Sitemap Generator written in PHP");
 	$LAYOUT->setCharSet("iso-8859-1");
 	$LAYOUT->addCss('.history, .required { background-color:#E0E0E0; }');
 	$LAYOUT->addCss('.source_fs { background-color:#FF70CC; }');
@@ -142,7 +140,7 @@ function init() {
 	if (isset($_SESSION[PSNG_SETTINGS])) $SETTINGS = array_merge($_SESSION[PSNG_SETTINGS],$SETTINGS);
 
 	$LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_SCRIPT].'?action=setup" title="Edit settings">Setup</a>');
-	$LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_SCRIPT].'?action='.PSNG_ACTION_CHECK_UPDATESTATUS.'" title="Invoke an update check at enarion.net to get information of recent versions">Check for updates</a>');
+	$LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_SCRIPT].'?action='.PSNG_ACTION_CHECK_UPDATESTATUS.'" title="Invoke an update check to get information of recent versions">Check for updates</a>');
 	if (isset($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET]))
 	{
 		if ($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET] == TRUE)
@@ -150,21 +148,9 @@ function init() {
 	}
 	if (@file_exists($SETTINGS[PSNG_SITEMAP_FILE]) && ( @filesize($SETTINGS[PSNG_SITEMAP_FILE]) > 0))
 		$LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_SITEMAP_URL].'" target="_blank" title="View the created sitemap in a new browser window">View sitemap </a>');
-	$LAYOUT->addContentHeader('<div align="left"><a href="http://enarion.net/google/phpsitemapng/feedback/" target="_blank" title="Create a feedback request at enarion.net in a new browser window">Give feedback</a>');
-	$LAYOUT->addContentHeader('<div align="left"><p>
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_xclick">
-<input type="hidden" name="business" value="enarion@enarion.net">
-<input type="hidden" name="item_name" value="Development of phpSitemapNG">
-<input type="hidden" name="no_shipping" value="1">
-<input type="hidden" name="return" value="http://enarion.net/google/phpsitemapng/donated.php">
-<input type="hidden" name="no_note" value="1">
-<input type="hidden" name="currency_code" value="USD">
-<input type="hidden" name="tax" value="0">
-<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but04.gif" border="0" name="submit" alt="Donate the development of phpSitemapNG" title="Donate the development of phpSitemapNG" target="_blank">
-</form></p></div>');
+	$LAYOUT->addContentHeader('<div align="left"><a href="https://github.com/nasa/sitepod/issues" target="_blank" title="Create a Github issue in a new browser window">Give feedback</a>');
 
-	debug('version: '.PSNG_VERSION, 'This is phpSitemapNG');
+	debug('version: '.PSNG_VERSION, 'This is Sitepod');
 	debug($SETTINGS, 'Merged settings');
 
 	debug($SETTINGS[PSNG_SETTINGS_STATE], 'last state');

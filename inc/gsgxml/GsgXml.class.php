@@ -258,7 +258,7 @@
             $ret[] = sprintf('<urlset xmlns="http://www.google.com/schemas/sitemap/0.84"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.google.com/schemas/sitemap/0.84 http://www.google.com/schemas/sitemap/0.84/sitemap.xsd">');
-            $ret[] = sprintf('<!-- Created by phpSitemapNG version %s -->', PSNG_VERSION);
+            $ret[] = sprintf('<!-- Created by Sitepod version %s -->', PSNG_VERSION);
             $ret[] = sprintf('<!-- Last update of sitemap %s -->', date($this->lastModDateTime).substr(date("O"),0,3).":".substr(date("O"),3));
 
             foreach ($this->urls as $url) {

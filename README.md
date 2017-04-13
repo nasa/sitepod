@@ -4,10 +4,10 @@ Sitepod; A Sitemap Generator.
 
 # Installation and Configuration
 
-See the [Project Wiki](https://github.com/lewismc/sitepod/wiki)
+See the [Project Wiki](https://github.com/nasa/sitepod/wiki)
 
 # Community, Support and Development
-Please open a ticket in the [Sitepod issue tracker](https://github.com/lewismc/sitepod/issues).
+Please open a ticket in the [Sitepod issue tracker](https://github.com/nasa/sitepod/issues).
 Please use labels to classify your issue.
 
 # License
