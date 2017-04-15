@@ -19,24 +19,24 @@
     /**
      * GsgXml
      *
-     * A PHP class for generating XML data for the Google Sitemaps service.
+     * A PHP class for generating XML data for the Sitemap Protocl 0.9.
      * This includes options for compressing the output
      *
      * @author  Quentin Zervaas
-     * @version 1.0
+     * @author  Lewis John McGibbney
      */
     class GsgXml
     {
         /**
-         * Version of the Google Sitemap this class is for
+         * Version of the Sitemap schema this class is for
          */
-        var $sitemapVersion = '0.84';
+        var $sitemapVersion = '0.9';
 
 
         /**
-         * URL to the namespace for Google Sitemaps
+         * URL to the namespace for Sitemaps
          */
-        var $namespace = 'http://www.google.com/schemas/sitemap/0.84';
+        var $namespace = 'http://www.sitemaps.org/schemas/sitemap/0.9';
 
 
         /**
@@ -146,7 +146,7 @@
 			$this->errorMsg = '';
 
             if (count($this->urls) >= $this->maxURLs) {
-				$this->errorMsg = "Only ".$this->maxURLs . " urls are allowed within a Google Sitemaps file.";
+				$this->errorMsg = "Only ".$this->maxURLs . " urls are allowed within a Sitemap file.";
                 return false;
 			}
 
@@ -255,36 +255,34 @@
             $ret = array();
 
             $ret[] = sprintf('<?xml version="1.0" encoding="%s"?>', $this->xmlEncoding);
-            $ret[] = sprintf('<urlset xmlns="http://www.google.com/schemas/sitemap/0.84"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.google.com/schemas/sitemap/0.84 http://www.google.com/schemas/sitemap/0.84/sitemap.xsd">');
-            $ret[] = sprintf('<!-- Created by Sitepod version %s -->', PSNG_VERSION);
+            $ret[] = sprintf('<urlset xmlns="%1$s" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="%2$s %3$s.xsd">', $this->namespace, $this->namespace, $this->namespace);
+            $ret[] = sprintf('<!-- Created by Sitepod version %1$s - For more information see %2$s -->', PSNG_VERSION, PSNG_URL_DOWNLOAD);
             $ret[] = sprintf('<!-- Last update of sitemap %s -->', date($this->lastModDateTime).substr(date("O"),0,3).":".substr(date("O"),3));
 
             foreach ($this->urls as $url) {
-                $ret[] = '<url>';
-                $ret[] = sprintf('<loc>%s</loc>', $this->xmlEscape($url['url']));
+                $ret[] = '   <url>';
+                $ret[] = sprintf('      <loc>%s</loc>', $this->xmlEscape($url['url']));
                 if (isset($url['lastmod'])) {
                 	if (is_numeric($url['lastmod'])) {
-                    $ret[] = sprintf('<lastmod>%s</lastmod>',
+                    $ret[] = sprintf('      <lastmod>%s</lastmod>',
                                      $url['lastmod_dateonly'] ?
                                      date($this->lastModDate, $url['lastmod']) :
                                      date($this->lastModDateTime, $url['lastmod']).
                                      	substr(date("O", $url['lastmod']),0,3) . ":" .
                                      	substr(date("O",$url['lastmod']),3));
                 	} elseif (is_string($url['lastmod'])) {
-                		$ret[] = sprintf('<lastmod>%s</lastmod>',$url['lastmod']);
+                		$ret[] = sprintf('      <lastmod>%s</lastmod>',$url['lastmod']);
                 	}
                }
                 if (isset($url['changefreq'])) {
-                    $ret[] = sprintf('<changefreq>%s</changefreq>',
+                    $ret[] = sprintf('      <changefreq>%s</changefreq>',
                                      $this->xmlEscape($url['changefreq']));
                 }
                 if (isset($url['priority'])) {
-                    $priorityStr = sprintf('<priority>%s</priority>', $this->priorityFormat);
+                    $priorityStr = sprintf('      <priority>%s</priority>', $this->priorityFormat);
                     $ret[] = sprintf($priorityStr, $url['priority']);
                 }
-                $ret[] = '</url>';
+                $ret[] = '   </url>';
             }
 
             $ret[] = '</urlset>';
