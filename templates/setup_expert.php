@@ -148,14 +148,14 @@ if (!isset($SETTINGS[PSNG_COMPRESS_SITEMAP])) $SETTINGS[PSNG_COMPRESS_SITEMAP] =
 	  	<td valign="top"><label for="isitemap_url" accesskey="S">Sitemap file</label></td>
 		<td>
 			<input type="Text" name="'.PSNG_SITEMAP_FILE.'" id="isitemap_url" align="LEFT" size="50" value="'.$SETTINGS[PSNG_SITEMAP_FILE].'"/><br />
-			<font size="-1">relativ to your page root; the generated sitemap will be stored to this file</font>
+			<font size="-1">relative to your page root; the generated sitemap will be stored to this file</font>
 		</td>
 	  </tr>
 	  <tr>
 	  	<td valign="top"><label for="itxtsitemap_url" accesskey="S">TXT Sitemap file</label><br /><font size="-1">Used by Yahoo, ...</font></td>
 		<td>
 			<input type="Text" name="'.PSNG_TXTSITEMAP_FILE.'" id="itxtsitemap_url" align="LEFT" size="50" value="'.$SETTINGS[PSNG_TXTSITEMAP_FILE].'"/><br />
-			<font size="-1">relativ to your page root; the generated txt sitemap will be stored to this file</font>
+			<font size="-1">relative to your page root; the generated txt sitemap will be stored to this file</font>
 		</td>
 	  </tr>
 
