@@ -496,7 +496,7 @@ function writeSitemap($FILE) {
 	}
 	$LAYOUT->addSuccess('Sitemap successfuly created and saved to <a href="'.$SETTINGS[PSNG_SITEMAP_URL].'" target="_blank">'.basename($SETTINGS[PSNG_SITEMAP_FILE]).'</a>!');
 	if (isset($SETTINGS[PSNG_TXTSITEMAP_FILE]) && strlen($SETTINGS[PSNG_TXTSITEMAP_FILE])>0) $LAYOUT->addSuccess('Txt-Sitemap successfuly created and saved to <a href="'.$SETTINGS[PSNG_TXTSITEMAP_URL].'" target="_blank">'.basename($SETTINGS[PSNG_TXTSITEMAP_FILE]).'</a>!');
-	$LAYOUT->addText('<form action="' . $SETTINGS[PSNG_SCRIPT] . '" method="post">' ."\n".
+	$LAYOUT->addText('<form action="' . $SETTINGS[PSNG_SCRIPT] . '" method="post" accept-charset=utf-8>' ."\n".
 			'<input type="hidden" name="'.PSNG_SETTINGS_ACTION.'" value="'.PSNG_ACTION_SETTINGS_PINGGOOGLE.'">' . "\n".
 			'<input type="Submit" value="Submit to google" name="submit">' . "\n".
 			'</form>' . "\n");
