@@ -229,10 +229,12 @@ function checkFile($filename) {
 }
 
 function getDateTimeISO($timestamp) {
+	date_default_timezone_set('UTC');
 	return date("Y-m-d\TH:i:s", $timestamp) . substr(date("O"),0,3) . ":" . substr(date("O"),3);
 }
 
 function getDateTimeISO_short($timestamp) {
+	date_default_timezone_set('UTC');
 	return date("Y-m-d", $timestamp);
 }
 
