@@ -36,6 +36,7 @@ include_once(dirname(__FILE__).'/functions/functions.inc.php');
 include_once(dirname(__FILE__).'/functions/parsing.inc.php');
 include_once(dirname(__FILE__).'/functions/settings.inc.php');
 include_once(dirname(__FILE__).'/classes/Crawler.class.php');
+include_once(dirname(__FILE__).'/classes/GeoIp.php');
 include_once(dirname(__FILE__).'/classes/FilesystemHandler.class.php');
 include_once(dirname(__FILE__).'/classes/LayoutEngine.class.php');
 include_once(dirname(__FILE__).'/gsgxml/GsgXml.class.php');
