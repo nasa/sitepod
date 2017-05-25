@@ -229,12 +229,16 @@ function checkFile($filename) {
 }
 
 function getDateTimeISO($timestamp) {
-	date_default_timezone_set('UTC');
+    $geoData = (new GeoIp())->getGeoData($_SERVER['REMOTE_ADDR']);
+    $timeZone = new DateTimeZone($geoData['time_zone']);
+    date_default_timezone_set($timeZone->getName());
 	return date("Y-m-d\TH:i:s", $timestamp) . substr(date("O"),0,3) . ":" . substr(date("O"),3);
 }
 
 function getDateTimeISO_short($timestamp) {
-	date_default_timezone_set('UTC');
+    $geoData = (new GeoIp())->getGeoData($_SERVER['REMOTE_ADDR']);
+    $timeZone = new DateTimeZone( $geoData['time_zone']);
+    date_default_timezone_set($timeZone->getName());
 	return date("Y-m-d", $timestamp);
 }
 
