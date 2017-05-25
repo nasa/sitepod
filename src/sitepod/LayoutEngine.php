@@ -1,4 +1,5 @@
 <?php
+namespace Sitepod;
 /* 
 	This is phpSitemapNG, a php script that creates your personal google sitemap
 	It can be downloaded under http://enarion.net/google/

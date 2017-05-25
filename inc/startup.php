@@ -30,16 +30,13 @@ $timeout_after = ini_get('max_execution_time');
 @ini_set('allow_url_fopen','1');
 @ini_set('include_path',ini_get('include_path').':./inc:./inc/functions:./inc/classes:./settings:./templates');
 
+include_once(dirname(__FILE__).'../vendor/autoload.php');
+
 include_once(dirname(__FILE__).'/Ontology.php');
 
 include_once(dirname(__FILE__).'/functions/functions.inc.php');
 include_once(dirname(__FILE__).'/functions/parsing.inc.php');
 include_once(dirname(__FILE__).'/functions/settings.inc.php');
-include_once(dirname(__FILE__).'/classes/Crawler.class.php');
-include_once(dirname(__FILE__).'/classes/GeoIp.php');
-include_once(dirname(__FILE__).'/classes/FilesystemHandler.class.php');
-include_once(dirname(__FILE__).'/classes/LayoutEngine.class.php');
-include_once(dirname(__FILE__).'/gsgxml/GsgXml.class.php');
 
 $SETTINGS[PSNG_FILE_SETTINGS] = 	'settings/settings.inc.php';
 $SETTINGS[PSNG_FILE_FILES] = 		'settings/files.inc.php';

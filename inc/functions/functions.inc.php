@@ -103,7 +103,7 @@ function init() {
 	session_start();
 
 	// set layout engine
-	$LAYOUT = new LayoutEngine("Sitepod");
+	$LAYOUT = new Sitepod\LayoutEngine("Sitepod");
 	$LAYOUT->setTitle("Welcome to Sitepod; a Sitemap Generator written in PHP");
 	$LAYOUT->setCharSet("iso-8859-1");
 	$LAYOUT->addCss('.history, .required { background-color:#E0E0E0; }');
@@ -229,7 +229,7 @@ function checkFile($filename) {
 }
 
 function getDateTimeISO($timestamp, $short = false) {
-    $geoData = (new GeoIp())->getGeoData($_SERVER['REMOTE_ADDR']);
+    $geoData = (new Sitepod\GeoIp())->getGeoData($_SERVER['REMOTE_ADDR']);
     $timeZone = new DateTimeZone($geoData['time_zone']);
     date_default_timezone_set($timeZone->getName());
     $dataString = 'Y-m-d';
