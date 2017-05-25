@@ -228,18 +228,23 @@ function checkFile($filename) {
 	return $msg;
 }
 
-function getDateTimeISO($timestamp) {
+function getDateTimeISO($timestamp, $short = false) {
     $geoData = (new GeoIp())->getGeoData($_SERVER['REMOTE_ADDR']);
     $timeZone = new DateTimeZone($geoData['time_zone']);
     date_default_timezone_set($timeZone->getName());
-	return date("Y-m-d\TH:i:s", $timestamp) . substr(date("O"),0,3) . ":" . substr(date("O"),3);
+    $dataString = 'Y-m-d';
+    if (!$short) {
+        $dataString .= '\TH:i:s';
+    }
+    return date($dataString, $timestamp) . substr(date("O"), 0, 3) . ":" . substr(date("O"), 3);
 }
 
+/**
+ * @deprecated No longer used by internal code and not recommended.
+ * @see getDateTimeISO()
+ */
 function getDateTimeISO_short($timestamp) {
-    $geoData = (new GeoIp())->getGeoData($_SERVER['REMOTE_ADDR']);
-    $timeZone = new DateTimeZone( $geoData['time_zone']);
-    date_default_timezone_set($timeZone->getName());
-	return date("Y-m-d", $timestamp);
+    return getDateTimeISO($timestamp, true);
 }
 
 function getFrequency($lastmod) {
