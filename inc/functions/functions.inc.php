@@ -239,14 +239,6 @@ function getDateTimeISO($timestamp, $short = false) {
     return date($dataString, $timestamp) . substr(date("O"), 0, 3) . ":" . substr(date("O"), 3);
 }
 
-/**
- * @deprecated No longer used by internal code and not recommended.
- * @see getDateTimeISO()
- */
-function getDateTimeISO_short($timestamp) {
-    return getDateTimeISO($timestamp, true);
-}
-
 function getFrequency($lastmod) {
 	// set changefreq
 	$age = time() - $lastmod;

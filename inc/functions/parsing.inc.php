@@ -361,7 +361,7 @@ function handleURL($url, $lastmod = '', $changefreq = '', $priority = '') {
 	// format timestamp appropriate to settings
 	if ($res[PSNG_LASTMOD] != '') {
 		if ($SETTINGS[PSNG_LASTMOD_TIMEFORMAT] == PSNG_TIMEFORMAT_SHORT) {
-			$res[PSNG_LASTMOD] =  getDateTimeISO_short($res[PSNG_LASTMOD]);
+			$res[PSNG_LASTMOD] =  getDateTimeISO($res[PSNG_LASTMOD], true);
 		} elseif ($SETTINGS[PSNG_LASTMOD_TIMEFORMAT] == PSNG_TIMEFORMAT_LONG) {
 			$res[PSNG_LASTMOD] =  getDateTimeISO($res[PSNG_LASTMOD]);
 		}
