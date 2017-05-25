@@ -24,7 +24,7 @@ class FilesystemHandler {
 	/**
 	 * public constructor, set initial values
 	 */
-    function FilesystemHandler($filesystem_base,  $deadline = 0, $directory_offset = '') {
+    function __construct($filesystem_base,  $deadline = 0, $directory_offset = '') {
 		$this->filesystem_base = $filesystem_base;
 		$this->directory_offset = $directory_offset;
 		$this->deadline = $deadline; 

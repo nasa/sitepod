@@ -16,7 +16,7 @@ class LayoutEngine {
 	var $buffering = true;
 	var $static_title = "";
 	
-    function LayoutEngine($staticTitle) {
+    function __construct($staticTitle) {
 /*		$this->content[error] = array();
 		$this->content[warning] = array();
 		$this->content[info] = array();

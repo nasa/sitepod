@@ -35,7 +35,7 @@ class Crawler {
 	var $base = '';
 	var $cookies = array();
 
-	function Crawler($host, $deadline = 0) {
+	function __construct($host, $deadline = 0) {
 		$url = parse_url($host);
 		if ($url != FALSE) {
 			if ($url['scheme'] != "") {

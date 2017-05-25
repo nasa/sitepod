@@ -109,7 +109,7 @@ namespace Sitepod;
          *                              extra path is included all added URLs
          *                              must be within this directory.
          */
-        function GsgXml($baseUrl = '')
+        function __construct($baseUrl = '')
         {
             $this->baseUrl = strtolower($baseUrl);
             $this->baseUrlLen = strlen($this->baseUrl); // cycle saver
