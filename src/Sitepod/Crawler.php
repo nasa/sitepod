@@ -481,8 +481,6 @@ class Crawler {
 		socket_set_blocking($fp, TRUE);
 		fwrite($fp, $get);
 
-		$res = '';
-		$head_done = FALSE;
 		$ts_begin = $this->microtime_float();
 		// source for chunk-decoding: http://www.phpforum.de/archiv_13065_fsockopen@end@chunked@geht@nicht_anzeigen.html
 
@@ -698,7 +696,6 @@ echo 'Crawler _absolute: '.'new path '.$path.'<br/>';
 			if (substr($relative, 0, 4) == 'http') {
 				$url = parse_url($relative);
 				if ($url['host'] != $this->host && ((("www.".$url['host']) == $this->host) && $this->withWWW == true || ($url['host'] == ("www.".$this->host)) && $this->withWWW == false)) {
-					$r = $relative;
 					$relative = str_replace($url['host'], $this->host, $relative); // replace hostname that differes from local
 				}
 				// is pure hostname without path - so add a /
