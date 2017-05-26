@@ -230,7 +230,10 @@ function checkFile($filename) {
 
 function getDateTimeISO($timestamp, $short = false) {
     $geoData = (new Sitepod\GeoIp())->getGeoData($_SERVER['REMOTE_ADDR']);
-    $timeZone = new DateTimeZone($geoData['time_zone']);
+    $timeZone = new DateTimeZone('UTC'); // Set a default timezone
+    if ($geoData['time_zone'] !== '') {
+        $timeZone = new DateTimeZone($geoData['time_zone']); // When there is a time_zone for the client IP address, use it.
+    }
     date_default_timezone_set($timeZone->getName());
     $dataString = 'Y-m-d';
     if (!$short) {
