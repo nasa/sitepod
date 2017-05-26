@@ -142,9 +142,11 @@ class Crawler {
 		return NULL;
 	}
 
-	/**
-	 * adds list of links extracted from this file $url
-	 */
+    /**
+     * adds list of links extracted from this file $url
+     * @param string $url
+     * @return boolean
+     */
 	function _getFilesForURL($url) {
 		$this->visitedUrls[] = $url;
 
@@ -152,13 +154,13 @@ class Crawler {
 		// if allready in list of files, return
 		if (array_key_exists($url, $this->files)) {
 //			debug($url, "File already in list of files");
-			return;
+			return false;
 		}
 
 		// check for non local file links that refers to another host
 		if (!($this->_isLocal($url))) {
 //			debug($url, 'The url does not match the current host '.$this->host.', only relative links are allowed at the moment!');
-			return;
+			return false;
 		}
 
 		// fetch content for given url
@@ -170,7 +172,7 @@ class Crawler {
 
 		if ($info['http_status'] >= '400' && $info['http_status'] < '499')  {
 			// we have an error - webpage is not accessible, just leave it
-			return;
+			return false;
 		}
 
 		// if not allready in list of files, add it
@@ -181,7 +183,7 @@ class Crawler {
 //			debug($url, 'Successful added url');
 		} elseif ($info['location'] == '') {
 //			debug($url, "File already in list of files");
-			return;
+			return false;
 		} else {
 //			debug($url, "Url is only a redirect (http 302)");
 		}
@@ -760,16 +762,18 @@ echo 'Crawler _absolute: '.'new path '.$path.'<br/>';
 		return FALSE;
 	}
 
-	/**
-	 * set list of forbidden directories
-	 */
+    /**
+     * set list of forbidden directories
+     * @param array $directories
+     */
 	function setForbiddenDirectories($directories = array ()) {
 		$this->forbidden_dir = $directories;
 	}
 
-	/**
-	 * set list of forbidden files
-	 */
+    /**
+     * set list of forbidden files
+     * @param array $files
+     */
 	function setForbiddenFiles($files = array ()) {
 		$this->forbidden_files = $files;
 	}
