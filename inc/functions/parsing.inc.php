@@ -179,12 +179,12 @@ function runFilesystemHandler($FILE, $FILES_CACHE) {
 	// TODO improve this
 	if ($SETTINGS[PSNG_TIMEOUT] != PSNG_TIMEOUT_NONE && $SETTINGS[PSNG_TIMEOUT_DONE] != '') {
 		debug('', "Running FilesystemHandler from last point");
-		$fsh = new FilesystemHandler($SETTINGS[PSNG_PAGEROOT], $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
+		$fsh = new Sitepod\FilesystemHandler($SETTINGS[PSNG_PAGEROOT], $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
 		$fsh->setTodo($SETTINGS[PSNG_TIMEOUT_TODO]);
 		$fsh->setDone($SETTINGS[PSNG_TIMEOUT_DONE]);
 		$fsh->setFiles($SETTINGS[PSNG_TIMEOUT_FILE]);
 	} else {
-		$fsh = new FilesystemHandler($SETTINGS[PSNG_PAGEROOT], $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
+		$fsh = new Sitepod\FilesystemHandler($SETTINGS[PSNG_PAGEROOT], $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
 		$fsh->setTodo(array($SETTINGS[PSNG_PAGEROOT]));
 	}
 	$fsh->setForbiddenDirectories($SETTINGS[PSNG_DISALLOW_DIR]);
@@ -240,12 +240,12 @@ function runCrawler($FILE, $FILES_CACHE) {
 
 	if ($SETTINGS[PSNG_TIMEOUT] != PSNG_TIMEOUT_NONE && isset($SETTINGS[PSNG_TIMEOUT_TODO])) { // check if we're running in TIMEOUT mode
 		debug('', "Running crawler engine from last point");
-		$crawler = new Crawler($urlToCrawl, $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
+		$crawler = new Sitepod\Crawler($urlToCrawl, $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
 		$crawler->setTodo($SETTINGS[PSNG_TIMEOUT_TODO]);
 		$crawler->setDone($SETTINGS[PSNG_TIMEOUT_DONE]);
 		$crawler->setFiles($SETTINGS[PSNG_TIMEOUT_FILE]);
 	} else { // we are not in timeout mode, no rerun
-		$crawler = new Crawler($urlToCrawl, $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
+		$crawler = new Sitepod\Crawler($urlToCrawl, $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
 		$crawler->setTodo(array($urlToCrawl));
 	}
 	$crawler->setForbiddenKeys($SETTINGS[PSNG_DISALLOW_KEY]);
@@ -361,7 +361,7 @@ function handleURL($url, $lastmod = '', $changefreq = '', $priority = '') {
 	// format timestamp appropriate to settings
 	if ($res[PSNG_LASTMOD] != '') {
 		if ($SETTINGS[PSNG_LASTMOD_TIMEFORMAT] == PSNG_TIMEFORMAT_SHORT) {
-			$res[PSNG_LASTMOD] =  getDateTimeISO_short($res[PSNG_LASTMOD]);
+			$res[PSNG_LASTMOD] =  getDateTimeISO($res[PSNG_LASTMOD], true);
 		} elseif ($SETTINGS[PSNG_LASTMOD_TIMEFORMAT] == PSNG_TIMEFORMAT_LONG) {
 			$res[PSNG_LASTMOD] =  getDateTimeISO($res[PSNG_LASTMOD]);
 		}
@@ -454,7 +454,7 @@ function displaySitemapEdit($FILE) {
 function writeSitemap($FILE) {
 	global $SETTINGS, $openFile_error, $LAYOUT;
 	$LAYOUT->setTitle("Writing sitemap");
-	$gsg = new GsgXml($SETTINGS[PSNG_WEBSITE]);
+	$gsg = new Sitepod\GsgXml($SETTINGS[PSNG_WEBSITE]);
 
 	$numb = 0;
 	$txtfilehandle = null;
@@ -513,7 +513,7 @@ function writeSitemapUserinput() {
 	global $SETTINGS, $openFile_error, $_REQUEST, $LAYOUT;
 	$LAYOUT->setTitle('Writing sitemap');
 
-	$gsg = new GsgXml($SETTINGS[PSNG_WEBSITE]);
+	$gsg = new Sitepod\GsgXml($SETTINGS[PSNG_WEBSITE]);
 
  // create the sitemap file
 	$filesGot = $_REQUEST['FILE'];

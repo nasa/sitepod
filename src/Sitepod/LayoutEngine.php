@@ -1,4 +1,5 @@
 <?php
+namespace Sitepod;
 /* 
 	This is phpSitemapNG, a php script that creates your personal google sitemap
 	It can be downloaded under http://enarion.net/google/
@@ -15,7 +16,7 @@ class LayoutEngine {
 	var $buffering = true;
 	var $static_title = "";
 	
-    function LayoutEngine($staticTitle) {
+    function __construct($staticTitle) {
 /*		$this->content[error] = array();
 		$this->content[warning] = array();
 		$this->content[info] = array();

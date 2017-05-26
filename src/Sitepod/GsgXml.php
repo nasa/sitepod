@@ -14,7 +14,7 @@
      *  See the License for the specific language governing permissions and
      *  limitations under the License.
      */
-
+namespace Sitepod;
 
     /**
      * GsgXml
@@ -109,7 +109,7 @@
          *                              extra path is included all added URLs
          *                              must be within this directory.
          */
-        function GsgXml($baseUrl = '')
+        function __construct($baseUrl = '')
         {
             $this->baseUrl = strtolower($baseUrl);
             $this->baseUrlLen = strlen($this->baseUrl); // cycle saver
