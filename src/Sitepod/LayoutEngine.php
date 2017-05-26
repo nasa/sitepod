@@ -201,7 +201,7 @@ class LayoutEngine {
     function getContent() {
     	if (! $this->buffering) {
 	    	$res = '<html><head>'."\n";
-			$res .= '<meta http-equiv="Content-Type" content="text/html; charset='.$this->content[charset].'">'."\n";
+			$res .= '<meta http-equiv="Content-Type" content="text/html; charset='.$this->content['charset'].'">'."\n";
 	    	$res .= '<title>'.$this->static_title .' ' . $this->content['title'].'</title>'."\n";
 	    	// header
 	    	if(($this->content['header'] != "") && count($this->content['header']) > 0) {
