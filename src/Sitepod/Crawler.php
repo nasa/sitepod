@@ -338,7 +338,7 @@ class Crawler {
 		if (is_array($header)) {
 		foreach ($header as $key => $value) {
 			if ($key == '' && substr($value, 0, strlen('HTTP/'))) {
-				$s = split(" ", $value);
+				$s = explode(" ", $value);
 				$res['http_status'] = $s[1];
 			} elseif ($key == "Last-Modified") {
 				$res['lastmod'] = strtotime(trim($value)); // no dynamic (php/other script) generated page
@@ -457,8 +457,8 @@ class Crawler {
 		$query_encoded = '';
 		if ($url_query != '') {
 			$query_encoded = '?';
-			foreach (split('&', $url_query) as $id => $quer) {
-				$v = split('=', $quer);
+			foreach (explode('&', $url_query) as $id => $quer) {
+				$v = explode('=', $quer);
 				if ($v[1] != '') {
 					$query_encoded .= $v[0].'='.rawurlencode($v[1]).'&';
 				} else {
