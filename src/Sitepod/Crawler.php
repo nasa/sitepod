@@ -142,9 +142,11 @@ class Crawler {
 		return NULL;
 	}
 
-	/**
-	 * adds list of links extracted from this file $url
-	 */
+    /**
+     * adds list of links extracted from this file $url
+     * @param string $url
+     * @return boolean
+     */
 	function _getFilesForURL($url) {
 		$this->visitedUrls[] = $url;
 
@@ -152,13 +154,13 @@ class Crawler {
 		// if allready in list of files, return
 		if (array_key_exists($url, $this->files)) {
 //			debug($url, "File already in list of files");
-			return;
+			return false;
 		}
 
 		// check for non local file links that refers to another host
 		if (!($this->_isLocal($url))) {
 //			debug($url, 'The url does not match the current host '.$this->host.', only relative links are allowed at the moment!');
-			return;
+			return false;
 		}
 
 		// fetch content for given url
@@ -170,7 +172,7 @@ class Crawler {
 
 		if ($info['http_status'] >= '400' && $info['http_status'] < '499')  {
 			// we have an error - webpage is not accessible, just leave it
-			return;
+			return false;
 		}
 
 		// if not allready in list of files, add it
@@ -181,7 +183,7 @@ class Crawler {
 //			debug($url, 'Successful added url');
 		} elseif ($info['location'] == '') {
 //			debug($url, "File already in list of files");
-			return;
+			return false;
 		} else {
 //			debug($url, "Url is only a redirect (http 302)");
 		}
@@ -338,7 +340,7 @@ class Crawler {
 		if (is_array($header)) {
 		foreach ($header as $key => $value) {
 			if ($key == '' && substr($value, 0, strlen('HTTP/'))) {
-				$s = split(" ", $value);
+				$s = explode(" ", $value);
 				$res['http_status'] = $s[1];
 			} elseif ($key == "Last-Modified") {
 				$res['lastmod'] = strtotime(trim($value)); // no dynamic (php/other script) generated page
@@ -457,8 +459,8 @@ class Crawler {
 		$query_encoded = '';
 		if ($url_query != '') {
 			$query_encoded = '?';
-			foreach (split('&', $url_query) as $id => $quer) {
-				$v = split('=', $quer);
+			foreach (explode('&', $url_query) as $id => $quer) {
+				$v = explode('=', $quer);
 				if ($v[1] != '') {
 					$query_encoded .= $v[0].'='.rawurlencode($v[1]).'&';
 				} else {
@@ -479,8 +481,6 @@ class Crawler {
 		socket_set_blocking($fp, TRUE);
 		fwrite($fp, $get);
 
-		$res = '';
-		$head_done = FALSE;
 		$ts_begin = $this->microtime_float();
 		// source for chunk-decoding: http://www.phpforum.de/archiv_13065_fsockopen@end@chunked@geht@nicht_anzeigen.html
 
@@ -696,7 +696,6 @@ echo 'Crawler _absolute: '.'new path '.$path.'<br/>';
 			if (substr($relative, 0, 4) == 'http') {
 				$url = parse_url($relative);
 				if ($url['host'] != $this->host && ((("www.".$url['host']) == $this->host) && $this->withWWW == true || ($url['host'] == ("www.".$this->host)) && $this->withWWW == false)) {
-					$r = $relative;
 					$relative = str_replace($url['host'], $this->host, $relative); // replace hostname that differes from local
 				}
 				// is pure hostname without path - so add a /
@@ -760,16 +759,18 @@ echo 'Crawler _absolute: '.'new path '.$path.'<br/>';
 		return FALSE;
 	}
 
-	/**
-	 * set list of forbidden directories
-	 */
+    /**
+     * set list of forbidden directories
+     * @param array $directories
+     */
 	function setForbiddenDirectories($directories = array ()) {
 		$this->forbidden_dir = $directories;
 	}
 
-	/**
-	 * set list of forbidden files
-	 */
+    /**
+     * set list of forbidden files
+     * @param array $files
+     */
 	function setForbiddenFiles($files = array ()) {
 		$this->forbidden_files = $files;
 	}

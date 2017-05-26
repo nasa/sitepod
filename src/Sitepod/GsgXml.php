@@ -194,6 +194,7 @@ namespace Sitepod;
             }
 
             $this->urls[] = $data;
+            return true;
         }
 
 
@@ -292,13 +293,11 @@ namespace Sitepod;
 
 
         /**
-         * compress
-         *
          * Compresses a text string with GZIP, and returns the compressed data
          *
-         * @access  public
-         * @param   string  The string to compress
-         * @return          The compressed gzip data, or null if the compression callback is not found
+         * @access public
+         * @param string $string The string to compress
+         * @return string The compressed gzip data, or null if the compression callback is not found
          */
         function compress($string)
         {
