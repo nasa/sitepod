@@ -280,11 +280,13 @@ class Crawler {
 		return $retproto;
 	}
 
-	/**
-	 * WAS: only allowed masking char: * (before and/or after search string)
-	 *
-	 * TODO check this with more data
-	 */
+    /**
+     * WAS: only allowed masking char: * (before and/or after search string)
+     *
+     * TODO check this with more data
+     * @param string $filename
+     * @return bool
+     */
 	function checkFileName($filename) {
 		$filename = substr($filename, strrpos($filename, '/') + 1);
 		if (is_array($this->forbidden_files) && count($this->forbidden_files) > 0) {
