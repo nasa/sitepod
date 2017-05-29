@@ -240,6 +240,7 @@ namespace Sitepod;
                 }
                 echo $xml;
             }
+            return null;
         }
 
 

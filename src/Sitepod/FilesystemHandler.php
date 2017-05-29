@@ -230,6 +230,7 @@ class FilesystemHandler {
 	       closedir($dir);
 	       return TRUE;
 	   }
+	   return null;
 	}
     
 }
