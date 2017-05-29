@@ -552,7 +552,7 @@ function submitPageToGoogle() {
 
 	$res = fopen("http://www.google.com/webmasters/sitemaps/ping?sitemap=".urlencode($SETTINGS['website'].$SETTINGS[PSNG_SITEMAP_URL]),"r");
 	if ($res === FALSE) {
-		$LAYOUT->addError('', 'Error while submitting '.$SETTINGS[sitemap_url].'to google!');
+		$LAYOUT->addError('', 'Error while submitting '.$SETTINGS[PSNG_SITEMAP_URL].'to google!');
 	}
 
 	$str = "";
