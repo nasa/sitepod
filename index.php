@@ -61,6 +61,6 @@ switch ($state) {
 		break;
 }
 
-require_once(PSNG_FILE_INC_SHUTDOWN);
+require_once('inc/shutdown.php');
 
 ?>
