@@ -20,7 +20,7 @@
  * misc functions
  */
 function info($param, $msg = '') {
-	global $SETTINGS, $LAYOUT;
+	global $LAYOUT;
 
 	if ($param == "" && $msg == "")
 		return;
@@ -245,7 +245,6 @@ function getDateTimeISO($timestamp, $short = false) {
 function getFrequency($lastmod) {
 	// set changefreq
 	$age = time() - $lastmod;
-	$change_freq = "monthly"; // default value
 	if ($age < 10) {
 		$change_freq = "always";
 	} elseif ($age < 60*60) {
