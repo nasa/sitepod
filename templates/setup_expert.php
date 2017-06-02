@@ -127,21 +127,21 @@ if (!isset($SETTINGS[PSNG_COMPRESS_SITEMAP])) $SETTINGS[PSNG_COMPRESS_SITEMAP] =
 	  	<td valign="top"><label for="idisallow_dir" accesskey="D">Exclude directories</label></td>
 		<td>
 			<font size="-1">directories containing these substrings will will not be scanned for files and will not be added to site index; use line break to separate entries</font><br />
-			<textarea name="'.PSNG_DISALLOW_DIR.'" cols="40" rows="10" id="idisallow_dir">'.arrToString($SETTINGS[PSNG_DISALLOW_DIR]).'</textarea>
+			<textarea name="'.PSNG_DISALLOW_DIR.'" cols="40" rows="10" id="idisallow_dir">'.\Sitepod\Util::arrToString($SETTINGS[PSNG_DISALLOW_DIR]).'</textarea>
 		</td>
 	  </tr>
 	  <tr>
 	  	<td valign="top"><label for="idisallow_file" accesskey="F">Exclude files</label></td>
 		<td>
 			<font size="-1">files containing these substrings will not be crawled for further links and not added to site index; use line break to separate entries</font><br/>
-			<textarea name="'.PSNG_DISALLOW_FILE.'" cols="40" rows="10" id="idisallow_file">'.arrToString($SETTINGS[PSNG_DISALLOW_FILE]).'</textarea>
+			<textarea name="'.PSNG_DISALLOW_FILE.'" cols="40" rows="10" id="idisallow_file">'.\Sitepod\Util::arrToString($SETTINGS[PSNG_DISALLOW_FILE]).'</textarea>
 		</td>
 	  </tr>
 	  <tr>
 	  	<td valign="top"><label for="idisallow_key" accesskey="K">Exclude url keys</label></td>
 		<td>
 			<font size="-1">remove keys in urls; you should add the session key here (default: PHPSESSID)</font>
-			<textarea name="'.PSNG_DISALLOW_KEY.'" cols="40" rows="10" id="idisallow_key">'.arrToString($SETTINGS[PSNG_DISALLOW_KEY]).'</textarea>
+			<textarea name="'.PSNG_DISALLOW_KEY.'" cols="40" rows="10" id="idisallow_key">'.\Sitepod\Util::arrToString($SETTINGS[PSNG_DISALLOW_KEY]).'</textarea>
 		</td>
 	  </tr>
 	  <tr>

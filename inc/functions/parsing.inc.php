@@ -143,11 +143,11 @@ function loadCachedFiles() {
 		foreach ($FILES as $numb => $arr) {
 			debug($arr, 'Got file number '.$numb.' from file cache');
 			$file_url = $arr[PSNG_FILE_URL];
-			$FILES_CACHE[$file_url][PSNG_FILE_URL] = 		variableNameToString($arr[PSNG_FILE_URL]);
-			$FILES_CACHE[$file_url][PSNG_LASTMOD] = 		variableNameToString($arr[PSNG_LASTMOD]);
-			$FILES_CACHE[$file_url][PSNG_CHANGEFREQ] = 		variableNameToString($arr[PSNG_CHANGEFREQ]);
-			$FILES_CACHE[$file_url][PSNG_PRIORITY] = 		variableNameToString($arr[PSNG_PRIORITY]);
-			$FILES_CACHE[$file_url][PSNG_FILE_ENABLED] = 	variableNameToString($arr[PSNG_FILE_ENABLED]);
+			$FILES_CACHE[$file_url][PSNG_FILE_URL] = 		\Sitepod\Util::variableNameToString($arr[PSNG_FILE_URL]);
+			$FILES_CACHE[$file_url][PSNG_LASTMOD] = 		\Sitepod\Util::variableNameToString($arr[PSNG_LASTMOD]);
+			$FILES_CACHE[$file_url][PSNG_CHANGEFREQ] = 		\Sitepod\Util::variableNameToString($arr[PSNG_CHANGEFREQ]);
+			$FILES_CACHE[$file_url][PSNG_PRIORITY] = 		\Sitepod\Util::variableNameToString($arr[PSNG_PRIORITY]);
+			$FILES_CACHE[$file_url][PSNG_FILE_ENABLED] = 	\Sitepod\Util::variableNameToString($arr[PSNG_FILE_ENABLED]);
 		}
 		debug($FILES_CACHE, "FILES_CACHE");
 	} else {
@@ -552,7 +552,7 @@ function submitPageToGoogle() {
 
 	$res = fopen("http://www.google.com/webmasters/sitemaps/ping?sitemap=".urlencode($SETTINGS['website'].$SETTINGS[PSNG_SITEMAP_URL]),"r");
 	if ($res === FALSE) {
-		$LAYOUT->addError('', 'Error while submitting '.$SETTINGS[sitemap_url].'to google!');
+		$LAYOUT->addError('', 'Error while submitting '.$SETTINGS[PSNG_SITEMAP_URL].'to google!');
 	}
 
 	$str = "";

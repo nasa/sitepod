@@ -20,10 +20,13 @@ class FilesystemHandler {
 	var $directory_offset = '';
 	var $cur_item = 0;
 	var $deadline;
-	 
-	/**
-	 * public constructor, set initial values
-	 */
+
+    /**
+     * public constructor, set initial values
+     * @param string $filesystem_base
+     * @param int $deadline
+     * @param string $directory_offset
+     */
     function __construct($filesystem_base,  $deadline = 0, $directory_offset = '') {
 		$this->filesystem_base = $filesystem_base;
 		$this->directory_offset = $directory_offset;
@@ -87,17 +90,19 @@ class FilesystemHandler {
 	function setDone($done) {
 		$this->done = $done;
 	}
-		
+
     /**
      * set list of forbidden directories
+     * @param array $directories
      */
     function setForbiddenDirectories($directories = array()) {
     	$this->forbidden_dir = $directories;	
     }
-	
-	/**
-	 * set list of forbidden files
-	 */
+
+    /**
+     * set list of forbidden files
+     * @param array $files
+     */
 	function setForbiddenFiles($files = array()) {
 		$this->forbidden_files = $files;	
 	}    
@@ -124,10 +129,12 @@ class FilesystemHandler {
 	function microtime_float() {
    		list($usec, $sec) = explode(" ", microtime());
    		return ((float)$usec + (float)$sec);
-	}    
+	}
 
     /**
      * return last modification time
+     * @param string $filename
+     * @return bool|int
      */
     function getLastModificationTime($filename) {
     	$lastmod = filemtime($filename);
@@ -152,11 +159,13 @@ class FilesystemHandler {
 	  return $res;
 	}
 
-	/**
-	 * only allowed masking char: * (before and/or after search string)
-	 * 
-	 * TODO check this with more data
-	 */
+    /**
+     * only allowed masking char: * (before and/or after search string)
+     *
+     * TODO check this with more data
+     * @param string $filename
+     * @return bool
+     */
 	function checkFileName($filename) {
 		$filename = substr($filename, strrpos($filename, '/')+1);
 	    if (is_array($this->forbidden_files) && count($this->forbidden_files) > 0) {
@@ -201,10 +210,12 @@ class FilesystemHandler {
 	  	return FALSE;
 	}
 
-	/**
-	 * searches for files and adds them to $this->files; adds directories to $this->todo
-	 * algorithm: breadth first search (former algorithm: dfs)
-	 */
+    /**
+     * searches for files and adds them to $this->files; adds directories to $this->todo
+     * algorithm: breadth first search (former algorithm: dfs)
+     * @param string $directory
+     * @return bool|null
+     */
 	function _getFiles($directory) {
 	   	if($dir = opendir($directory)) {
 	       while(FALSE !== ($file = readdir($dir))) {
@@ -230,6 +241,7 @@ class FilesystemHandler {
 	       closedir($dir);
 	       return TRUE;
 	   }
+	   return null;
 	}
     
 }

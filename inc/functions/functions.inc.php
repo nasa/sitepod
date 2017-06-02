@@ -20,12 +20,12 @@
  * misc functions
  */
 function info($param, $msg = '') {
-	global $SETTINGS, $LAYOUT;
+	global $LAYOUT;
 
 	if ($param == "" && $msg == "")
 		return;
 	if (is_array($param)) {
-		$LAYOUT->addInfo(arrToStringReadable($param, "<br>\n"),$msg);
+		$LAYOUT->addInfo(\Sitepod\Util::arrToStringReadable($param, "<br>\n"),$msg);
 	} else {
 		$LAYOUT->addInfo($param, $msg);
 	}
@@ -40,7 +40,7 @@ function debug($param, $msg = '') {
 			if ($param == "" && $msg == "")
 				return;
 			if (is_array($param)) {
-				$LAYOUT->addDebug(arrToStringReadable($param, "<br>\n"),$msg);
+				$LAYOUT->addDebug(\Sitepod\Util::arrToStringReadable($param, "<br>\n"),$msg);
 			} else {
 				$LAYOUT->addDebug($param, $msg);
 			}
@@ -229,12 +229,6 @@ function checkFile($filename) {
 }
 
 function getDateTimeISO($timestamp, $short = false) {
-    $geoData = (new Sitepod\GeoIp())->getGeoData($_SERVER['REMOTE_ADDR']);
-    $timeZone = new DateTimeZone('UTC'); // Set a default timezone
-    if ($geoData['time_zone'] !== '') {
-        $timeZone = new DateTimeZone($geoData['time_zone']); // When there is a time_zone for the client IP address, use it.
-    }
-    date_default_timezone_set($timeZone->getName());
     $dataString = 'Y-m-d';
     if (!$short) {
         $dataString .= '\TH:i:s';
@@ -245,7 +239,6 @@ function getDateTimeISO($timestamp, $short = false) {
 function getFrequency($lastmod) {
 	// set changefreq
 	$age = time() - $lastmod;
-	$change_freq = "monthly"; // default value
 	if ($age < 10) {
 		$change_freq = "always";
 	} elseif ($age < 60*60) {
@@ -277,11 +270,11 @@ function storeSettings($SETTINGS, $filename, $keyname) {
 	foreach ($SETTINGS as $key => $val) {
 		if (is_array($val)) {
 			foreach ($val as $key2 => $val2) {
-				fputs($file, '$'.$keyname."['".stringToVariableName($key)."']['".stringToVariableName($key2)."'] = '".stringToVariableName($val2)."';\n");
+				fputs($file, '$'.$keyname."['".\Sitepod\Util::stringToVariableName($key)."']['".\Sitepod\Util::stringToVariableName($key2)."'] = '".\Sitepod\Util::stringToVariableName($val2)."';\n");
 			}
 			continue;
 		}
-		fputs($file, '$'.$keyname."['".stringToVariableName($key)."'] = '".stringToVariableName($val)."';\n");
+		fputs($file, '$'.$keyname."['".\Sitepod\Util::stringToVariableName($key)."'] = '".\Sitepod\Util::stringToVariableName($val)."';\n");
 	}
 	fputs($file, "?>\n");
 	fclose($file);
@@ -289,64 +282,4 @@ function storeSettings($SETTINGS, $filename, $keyname) {
 	return NULL;
 }
 
-/* remove maybe existing ' in string */
-function stringToVariableName($str) {
-	return ((!get_magic_quotes_gpc()) ? addslashes($str) : $str);
-}
-function variableNameToString($var_name) {
-	if(get_magic_quotes_gpc()) {
-		return stripslashes($var_name);
-	} else {
-		$res = $var_name;
-		if (substr($res, 0, 1) == "'")
-			$res = substr($res, 1);
-		if (substr($res, strlen($res) - 1) == "'")
-			$res = substr($res, 0, strlen($res) - 1);
-		return $res;
-	}
-}
-
-/* explodes the array for given deliminator and returns a correct array */
-function toArray($str, $delim = "\n") {
-	$res = array ();
-	$res = explode($delim, $str);
-
-	for ($i = 0; $i < count($res); $i ++) {
-		$res[$i] = trim($res[$i]);
-	}
-
-	return $res;
-}
-
-/* returns a string of all entries of array with delim */
-function arrToStringReadable($array, $delim) {
-	$res = "";
-	if (is_array($array)) {
-		$i = 0;
-		foreach ($array as $key => $val) {
-			if (is_array($val)) {
-				$res .= "$key: ".arrToStringReadable($val, $delim);
-			} else {
-				$res .= "$key: $val";
-			}
-			if ($i < (count($array) - 1))
-				$res .= $delim;
-			$i ++;
-		}
-	}
-	return $res;
-}
-
-/* returns a string of all entries of array with delim */
-function arrToString($array, $delim = "\n") {
-	$res = "";
-	if (is_array($array)) {
-		for ($i = 0; $i < count($array); $i ++) {
-			$res .= $array[$i];
-			if ($i < (count($array) - 1))
-				$res .= $delim;
-		}
-	}
-	return $res;
-}
 ?>
