@@ -401,28 +401,26 @@ function handleURL($url, $lastmod = '', $changefreq = '', $priority = '') {
 function handleDoubleEntryFilesystemWebsite($fs, $website) {
 	$res = ($fs != null) ? $fs : $website;
 
-	if($fs[PSNG_FILE_URL] == $fs[PSNG_FILE_URL]) {
-		// check lastmod
-		if (($fs[PSNG_LASTMOD] != '' && $website[PSNG_LASTMOD] != '') ||($fs[PSNG_LASTMOD] != '' && $website[PSNG_LASTMOD] == '')) {
-			$res[PSNG_LASTMOD] = $fs[PSNG_LASTMOD];
-		} else { // empty value or only in website
-			$res[PSNG_LASTMOD] = $website[PSNG_LASTMOD];
-		}
+    // check lastmod
+    if (($fs[PSNG_LASTMOD] != '' && $website[PSNG_LASTMOD] != '') ||($fs[PSNG_LASTMOD] != '' && $website[PSNG_LASTMOD] == '')) {
+        $res[PSNG_LASTMOD] = $fs[PSNG_LASTMOD];
+    } else { // empty value or only in website
+        $res[PSNG_LASTMOD] = $website[PSNG_LASTMOD];
+    }
 
-		// check changefreq
-		if (($fs[PSNG_CHANGEFREQ] != '' && $website[PSNG_CHANGEFREQ] != '') || ($fs[PSNG_CHANGEFREQ] != '' && $website[PSNG_CHANGEFREQ] == '')) {
-			$res[PSNG_CHANGEFREQ] = $fs[PSNG_CHANGEFREQ];
-		} else { // empty value or only in website
-			$res[PSNG_CHANGEFREQ] = $website[PSNG_CHANGEFREQ];
-		}
+    // check changefreq
+    if (($fs[PSNG_CHANGEFREQ] != '' && $website[PSNG_CHANGEFREQ] != '') || ($fs[PSNG_CHANGEFREQ] != '' && $website[PSNG_CHANGEFREQ] == '')) {
+        $res[PSNG_CHANGEFREQ] = $fs[PSNG_CHANGEFREQ];
+    } else { // empty value or only in website
+        $res[PSNG_CHANGEFREQ] = $website[PSNG_CHANGEFREQ];
+    }
 
-		// check priority
-		if (($fs[PSNG_PRIORITY] != '' && $website[PSNG_PRIORITY] != '') || ($fs[PSNG_PRIORITY] != '' && $website[PSNG_PRIORITY] == '')) {
-			$res[PSNG_PRIORITY] = $fs[PSNG_PRIORITY];
-		} else { // empty value or only in website
-			$res[PSNG_PRIORITY] = $website[PSNG_PRIORITY];
-		}
-	};
+    // check priority
+    if (($fs[PSNG_PRIORITY] != '' && $website[PSNG_PRIORITY] != '') || ($fs[PSNG_PRIORITY] != '' && $website[PSNG_PRIORITY] == '')) {
+        $res[PSNG_PRIORITY] = $fs[PSNG_PRIORITY];
+    } else { // empty value or only in website
+        $res[PSNG_PRIORITY] = $website[PSNG_PRIORITY];
+    }
 
 	// add missing keys from 1st array
 	foreach (array_diff(array_keys($fs), array_keys($website)) as $id => $key) {
