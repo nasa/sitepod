@@ -359,7 +359,7 @@ class Crawler {
 				foreach ($parts as $id => $part) {
 					$p = explode('=', trim($part));
 					$cookie[$p[0]] = $p[1];
-					if ($p[0] != 'path' && $p[0] != 'path' && strpos($p[0], 'expires') === FALSE && $p[0] != 'domain') {
+					if ($p[0] != 'path' && strpos($p[0], 'expires') === FALSE && $p[0] != 'domain') {
 						$cookie_name = $p[0];
 					}
 				}
