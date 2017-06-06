@@ -409,7 +409,7 @@ function handleURL($url, $lastmod = '', $changefreq = '', $priority = '') {
 		$res[PSNG_PRIORITY] = $SETTINGS[PSNG_PRIORITY_FIXED];
 	} elseif($SETTINGS[PSNG_PRIORITY] == PSNG_PRIORITY_AUTOMATIC) {
 		// TODO IMPLEMENTME!!! calculate priority depending on #links, hierachie level, ...
-		$res[PSNG_PRIORITY] = $SETTINGS[PSNG_PRIORITY_FIXED];
+		$res[PSNG_PRIORITY] = $SETTINGS[PSNG_PRIORITY_AUTOMATIC];
 	} elseif($SETTINGS[PSNG_PRIORITY] == PSNG_PRIORITY_DISSABLED) {
 		$res[PSNG_PRIORITY] = '';
 	}
