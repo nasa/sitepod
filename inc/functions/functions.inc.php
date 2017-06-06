@@ -22,8 +22,9 @@
 function info($param, $msg = '') {
 	global $LAYOUT;
 
-	if ($param == "" && $msg == "")
-		return;
+	if ($param == "" && $msg == "") {
+        return;
+    }
 	if (is_array($param)) {
 		$LAYOUT->addInfo(\Sitepod\Util::arrToStringReadable($param, "<br>\n"),$msg);
 	} else {
@@ -37,8 +38,9 @@ function debug($param, $msg = '') {
 	if (isset($_SESSION[PSNG_DEBUG]) && isset($SETTINGS[PSNG_DEBUG]))
 	{
 		if ($SETTINGS[PSNG_DEBUG] === TRUE && $_SESSION[PSNG_DEBUG] === TRUE) {
-			if ($param == "" && $msg == "")
-				return;
+			if ($param == "" && $msg == "") {
+                return;
+            }
 			if (is_array($param)) {
 				$LAYOUT->addDebug(\Sitepod\Util::arrToStringReadable($param, "<br>\n"),$msg);
 			} else {
@@ -145,17 +147,21 @@ function init() {
 	}
 /**/
 
-	if (isset($_SESSION[PSNG_SETTINGS])) $SETTINGS = array_merge($_SESSION[PSNG_SETTINGS],$SETTINGS);
+	if (isset($_SESSION[PSNG_SETTINGS])) {
+	    $SETTINGS = array_merge($_SESSION[PSNG_SETTINGS],$SETTINGS);
+    }
 
 	$LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_SCRIPT].'?action=setup" title="Edit settings">Setup</a>');
 	$LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_SCRIPT].'?action='.PSNG_ACTION_CHECK_UPDATESTATUS.'" title="Invoke an update check to get information of recent versions">Check for updates</a>');
 	if (isset($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET]))
 	{
-		if ($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET] == TRUE)
-			$LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_SCRIPT].'?action=parse" title="Start the scan for files">Start scan</a>');
+		if ($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET] == TRUE) {
+            $LAYOUT->addContentHeader('<a href="' . $SETTINGS[PSNG_SCRIPT] . '?action=parse" title="Start the scan for files">Start scan</a>');
+        }
 	}
-	if (@file_exists($SETTINGS[PSNG_SITEMAP_FILE]) && ( @filesize($SETTINGS[PSNG_SITEMAP_FILE]) > 0))
-		$LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_SITEMAP_URL].'" target="_blank" title="View the created sitemap in a new browser window">View sitemap </a>');
+	if (@file_exists($SETTINGS[PSNG_SITEMAP_FILE]) && ( @filesize($SETTINGS[PSNG_SITEMAP_FILE]) > 0)) {
+        $LAYOUT->addContentHeader('<a href="' . $SETTINGS[PSNG_SITEMAP_URL] . '" target="_blank" title="View the created sitemap in a new browser window">View sitemap </a>');
+    }
 	$LAYOUT->addContentHeader('<div align="left"><a href="https://github.com/nasa/sitepod/issues" target="_blank" title="Create a Github issue in a new browser window">Give feedback</a>');
 
 	debug('version: '.PSNG_VERSION, 'This is Sitepod');
@@ -163,10 +169,14 @@ function init() {
 
 	debug($SETTINGS[PSNG_SETTINGS_STATE], 'last state');
 	$action = '';
-	if (isset($_REQUEST[PSNG_ACTION])) $action = $_REQUEST[PSNG_ACTION];
+	if (isset($_REQUEST[PSNG_ACTION])) {
+	    $action = $_REQUEST[PSNG_ACTION];
+    }
 	// handle some special actions, eg submit buttons without approriate hidden action tag
 	if (isset($_REQUEST[PSNG_ACTION_SETTINGS_RESET])) {
-		if ($_REQUEST[PSNG_ACTION_SETTINGS_RESET] != '') $action = PSNG_ACTION_SETTINGS_RESET;
+		if ($_REQUEST[PSNG_ACTION_SETTINGS_RESET] != '') {
+		    $action = PSNG_ACTION_SETTINGS_RESET;
+        }
 	}
 
 	$SETTINGS[PSNG_SETTINGS_STATE] = $action;
@@ -177,7 +187,9 @@ function init() {
 	$SETTINGS[PSNG_TIMEOUT_IS] = FALSE;
 
 	$SETTINGS[PSNG_TIMEOUT_IS] = '';
-	if ($SETTINGS[PSNG_TIMEOUT] == PSNG_TIMEOUT_NONE) $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE] = time()+60*60*24; // timeout is now in 24 h
+	if ($SETTINGS[PSNG_TIMEOUT] == PSNG_TIMEOUT_NONE) {
+	    $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE] = time()+60*60*24; // timeout is now in 24 h
+    }
 
 	return $action;
 }
@@ -263,8 +275,9 @@ function storeSettings($SETTINGS, $filename, $keyname) {
 
 	$file = openFile($filename, TRUE);
 
-	if ($file === FALSE)
-		return $openFile_error;
+	if ($file === FALSE) {
+        return $openFile_error;
+    }
 
 	fputs($file, "<?php\n");
 	foreach ($SETTINGS as $key => $val) {
