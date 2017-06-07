@@ -33,18 +33,30 @@
 	$count = array();
 	$count['numb'] = 5;
 	$f = $FILE[array_pop(array_keys($FILE))];
-	if ($f[PSNG_LASTMOD] == PSNG_LASTMOD_DISSABLED) $count[numb]--;
-	if ($f[PSNG_CHANGEFREQ] == PSNG_CHANGEFREQ_DISSABLED) $count[numb]--;
-	if ($f[PSNG_PRIORITY] == PSNG_PRIORITY_DISSABLED) $count[numb]--;
+	if ($f[PSNG_LASTMOD] == PSNG_LASTMOD_DISSABLED) {
+	    $count[numb]--;
+    }
+	if ($f[PSNG_CHANGEFREQ] == PSNG_CHANGEFREQ_DISSABLED) {
+	    $count[numb]--;
+    }
+	if ($f[PSNG_PRIORITY] == PSNG_PRIORITY_DISSABLED) {
+	    $count[numb]--;
+    }
 	$count[PSNG_HTML_SOURCE_FS] = 0;
 	$count[PSNG_HTML_SOURCE_WEBSITE] = 0;
 	$count[PSNG_HTML_SOURCE_FS_WEBSITE] = 0;
 	$count[PSNG_HTML_HISTORY] = 0;
 
 	foreach ($FILE as $filename => $fileinfo) {
-		if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_FS) $count[PSNG_HTML_SOURCE_FS]++;
-		if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_WEBSITE) $count[PSNG_HTML_SOURCE_WEBSITE]++;
-		if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_FS_WEBSITE) $count[PSNG_HTML_SOURCE_FS_WEBSITE]++;
+		if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_FS) {
+		    $count[PSNG_HTML_SOURCE_FS]++;
+        }
+		if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_WEBSITE) {
+		    $count[PSNG_HTML_SOURCE_WEBSITE]++;
+        }
+		if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_FS_WEBSITE) {
+		    $count[PSNG_HTML_SOURCE_FS_WEBSITE]++;
+        }
 
 		if (isset($fileinfo[PSNG_HTML_HISTORY])) {
 			$count[PSNG_HTML_HISTORY]++;
@@ -88,10 +100,18 @@
 			$numb++;
 	}
 	$layout .= '<tr><td colspan="'.$count['numb'].'">&nbsp;</td></tr>'."\n";
-	if ($count[PSNG_HTML_HISTORY] != '') $layout .= '<tr class="'.PSNG_HTML_HISTORY.'"><td colspan="'.$count['numb'].'">A cell with this background means that this file is already stored in your local cached filelist</td></tr>'."\n";
-	if ($count[PSNG_HTML_SOURCE_FS] != '') $layout .= '<tr '.PSNG_HTML_SOURCE_FS.'><td colspan="'.$count['numb'].'">A row with this background means that this file can found on your local filesystem</td></tr>'."\n";
-	if ($count[PSNG_HTML_SOURCE_WEBSITE] != '') $layout .= '<tr '.PSNG_HTML_SOURCE_WEBSITE.'><td colspan="'.$count['numb'].'">A row with this background means that this file has been found with the crawler engine</td></tr>'."\n";
-	if ($count[PSNG_HTML_SOURCE_FS_WEBSITE] != '') $layout .= '<tr '.PSNG_HTML_SOURCE_FS_WEBSITE.'><td colspan="'.$count['numb'].'">A row with this background means that this file is stored on filesystem and there are links to this file.</td></tr>'."\n";
+	if ($count[PSNG_HTML_HISTORY] != '') {
+	    $layout .= '<tr class="'.PSNG_HTML_HISTORY.'"><td colspan="'.$count['numb'].'">A cell with this background means that this file is already stored in your local cached filelist</td></tr>'."\n";
+    }
+	if ($count[PSNG_HTML_SOURCE_FS] != ''){
+	    $layout .= '<tr '.PSNG_HTML_SOURCE_FS.'><td colspan="'.$count['numb'].'">A row with this background means that this file can found on your local filesystem</td></tr>'."\n";
+    }
+	if ($count[PSNG_HTML_SOURCE_WEBSITE] != '') {
+	    $layout .= '<tr '.PSNG_HTML_SOURCE_WEBSITE.'><td colspan="'.$count['numb'].'">A row with this background means that this file has been found with the crawler engine</td></tr>'."\n";
+    }
+	if ($count[PSNG_HTML_SOURCE_FS_WEBSITE] != '') {
+	    $layout .= '<tr '.PSNG_HTML_SOURCE_FS_WEBSITE.'><td colspan="'.$count['numb'].'">A row with this background means that this file is stored on filesystem and there are links to this file.</td></tr>'."\n";
+    }
 
 	$layout .= '</table></form>'."\n";
 

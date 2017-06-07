@@ -44,8 +44,9 @@ class Crawler {
 				$this->protocol = "http";
 			}
 			$this->host = $url['host'];
-			if (substr($this->host, 0, 3) == 'www')
-				$this->withWWW = TRUE;
+			if (substr($this->host, 0, 3) == 'www') {
+                $this->withWWW = TRUE;
+            }
 		}
 
 		$this->url = $this->protocol.'://'.$this->host.'/';
@@ -63,8 +64,9 @@ class Crawler {
 		reset($this->todo);
 		while (($this->deadline == 0) || (($this->deadline - $this->microtime_float()) > 0)) {
 			$url = array_pop($this->todo);
-			if (is_null($url) || $url == '')
-				break;
+			if (is_null($url) || $url == '') {
+                break;
+            }
 			$this->_getFilesForURL($url);
 		}
 		ksort($this->files);
@@ -94,8 +96,9 @@ class Crawler {
 	}
 
 	function setFiles($files) {
-		if (is_array($files))
-			$this->files = $files;
+		if (is_array($files)) {
+            $this->files = $files;
+        }
 	}
 
 	function setDone($done) {
@@ -122,8 +125,9 @@ class Crawler {
 	 * behaves like in java
 	 */
 	function hasNext() {
-		if ($this->size() > $this->cur_item)
-			return TRUE;
+		if ($this->size() > $this->cur_item) {
+            return TRUE;
+        }
 		return FALSE;
 	}
 
@@ -132,8 +136,9 @@ class Crawler {
 	 * behaves like in java
 	 */
 	function getNext() {
-		if (count($this->keys) == 0)
-			$this->keys = array_keys($this->files);
+		if (count($this->keys) == 0) {
+            $this->keys = array_keys($this->files);
+        }
 		if ($this->hasNext()) {
 			$tmp = $this->files[$this->keys[$this->cur_item]];
 			$this->cur_item++;
@@ -200,10 +205,14 @@ class Crawler {
 		$a_begin = 0;
 		while (TRUE) {
 			$a_begin = strpos($res, '<!--', $a_begin);
-			if ($a_begin === FALSE) break; // no comment tag found, break
+			if ($a_begin === FALSE) {
+			    break; // no comment tag found, break
+            }
 
 			$a_end = strpos($res, '-->', $a_begin +3);
-			if ($a_end === FALSE) break; // no comment end tag found, break
+			if ($a_end === FALSE) {
+			    break; // no comment end tag found, break
+            }
 
 			$a_end += 3;
 			$res = substr_replace($res, '', $a_begin, ($a_end - $a_begin));
@@ -221,9 +230,13 @@ class Crawler {
     	$ts_begin = $this->microtime_float();
     	while ((($ts_middle = ($this->microtime_float()-$ts_begin)) < PSNG_CRAWLER_MAX_GETFILE_TIME) && $urls_count > 0 ) {
         	$thisurl =  trim(str_replace('&amp;', '&', $urls[1][--$urls_count]));
-			if ($thisurl == '' || (strcasecmp(substr($thisurl, 0, strlen('javascript:')), 'javascript:') == 0))	continue;
+			if ($thisurl == '' || (strcasecmp(substr($thisurl, 0, strlen('javascript:')), 'javascript:') == 0))	{
+			    continue;
+            }
 			// filter out links to fragment ids (same resource) - added mk/2005-11-13
-			if ('#' == $thisurl{0}) continue;
+			if ('#' == $thisurl{0}) {
+			    continue;
+            }
 			// debug('_'.$thisurl.'_','Extracted url');
 
 			$absUrl1 = $this->_absolute($thisurl, $url);
@@ -233,7 +246,9 @@ class Crawler {
 			// remove "//"
 			$start = (strpos($absUrl2, '//') + 3);
 			$end = strpos($absUrl2, '?', $start);
-			if ($end === FALSE)	$end = strlen($absUrl2);
+			if ($end === FALSE)	{
+			    $end = strlen($absUrl2);
+            }
 			$absUrl = substr($absUrl2, 0, $start).str_replace('//', '/', substr($absUrl2, $start, ($end - $start))).substr($absUrl2, $end);
 			//debug($absUrl, "Computed absUrl");
 
@@ -252,9 +267,13 @@ class Crawler {
 		foreach ($result as $id => $file) {
 			if (!in_array($file, $this->visitedUrls) && !array_key_exists($file, $this->files)) {
 				// check forbidden files
-				if ($this->checkFileName($file)) continue;
+				if ($this->checkFileName($file)) {
+				    continue;
+                }
 				// check forbidden directories
-				if ($this->checkDirectoryName($file)) continue;
+				if ($this->checkDirectoryName($file)) {
+				    continue;
+                }
 				//debug($file, 'Adding URL to todo list');
 
 				// add file to todo list
@@ -266,7 +285,9 @@ class Crawler {
 	}
 
 	function _isLocal($givenURL) {
-		if (preg_match(',^(ftp://|mailto:|news:|javascript:|telnet:|callto:),i', $givenURL)) return FALSE;
+		if (preg_match(',^(ftp://|mailto:|news:|javascript:|telnet:|callto:),i', $givenURL)) {
+		    return FALSE;
+        }
 
 		$url = parse_url($givenURL);
 
@@ -291,7 +312,9 @@ class Crawler {
 		$filename = substr($filename, strrpos($filename, '/') + 1);
 		if (is_array($this->forbidden_files) && count($this->forbidden_files) > 0) {
 			foreach ($this->forbidden_files as $id => $file) {
-				if ($file == '') continue;
+				if ($file == '') {
+				    continue;
+                }
 				$pos = strpos($filename, $file);
 				/*	    		$file_search = '';
 						  		if (!(($as = strpos($file, '*')) === FALSE)) {
@@ -302,7 +325,9 @@ class Crawler {
 									$pos = ($filename === $file);
 						  		}
 				*/
-				if ($pos === FALSE)	continue;
+				if ($pos === FALSE)	{
+				    continue;
+                }
 				return TRUE;
 			}
 		}
@@ -313,7 +338,9 @@ class Crawler {
 		$directory = substr($directory, 0, strrpos($directory, '/') + 1); // with last "/"
 		if (is_array($this->forbidden_dir) && count($this->forbidden_dir) > 0) {
 			foreach ($this->forbidden_dir as $id => $dir) {
-				if ($dir == '')	continue;
+				if ($dir == '')	{
+				    continue;
+                }
 				$pos = strpos($directory, $dir);
 				/*	    		$dir_search = '';
 						  		if (!(($as = strpos($dir, '*')) === FALSE)) {
@@ -324,7 +351,9 @@ class Crawler {
 									$pos = ($directory === $dir);
 						  		}
 				*/ // echo "directory: $directory, dir: $dir, dir_search: $dir_search, pos: $pos<br>\n";
-				if ($pos === FALSE)	continue;
+				if ($pos === FALSE)	{
+				    continue;
+                }
 				return TRUE;
 			}
 		}
@@ -359,7 +388,7 @@ class Crawler {
 				foreach ($parts as $id => $part) {
 					$p = explode('=', trim($part));
 					$cookie[$p[0]] = $p[1];
-					if ($p[0] != 'path' && $p[0] != 'path' && strpos($p[0], 'expires') === FALSE && $p[0] != 'domain') {
+					if ($p[0] != 'path' && strpos($p[0], 'expires') === FALSE && $p[0] != 'domain') {
 						$cookie_name = $p[0];
 					}
 				}
@@ -374,13 +403,17 @@ class Crawler {
 			} elseif ($key == "Pragma") {
 				$pragma = trim($value);
 				if ($pragma == "no-cache") { // handle non-cached files -> normaly dynamic created pages
-					if (!isset ($res['lastmod'])) $res['lastmod'] = $res['date'];
+					if (!isset ($res['lastmod'])) {
+					    $res['lastmod'] = $res['date'];
+                    }
 					$res['changefreq'] = 'always';
 				}
 			}
 		}
 		}
-		if ($res['date'] != '' && $res['lastmod'] == '') $res['lastmod'] = $res['date'];
+		if ($res['date'] != '' && $res['lastmod'] == '') {
+		    $res['lastmod'] = $res['date'];
+        }
 //		debug($header, 'Header');
 //		debug($res, 'Extracted information from headers');
 /*
@@ -395,7 +428,9 @@ class Crawler {
 		$paramsStart = strpos($url, '?');
 		if ($paramsStart !== FALSE)  { // url has no parameters, don't search for keys
 			foreach ($this->forbiddenKeys as $id => $key) {
-				if ($key == '') continue; // empty key => ignore it
+				if ($key == '') {
+				    continue; // empty key => ignore it
+                }
 				$start = strpos($url, $key, $paramsStart);
 				while ($start != FALSE) {
 					$end = strpos($url, '&', $start);
@@ -521,16 +556,22 @@ class Crawler {
 		         $res .= $part;
 
 		         if ($chunk == 0){
-		             if (fgets($fp, 1024) != "\r\n") debug('Error in chunk-decoding');
+		             if (fgets($fp, 1024) != "\r\n") {
+		                 debug('Error in chunk-decoding');
+                     }
 		             $chunk = hexdec(fgets($fp, 1024));
 		         }
 		    } else {
 		         $res .= fread($fp, 1024);
 		    }
 			// handle local timeout for fetching file
-			if (($ts_middle = $this->microtime_float() - $ts_begin) > PSNG_CRAWLER_MAX_GETFILE_TIME) break;
+			if (($ts_middle = $this->microtime_float() - $ts_begin) > PSNG_CRAWLER_MAX_GETFILE_TIME) {
+		        break;
+            }
 			// handle global timeout:
-			if (($this->deadline != 0) && (($this->deadline - $this->microtime_float()) < 0)) break;
+			if (($this->deadline != 0) && (($this->deadline - $this->microtime_float()) < 0)) {
+		        break;
+            }
 		}
 		fclose($fp);
 
@@ -701,8 +742,9 @@ echo 'Crawler _absolute: '.'new path '.$path.'<br/>';
 					$relative = str_replace($url['host'], $this->host, $relative); // replace hostname that differes from local
 				}
 				// is pure hostname without path - so add a /
-				if (!array_key_exists('path', $url) || $url['path'] == '' && substr($relative, -1) != '/')
-					$relative .= '/';
+				if (!array_key_exists('path', $url) || $url['path'] == '' && substr($relative, -1) != '/') {
+                    $relative .= '/';
+                }
 			}
 			return $relative;
 		}
@@ -711,10 +753,12 @@ echo 'Crawler _absolute: '.'new path '.$path.'<br/>';
 		$url = parse_url($absolute);
 
 		// dirname() erkennt auf / endende URLs nicht
-		if ($url['path'] { strlen($url['path']) - 1 } == '/')
-			$dir = substr($url['path'], 0, strlen($url['path']) - 1);
-		else
-			$dir = dirname($url['path']);
+		if ($url['path'] { strlen($url['path']) - 1 } == '/') {
+            $dir = substr($url['path'], 0, strlen($url['path']) - 1);
+        }
+		else {
+            $dir = dirname($url['path']);
+        }
 
 		// absoluter Link auf dem gleichen Server
 		if ($relative{0} == '/') {
@@ -728,15 +772,17 @@ echo 'Crawler _absolute: '.'new path '.$path.'<br/>';
 		}
 
 		// Link f�ngt mit ./ an
-		if (substr($relative, 0, 2) == './')
-			$relative = substr($relative, 2);
+		if (substr($relative, 0, 2) == './') {
+            $relative = substr($relative, 2);
+        }
 
 		// Referenzen auf h�her liegende Verzeichnisse aufl�sen
-		else
-			while (substr($relative, 0, 3) == '../') {
-				$relative = substr($relative, 3);
-				$dir = substr($dir, 0, strrpos($dir, '/'));
-			}
+		else {
+            while (substr($relative, 0, 3) == '../') {
+                $relative = substr($relative, 3);
+                $dir = substr($dir, 0, strrpos($dir, '/'));
+            }
+        }
 
 		// if base is set, add it.
 		if (strlen($this->base)) {
@@ -753,7 +799,9 @@ echo 'Crawler _absolute: '.'new path '.$path.'<br/>';
 		if (is_array($array) && count($array) > 0) {
 			foreach ($array as $id => $val) {
 				$pos = @ strpos($key, $val);
-				if ($pos === FALSE)	continue;
+				if ($pos === FALSE)	{
+				    continue;
+                }
 				return TRUE;
 			}
 		}

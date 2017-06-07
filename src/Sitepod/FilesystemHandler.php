@@ -45,7 +45,9 @@ class FilesystemHandler {
      * behaves like in java
      */
     function hasNext() {
-    	if ($this->size() > $this->cur_item) return TRUE;
+    	if ($this->size() > $this->cur_item) {
+    	    return TRUE;
+        }
     	return FALSE;
     }
     
@@ -116,7 +118,9 @@ class FilesystemHandler {
      	reset($this->todo);
      	while(($this->deadline == 0) || (($this->microtime_float() - $this->deadline) <= 0)) {
      		$url = array_pop($this->todo);
-     		if (is_null($url) || $url == '') break;
+     		if (is_null($url) || $url == '') {
+     		    break;
+            }
      		$this->_getFiles($url);
      	}
      	$this->files = $this->_changeOffset($this->done, $this->filesystem_base, $this->directory_offset);
@@ -139,7 +143,9 @@ class FilesystemHandler {
     function getLastModificationTime($filename) {
     	$lastmod = filemtime($filename);
     	// if filemtime failed (for any reason), set it to current time
-		if (!((!is_null($lastmod)) && is_integer($lastmod) && $lastmod > 0)) $lastmod = time(); 
+		if (!((!is_null($lastmod)) && is_integer($lastmod) && $lastmod > 0)) {
+		    $lastmod = time();
+        }
     	
 		return $lastmod;
     	
@@ -170,7 +176,9 @@ class FilesystemHandler {
 		$filename = substr($filename, strrpos($filename, '/')+1);
 	    if (is_array($this->forbidden_files) && count($this->forbidden_files) > 0) {
 	    	foreach ($this->forbidden_files as $id => $file) {
-	    		if ($file == '') continue;
+	    		if ($file == '') {
+	    		    continue;
+                }
 	    		$pos = strpos($filename, $file);
 /*	    		$file_search = '';
 		  		if (!(($as = strpos($file, '*')) === FALSE)) {
@@ -180,7 +188,9 @@ class FilesystemHandler {
 		  		} else {
 					$pos = ($filename === $file);
 		  		}
-*/		  		if ($pos === FALSE) continue;
+*/		  		if ($pos === FALSE) {
+                    continue;
+                }
 		  		return TRUE;
 	    	}
 	  	}
@@ -192,7 +202,9 @@ class FilesystemHandler {
 				// dirname($directory); // 
 	    if (is_array($this->forbidden_dir) && count($this->forbidden_dir) > 0) {
 	    	foreach ($this->forbidden_dir as $id => $dir) {
-	    		if ($dir == '') continue;
+	    		if ($dir == '') {
+	    		    continue;
+                }
 	    		$pos = strpos($directory, $dir);
 /*	    		$dir_search = '';
 		  		if (!(($as = strpos($dir, '*')) === FALSE)) {
@@ -203,7 +215,9 @@ class FilesystemHandler {
 					$pos = ($directory === $dir);
 		  		}
 		  		// echo "directory: $directory, dir: $dir, dir_search: $dir_search, pos: $pos<br>\n";
-*/		  		if ($pos === FALSE) continue;
+*/		  		if ($pos === FALSE) {
+                    continue;
+                }
 		  		return TRUE;
 	    	}
 	  	}
@@ -219,7 +233,9 @@ class FilesystemHandler {
 	function _getFiles($directory) {
 	   	if($dir = opendir($directory)) {
 	       while(FALSE !== ($file = readdir($dir))) {
-	       		if ($file == '..' || $file == '.' || $file[0] == '.') continue;
+	       		if ($file == '..' || $file == '.' || $file[0] == '.') {
+	       		    continue;
+                }
 	       		
 	       		//TODO maybe adapt this to php running on windows 
 	       		if (substr($directory, -1) != '/') {
@@ -231,10 +247,14 @@ class FilesystemHandler {
 			   // If $file is a directory, add it to the todo list
 				 if(@is_dir($filename)) {
 				 	$filename = $filename .'/';
-					if ($this->checkDirectoryName($filename)) continue;
+					if ($this->checkDirectoryName($filename)) {
+					    continue;
+                    }
 					array_push($this->todo, $filename);
 				} else {  // is a file, add it to done list
-					if ($this->checkFileName($filename)) continue;
+					if ($this->checkFileName($filename)) {
+					    continue;
+                    }
 			    	array_push($this->done, $filename);
 				}
 	       }

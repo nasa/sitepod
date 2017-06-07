@@ -13,10 +13,12 @@ class Util {
             return stripslashes($var_name);
         } else {
             $res = $var_name;
-            if (substr($res, 0, 1) == "'")
+            if (substr($res, 0, 1) == "'") {
                 $res = substr($res, 1);
-            if (substr($res, strlen($res) - 1) == "'")
+            }
+            if (substr($res, strlen($res) - 1) == "'") {
                 $res = substr($res, 0, strlen($res) - 1);
+            }
             return $res;
         }
     }
@@ -43,8 +45,9 @@ class Util {
                 } else {
                     $res .= "$key: $val";
                 }
-                if ($i < (count($array) - 1))
+                if ($i < (count($array) - 1)) {
                     $res .= $delim;
+                }
                 $i ++;
             }
         }
@@ -57,8 +60,9 @@ class Util {
         if (is_array($array)) {
             for ($i = 0; $i < count($array); $i ++) {
                 $res .= $array[$i];
-                if ($i < (count($array) - 1))
+                if ($i < (count($array) - 1)) {
                     $res .= $delim;
+                }
             }
         }
         return $res;

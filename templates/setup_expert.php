@@ -16,7 +16,9 @@
  * along with Sitepod.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-if (!isset($SETTINGS[PSNG_COMPRESS_SITEMAP])) $SETTINGS[PSNG_COMPRESS_SITEMAP] = '';
+if (!isset($SETTINGS[PSNG_COMPRESS_SITEMAP])) {
+    $SETTINGS[PSNG_COMPRESS_SITEMAP] = '';
+}
 
 	$layout = '
 	<script type="text/javascript">

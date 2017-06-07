@@ -61,7 +61,9 @@ function parseFilesystem($displayResultForEditing = TRUE) {
 		$LAYOUT->addInfo('', 'Scanning filesystem for files now...');
 		$SETTINGS[PSNG_TIMEOUT_ACTION] = PSNG_TIMEOUT_ACTION_FS;
 		$FILE = runFilesystemHandler($FILE, $FILES_CACHE);
-		if(count($FILE)>0) $LAYOUT->addInfo('', 'Found '.count($FILE). ' files on local filesystem.');
+		if(count($FILE)>0) {
+		    $LAYOUT->addInfo('', 'Found '.count($FILE). ' files on local filesystem.');
+        }
 		debug($FILE, "Result from filesystem scan");
 	}
 
@@ -70,7 +72,9 @@ function parseFilesystem($displayResultForEditing = TRUE) {
 		$LAYOUT->addInfo('', 'Crawling website now...');
 		$SETTINGS[PSNG_TIMEOUT_ACTION] = PSNG_TIMEOUT_ACTION_WEBSITE;
 		$FILE = runCrawler($FILE, $FILES_CACHE);
-		if(!breakSession()&&count($FILE)>0) $LAYOUT->addInfo('', 'Found '.count($FILE). ' files on website.');
+		if(!breakSession()&&count($FILE)>0) {
+		    $LAYOUT->addInfo('', 'Found '.count($FILE). ' files on website.');
+        }
 		debug($FILE, "Result from website crawler");
 	}
 
@@ -80,7 +84,9 @@ function parseFilesystem($displayResultForEditing = TRUE) {
 		reset($FILE);
 		$n_before = count($FILE);
 		foreach ($FILE as $file => $fileinfo) {
-			if (!(strpos($file, '?') === FALSE)) continue;
+			if (!(strpos($file, '?') === FALSE)) {
+			    continue;
+            }
 			if (!(strpos($file, '/index.') === FALSE)) {
 				# mk/2005-11-09 fixed indents
 				if (array_key_exists(dirname($file).'/', $FILE)) {
@@ -113,8 +119,12 @@ function parseFilesystem($displayResultForEditing = TRUE) {
  */
 function breakSession($force = FALSE) {
 	global $SETTINGS, $LAYOUT;
-	if ($SETTINGS[PSNG_TIMEOUT] == PSNG_TIMEOUT_NONE) return FALSE;
-	if ($SETTINGS[PSNG_TIMEOUT_IS] != '') return TRUE;
+	if ($SETTINGS[PSNG_TIMEOUT] == PSNG_TIMEOUT_NONE) {
+	    return FALSE;
+    }
+	if ($SETTINGS[PSNG_TIMEOUT_IS] != '') {
+	    return TRUE;
+    }
 
 	$t2 = microtime_float();
 	if (($t2 >= $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]) || ($force == TRUE)) {
@@ -203,7 +213,9 @@ function runFilesystemHandler($FILE, $FILES_CACHE) {
 			$filename = $fsh->getNext(); // returns the filename
 			$file_url = $SETTINGS[PSNG_WEBSITE]. ((substr($filename, 0,1) != '/') ? $filename : substr($filename, 1));
 			$lastmod = '';
-			if ($SETTINGS[PSNG_LASTMOD] == PSNG_LASTMOD_FILEDATE) $lastmod = $fsh->getLastModificationTime($SETTINGS[PSNG_PAGEROOT].$filename);
+			if ($SETTINGS[PSNG_LASTMOD] == PSNG_LASTMOD_FILEDATE) {
+			    $lastmod = $fsh->getLastModificationTime($SETTINGS[PSNG_PAGEROOT].$filename);
+            }
 
 			$fileinfo = handleURL($file_url, $lastmod);
 			$fileinfo = handleURLCached($FILES_CACHE, $fileinfo);
@@ -236,7 +248,9 @@ function runCrawler($FILE, $FILES_CACHE) {
 
 	// check if we have a already started scan
 	debug($SETTINGS[PSNG_TIMEOUT], 'PSNG_TIMEOUT');
-	if (isset($SETTINGS[PSNG_TIMEOUT_TODO])) debug($SETTINGS[PSNG_TIMEOUT_TODO], 'PSNG_TIMEOUT_TODO');		# !!! 'repair' may not be correct mk/2005-11-08
+	if (isset($SETTINGS[PSNG_TIMEOUT_TODO])) {
+	    debug($SETTINGS[PSNG_TIMEOUT_TODO], 'PSNG_TIMEOUT_TODO');		# !!! 'repair' may not be correct mk/2005-11-08
+    }
 
 	if ($SETTINGS[PSNG_TIMEOUT] != PSNG_TIMEOUT_NONE && isset($SETTINGS[PSNG_TIMEOUT_TODO])) { // check if we're running in TIMEOUT mode
 		debug('', "Running crawler engine from last point");
@@ -267,11 +281,21 @@ function runCrawler($FILE, $FILES_CACHE) {
 		while($crawler->hasNext()) {
 			$fileinfo = $crawler->getNext(); // returns an array
 
-			if (!isset($fileinfo['http_status']))	$fileinfo['http_status'] = '';
-			if (!isset($fileinfo['file']))			$fileinfo['file'] = '';
-			if (!isset($fileinfo['lastmod']))		$fileinfo['lastmod'] = '';
-			if (!isset($fileinfo['changefreq']))	$fileinfo['changefreq'] = '';
-			if (!isset($fileinfo['priority']))		$fileinfo['priority'] = '';
+			if (!isset($fileinfo['http_status'])) {
+			    $fileinfo['http_status'] = '';
+            }
+			if (!isset($fileinfo['file'])) {
+			    $fileinfo['file'] = '';
+            }
+			if (!isset($fileinfo['lastmod'])) {
+			    $fileinfo['lastmod'] = '';
+            }
+			if (!isset($fileinfo['changefreq'])) {
+			    $fileinfo['changefreq'] = '';
+            }
+			if (!isset($fileinfo['priority'])) {
+			    $fileinfo['priority'] = '';
+            }
 
 			$http_status = $fileinfo['http_status'];
 			// create and setup valid values
@@ -385,7 +409,7 @@ function handleURL($url, $lastmod = '', $changefreq = '', $priority = '') {
 		$res[PSNG_PRIORITY] = $SETTINGS[PSNG_PRIORITY_FIXED];
 	} elseif($SETTINGS[PSNG_PRIORITY] == PSNG_PRIORITY_AUTOMATIC) {
 		// TODO IMPLEMENTME!!! calculate priority depending on #links, hierachie level, ...
-		$res[PSNG_PRIORITY] = $SETTINGS[PSNG_PRIORITY_FIXED];
+		$res[PSNG_PRIORITY] = $SETTINGS[PSNG_PRIORITY_AUTOMATIC];
 	} elseif($SETTINGS[PSNG_PRIORITY] == PSNG_PRIORITY_DISSABLED) {
 		$res[PSNG_PRIORITY] = '';
 	}
@@ -401,28 +425,26 @@ function handleURL($url, $lastmod = '', $changefreq = '', $priority = '') {
 function handleDoubleEntryFilesystemWebsite($fs, $website) {
 	$res = ($fs != null) ? $fs : $website;
 
-	if($fs[PSNG_FILE_URL] == $fs[PSNG_FILE_URL]) {
-		// check lastmod
-		if (($fs[PSNG_LASTMOD] != '' && $website[PSNG_LASTMOD] != '') ||($fs[PSNG_LASTMOD] != '' && $website[PSNG_LASTMOD] == '')) {
-			$res[PSNG_LASTMOD] = $fs[PSNG_LASTMOD];
-		} else { // empty value or only in website
-			$res[PSNG_LASTMOD] = $website[PSNG_LASTMOD];
-		}
+    // check lastmod
+    if (($fs[PSNG_LASTMOD] != '' && $website[PSNG_LASTMOD] != '') ||($fs[PSNG_LASTMOD] != '' && $website[PSNG_LASTMOD] == '')) {
+        $res[PSNG_LASTMOD] = $fs[PSNG_LASTMOD];
+    } else { // empty value or only in website
+        $res[PSNG_LASTMOD] = $website[PSNG_LASTMOD];
+    }
 
-		// check changefreq
-		if (($fs[PSNG_CHANGEFREQ] != '' && $website[PSNG_CHANGEFREQ] != '') || ($fs[PSNG_CHANGEFREQ] != '' && $website[PSNG_CHANGEFREQ] == '')) {
-			$res[PSNG_CHANGEFREQ] = $fs[PSNG_CHANGEFREQ];
-		} else { // empty value or only in website
-			$res[PSNG_CHANGEFREQ] = $website[PSNG_CHANGEFREQ];
-		}
+    // check changefreq
+    if (($fs[PSNG_CHANGEFREQ] != '' && $website[PSNG_CHANGEFREQ] != '') || ($fs[PSNG_CHANGEFREQ] != '' && $website[PSNG_CHANGEFREQ] == '')) {
+        $res[PSNG_CHANGEFREQ] = $fs[PSNG_CHANGEFREQ];
+    } else { // empty value or only in website
+        $res[PSNG_CHANGEFREQ] = $website[PSNG_CHANGEFREQ];
+    }
 
-		// check priority
-		if (($fs[PSNG_PRIORITY] != '' && $website[PSNG_PRIORITY] != '') || ($fs[PSNG_PRIORITY] != '' && $website[PSNG_PRIORITY] == '')) {
-			$res[PSNG_PRIORITY] = $fs[PSNG_PRIORITY];
-		} else { // empty value or only in website
-			$res[PSNG_PRIORITY] = $website[PSNG_PRIORITY];
-		}
-	};
+    // check priority
+    if (($fs[PSNG_PRIORITY] != '' && $website[PSNG_PRIORITY] != '') || ($fs[PSNG_PRIORITY] != '' && $website[PSNG_PRIORITY] == '')) {
+        $res[PSNG_PRIORITY] = $fs[PSNG_PRIORITY];
+    } else { // empty value or only in website
+        $res[PSNG_PRIORITY] = $website[PSNG_PRIORITY];
+    }
 
 	// add missing keys from 1st array
 	foreach (array_diff(array_keys($fs), array_keys($website)) as $id => $key) {
@@ -471,7 +493,9 @@ function writeSitemap($FILE) {
 	foreach ($FILE as $numb => $value) {
 		if ($value[PSNG_FILE_ENABLED] != '') {
 			debug($value, "Adding file ".$value[PSNG_FILE_URL]);
-			if (isset($txtfilehandle)) fputs($txtfilehandle, $value[PSNG_FILE_URL]."\n");
+			if (isset($txtfilehandle)) {
+			    fputs($txtfilehandle, $value[PSNG_FILE_URL]."\n");
+            }
 			if ($gsg->addUrl($value[PSNG_FILE_URL], FALSE, $value[PSNG_LASTMOD], FALSE, $value[PSNG_CHANGEFREQ], $value[PSNG_PRIORITY]) === FALSE) {
 				$LAYOUT->addError($value[PSNG_FILE_URL], 'Could not add file to sitemap' . $gsg->errorMsg);
 			}
@@ -489,13 +513,17 @@ function writeSitemap($FILE) {
 
 	fputs ($filehandle, $xml);
 	fclose ($filehandle);
-	if (isset($txtfilehandle)) fclose($txtfilehandle);
+	if (isset($txtfilehandle)) {
+	    fclose($txtfilehandle);
+    }
 
 	if ($numb > 50000) {
 		$LAYOUT->addWarning('Not implemented: split result into files with only 50000 entries','Only 50000 entries are allowed in one sitemap file at the moment!');
 	}
 	$LAYOUT->addSuccess('Sitemap successfuly created and saved to <a href="'.$SETTINGS[PSNG_SITEMAP_URL].'" target="_blank">'.basename($SETTINGS[PSNG_SITEMAP_FILE]).'</a>!');
-	if (isset($SETTINGS[PSNG_TXTSITEMAP_FILE]) && strlen($SETTINGS[PSNG_TXTSITEMAP_FILE])>0) $LAYOUT->addSuccess('Txt-Sitemap successfuly created and saved to <a href="'.$SETTINGS[PSNG_TXTSITEMAP_URL].'" target="_blank">'.basename($SETTINGS[PSNG_TXTSITEMAP_FILE]).'</a>!');
+	if (isset($SETTINGS[PSNG_TXTSITEMAP_FILE]) && strlen($SETTINGS[PSNG_TXTSITEMAP_FILE])>0) {
+	    $LAYOUT->addSuccess('Txt-Sitemap successfuly created and saved to <a href="'.$SETTINGS[PSNG_TXTSITEMAP_URL].'" target="_blank">'.basename($SETTINGS[PSNG_TXTSITEMAP_FILE]).'</a>!');
+    }
 	$LAYOUT->addText('<form action="' . $SETTINGS[PSNG_SCRIPT] . '" method="post" accept-charset=utf-8>' ."\n".
 			'<input type="hidden" name="'.PSNG_SETTINGS_ACTION.'" value="'.PSNG_ACTION_SETTINGS_PINGGOOGLE.'">' . "\n".
 			'<input type="Submit" value="Submit to google" name="submit">' . "\n".

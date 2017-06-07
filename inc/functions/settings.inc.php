@@ -30,28 +30,56 @@ function viewSetup($resetSettings = FALSE) {
 		$SETTINGS = array();
 	}
 	$page_root = substr($_SERVER['SCRIPT_FILENAME'],0,strpos($_SERVER['SCRIPT_FILENAME'],$_SERVER['SCRIPT_NAME']));
-	if (is_null($SETTINGS[PSNG_PAGEROOT])) 		$SETTINGS[PSNG_PAGEROOT] 			= ($page_root != '')?$page_root : $_SERVER[DOCUMENT_ROOT];
-	if (is_null($SETTINGS[PSNG_WEBSITE])) 		$SETTINGS[PSNG_WEBSITE] 			= "http://".$_SERVER[HTTP_HOST];
-	if (is_null($SETTINGS[PSNG_CRAWLER_URL])) 	$SETTINGS[PSNG_CRAWLER_URL] 		= $SETTINGS[PSNG_WEBSITE];
+	if (is_null($SETTINGS[PSNG_PAGEROOT])) {
+	    $SETTINGS[PSNG_PAGEROOT] = ($page_root != '') ? $page_root : $_SERVER[DOCUMENT_ROOT];
+    }
+	if (is_null($SETTINGS[PSNG_WEBSITE])) {
+	    $SETTINGS[PSNG_WEBSITE] = "http://".$_SERVER[HTTP_HOST];
+    }
+	if (is_null($SETTINGS[PSNG_CRAWLER_URL])) {
+	    $SETTINGS[PSNG_CRAWLER_URL] = $SETTINGS[PSNG_WEBSITE];
+    }
 
-	if (is_null($SETTINGS[PSNG_SITEMAP_FILE])) 	$SETTINGS[PSNG_SITEMAP_FILE] 		= "/sitemap.xml";
-	if (is_null($SETTINGS[PSNG_TXTSITEMAP_FILE])) 	$SETTINGS[PSNG_TXTSITEMAP_FILE] = "/sitemap.txt";
+	if (is_null($SETTINGS[PSNG_SITEMAP_FILE])) {
+	    $SETTINGS[PSNG_SITEMAP_FILE] = "/sitemap.xml";
+    }
+	if (is_null($SETTINGS[PSNG_TXTSITEMAP_FILE])) {
+	    $SETTINGS[PSNG_TXTSITEMAP_FILE] = "/sitemap.txt";
+    }
 //	if (is_null($SETTINGS[PSNG_SITEMAP_FILE])) 	$SETTINGS[PSNG_SITEMAP_FILE] 		= $SETTINGS[PSNG_PAGEROOT] . "/sitemap.xml";
 //	if (is_null($SETTINGS[PSNG_SITEMAP_URL])) 	$SETTINGS[PSNG_SITEMAP_URL] 		= $SETTINGS[PSNG_WEBSITE] ."/sitemap.xml";
-	if (is_null($SETTINGS[PSNG_TEMP_DIR]))		$SETTINGS[PSNG_TEMP_DIR] 			= dirname(__FILE__) . "/temp/";
-	if (is_null($SETTINGS[PSNG_PUBLIC_URL]))	$SETTINGS[PSNG_PUBLIC_URL] 			= $SETTINGS[PSNG_PAGEROOT] . "/phpsitemapng.php";
-	if (is_null($SETTINGS[PSNG_SCAN_LOCAL]))	$SETTINGS[PSNG_SCAN_LOCAL] 			= TRUE;
-	if (is_null($SETTINGS[PSNG_SCAN_WEBSITE]))	$SETTINGS[PSNG_SCAN_WEBSITE] 		= TRUE;
-	if (is_null($SETTINGS[PSNG_PINGGOOGLE]))	$SETTINGS[PSNG_PINGGOOGLE] 			= TRUE;
-	if (is_null($SETTINGS[PSNG_EDITRESULT]))	$SETTINGS[PSNG_EDITRESULT] 			= PSNG_EDITRESULT_TRUE;
-	if (is_null($SETTINGS[PSNG_STORE_FILELIST])) $SETTINGS[PSNG_STORE_FILELIST] 	= TRUE;
+	if (is_null($SETTINGS[PSNG_TEMP_DIR])) {
+	    $SETTINGS[PSNG_TEMP_DIR] = dirname(__FILE__) . "/temp/";
+    }
+	if (is_null($SETTINGS[PSNG_PUBLIC_URL])) {
+	    $SETTINGS[PSNG_PUBLIC_URL] = $SETTINGS[PSNG_PAGEROOT] . "/phpsitemapng.php";
+    }
+	if (is_null($SETTINGS[PSNG_SCAN_LOCAL])) {
+	    $SETTINGS[PSNG_SCAN_LOCAL] = TRUE;
+    }
+	if (is_null($SETTINGS[PSNG_SCAN_WEBSITE])) {
+	    $SETTINGS[PSNG_SCAN_WEBSITE] = TRUE;
+    }
+	if (is_null($SETTINGS[PSNG_PINGGOOGLE])) {
+	    $SETTINGS[PSNG_PINGGOOGLE] = TRUE;
+    }
+	if (is_null($SETTINGS[PSNG_EDITRESULT])) {
+	    $SETTINGS[PSNG_EDITRESULT] = PSNG_EDITRESULT_TRUE;
+    }
+	if (is_null($SETTINGS[PSNG_STORE_FILELIST])) {
+	    $SETTINGS[PSNG_STORE_FILELIST] = TRUE;
+    }
 
 //	if (!isset($SETTINGS[PSNG_TIMEOUT]))		$SETTINGS[PSNG_TIMEOUT] 			= PSNG_TIMEOUT_AUTOMATIC; //($SETTINGS[PSNG_TIMEOUT_AUTOMATIC] == TRUE)?PSNG_TIMEOUT_AUTOMATIC:PSNG_TIMEOUT_NONE;
-	if (!isset($SETTINGS[PSNG_TIMEOUT]))		$SETTINGS[PSNG_TIMEOUT] 			= PSNG_TIMEOUT_FORCE;
-	if (!isset($SETTINGS[PSNG_TIMEOUT_TIME_DURATION])) 	$SETTINGS[PSNG_TIMEOUT_TIME_DURATION] =
-			(ini_get('max_execution_time') != '' && ini_get('max_execution_time') > 0)
-					?	ini_get('max_execution_time')
-					: 	30;
+	if (!isset($SETTINGS[PSNG_TIMEOUT])) {
+	    $SETTINGS[PSNG_TIMEOUT] = PSNG_TIMEOUT_FORCE;
+    }
+	if (!isset($SETTINGS[PSNG_TIMEOUT_TIME_DURATION])) {
+	    $SETTINGS[PSNG_TIMEOUT_TIME_DURATION] =
+            (ini_get('max_execution_time') != '' && ini_get('max_execution_time') > 0)
+                ?	ini_get('max_execution_time')
+                : 	30;
+    }
 //is_null($SETTINGS[PSNG_TIMEOUT])
 	/* list of disallowed directory names */
 	if (is_null($SETTINGS[PSNG_DISALLOW_DIR])) {
@@ -104,14 +132,26 @@ function viewSetup($resetSettings = FALSE) {
 	}
 
 	debug($SETTINGS[PSNG_DISALLOW_KEY], "disallow keys");
-	if (is_null($SETTINGS[PSNG_CHANGEFREQ])) 			$SETTINGS[PSNG_CHANGEFREQ] = PSNG_CHANGEFREQ_FIXED;
-	if (is_null($SETTINGS[PSNG_CHANGEFREQ_FIXED])) 		$SETTINGS[PSNG_CHANGEFREQ_FIXED] = 'weekly';
+	if (is_null($SETTINGS[PSNG_CHANGEFREQ])) {
+	    $SETTINGS[PSNG_CHANGEFREQ] = PSNG_CHANGEFREQ_FIXED;
+    }
+	if (is_null($SETTINGS[PSNG_CHANGEFREQ_FIXED])) {
+	    $SETTINGS[PSNG_CHANGEFREQ_FIXED] = 'weekly';
+    }
 
-	if (is_null($SETTINGS[PSNG_PRIORITY])) 				$SETTINGS[PSNG_PRIORITY] = PSNG_PRIORITY_FIXED;
-	if (is_null($SETTINGS[PSNG_PRIORITY_FIXED])) 		$SETTINGS[PSNG_PRIORITY_FIXED] = 0.5;
+	if (is_null($SETTINGS[PSNG_PRIORITY])) {
+	    $SETTINGS[PSNG_PRIORITY] = PSNG_PRIORITY_FIXED;
+    }
+	if (is_null($SETTINGS[PSNG_PRIORITY_FIXED])) {
+	    $SETTINGS[PSNG_PRIORITY_FIXED] = 0.5;
+    }
 
-	if (is_null($SETTINGS[PSNG_LASTMOD])) 				$SETTINGS[PSNG_LASTMOD] = PSNG_LASTMOD_FILEDATE;
-	if (is_null($SETTINGS[PSNG_LASTMOD_TIMEFORMAT])) 	$SETTINGS[PSNG_LASTMOD_TIMEFORMAT] = PSNG_TIMEFORMAT_LONG;
+	if (is_null($SETTINGS[PSNG_LASTMOD])) {
+	    $SETTINGS[PSNG_LASTMOD] = PSNG_LASTMOD_FILEDATE;
+    }
+	if (is_null($SETTINGS[PSNG_LASTMOD_TIMEFORMAT])) {
+	    $SETTINGS[PSNG_LASTMOD_TIMEFORMAT] = PSNG_TIMEFORMAT_LONG;
+    }
 
 	require(dirname(__FILE__).'/../../'.PSNG_FILE_TEMPLATE_SETUP_EXPERT);
 
@@ -135,10 +175,14 @@ function getSettings() {
 		$SETTINGS[PSNG_WEBSITE] = "http://".$SETTINGS[PSNG_WEBSITE];
 	}
 	// TODO test this, if it's working with e.g. http://enarion.net
-	if (substr($SETTINGS[PSNG_WEBSITE], -1) != '/' && substr($SETTINGS[PSNG_WEBSITE], -1) != "\\") $SETTINGS[PSNG_WEBSITE] .= '/';
+	if (substr($SETTINGS[PSNG_WEBSITE], -1) != '/' && substr($SETTINGS[PSNG_WEBSITE], -1) != "\\") {
+	    $SETTINGS[PSNG_WEBSITE] .= '/';
+    }
 
 	$SETTINGS[PSNG_PAGEROOT] = addslashes($_REQUEST[PSNG_PAGEROOT]);
-	if (substr($SETTINGS[PSNG_PAGEROOT], -1) != '/' && substr($SETTINGS[PSNG_PAGEROOT], -1) != "\\") $SETTINGS[PSNG_PAGEROOT] .= '/';
+	if (substr($SETTINGS[PSNG_PAGEROOT], -1) != '/' && substr($SETTINGS[PSNG_PAGEROOT], -1) != "\\") {
+	    $SETTINGS[PSNG_PAGEROOT] .= '/';
+    }
 
 	// sitemap is the file after the website-part of the sitemap_url
 /*	$sitemap = str_replace($SETTINGS[PSNG_WEBSITE], '', $_REQUEST[PSNG_SITEMAP_URL]);
@@ -159,13 +203,35 @@ function getSettings() {
 		$SETTINGS[PSNG_TIMEOUT] = PSNG_TIMEOUT_NONE;
 	}
 
-	if (isset($_REQUEST[PSNG_CRAWLER_URL]))		$SETTINGS[PSNG_CRAWLER_URL] = $_REQUEST[PSNG_CRAWLER_URL];
+	if (isset($_REQUEST[PSNG_CRAWLER_URL])) {
+	    $SETTINGS[PSNG_CRAWLER_URL] = $_REQUEST[PSNG_CRAWLER_URL];
+    }
 
-	if (isset($_REQUEST[PSNG_SCAN_LOCAL]))		$SETTINGS[PSNG_SCAN_LOCAL] = TRUE; else $SETTINGS[PSNG_SCAN_LOCAL] = FALSE;
-	if (isset($_REQUEST[PSNG_SCAN_WEBSITE]))	$SETTINGS[PSNG_SCAN_WEBSITE] = TRUE; else $SETTINGS[PSNG_SCAN_WEBSITE] = FALSE;
-	if (isset($_REQUEST[PSNG_PINGGOOGLE]))		$SETTINGS[PSNG_PINGGOOGLE] = TRUE; else $SETTINGS[PSNG_PINGGOOGLE] = FALSE;
-	if (isset($_REQUEST[PSNG_SCAN_WEBSITE]))	$SETTINGS[PSNG_SCAN_WEBSITE] = TRUE; else $SETTINGS[PSNG_SCAN_WEBSITE] = FALSE;
-	if (isset($_REQUEST[PSNG_SCAN_WEBSITE_LEVEL])) $SETTINGS[PSNG_SCAN_WEBSITE_LEVEL] = $_REQUEST[PSNG_SCAN_WEBSITE_LEVEL]; else $SETTINGS[PSNG_SCAN_WEBSITE_LEVEL] = 0;
+	if (isset($_REQUEST[PSNG_SCAN_LOCAL])) {
+	    $SETTINGS[PSNG_SCAN_LOCAL] = TRUE;
+    } else {
+	    $SETTINGS[PSNG_SCAN_LOCAL] = FALSE;
+    }
+	if (isset($_REQUEST[PSNG_SCAN_WEBSITE])){
+	    $SETTINGS[PSNG_SCAN_WEBSITE] = TRUE;
+    } else {
+	    $SETTINGS[PSNG_SCAN_WEBSITE] = FALSE;
+    }
+	if (isset($_REQUEST[PSNG_PINGGOOGLE])) {
+	    $SETTINGS[PSNG_PINGGOOGLE] = TRUE;
+    } else {
+	    $SETTINGS[PSNG_PINGGOOGLE] = FALSE;
+    }
+	if (isset($_REQUEST[PSNG_SCAN_WEBSITE])) {
+	    $SETTINGS[PSNG_SCAN_WEBSITE] = TRUE;
+    } else {
+	    $SETTINGS[PSNG_SCAN_WEBSITE] = FALSE;
+    }
+	if (isset($_REQUEST[PSNG_SCAN_WEBSITE_LEVEL])) {
+	    $SETTINGS[PSNG_SCAN_WEBSITE_LEVEL] = $_REQUEST[PSNG_SCAN_WEBSITE_LEVEL];
+    } else {
+	    $SETTINGS[PSNG_SCAN_WEBSITE_LEVEL] = 0;
+    }
 
 	$SETTINGS[PSNG_EDITRESULT] = ($_REQUEST[PSNG_EDITRESULT] != '') ? PSNG_EDITRESULT_TRUE : PSNG_EDITRESULT_FALSE;
 	$SETTINGS[PSNG_STORE_FILELIST] = $_REQUEST[PSNG_STORE_FILELIST];
@@ -179,24 +245,36 @@ function getSettings() {
 	$SETTINGS[PSNG_PRIORITY] = $_REQUEST[PSNG_PRIORITY];
 	$SETTINGS[PSNG_PRIORITY_FIXED] = $_REQUEST[PSNG_PRIORITY_FIXED];
 
-	if ($_REQUEST[PSNG_DISALLOW_DIR] != "") $SETTINGS[PSNG_DISALLOW_DIR] = \Sitepod\Util::toArray($_REQUEST[PSNG_DISALLOW_DIR]);
-	if ($_REQUEST[PSNG_DISALLOW_FILE] != "") $SETTINGS[PSNG_DISALLOW_FILE] = \Sitepod\Util::toArray($_REQUEST[PSNG_DISALLOW_FILE]);
-	if ($_REQUEST[PSNG_DISALLOW_KEY] != "") $SETTINGS[PSNG_DISALLOW_KEY] = \Sitepod\Util::toArray($_REQUEST[PSNG_DISALLOW_KEY]);
+	if ($_REQUEST[PSNG_DISALLOW_DIR] != "") {
+	    $SETTINGS[PSNG_DISALLOW_DIR] = \Sitepod\Util::toArray($_REQUEST[PSNG_DISALLOW_DIR]);
+    }
+	if ($_REQUEST[PSNG_DISALLOW_FILE] != "") {
+	    $SETTINGS[PSNG_DISALLOW_FILE] = \Sitepod\Util::toArray($_REQUEST[PSNG_DISALLOW_FILE]);
+    }
+	if ($_REQUEST[PSNG_DISALLOW_KEY] != "") {
+	    $SETTINGS[PSNG_DISALLOW_KEY] = \Sitepod\Util::toArray($_REQUEST[PSNG_DISALLOW_KEY]);
+    }
 	$tmp = array();
 	foreach($SETTINGS[PSNG_DISALLOW_DIR] as $k => $v) {
-		if ($v != '') $tmp[] = $v;
+		if ($v != '') {
+		    $tmp[] = $v;
+        }
 	}
 	$SETTINGS[PSNG_DISALLOW_DIR] = $tmp;
 
 	$tmp = array();
 	foreach($SETTINGS[PSNG_DISALLOW_FILE] as $k => $v) {
-		if ($v != '') $tmp[] = $v;
+		if ($v != '') {
+		    $tmp[] = $v;
+        }
 	}
 	$SETTINGS[PSNG_DISALLOW_FILE] = $tmp;
 
 	$tmp = array();
 	foreach($SETTINGS[PSNG_DISALLOW_KEY] as $k => $v) {
-		if ($v != '') $tmp[] = $v;
+		if ($v != '') {
+		    $tmp[] = $v;
+        }
 	}
 	$SETTINGS[PSNG_DISALLOW_KEY] = $tmp;
 	$SETTINGS[PSNG_COMPRESS_SITEMAP] = isset($_REQUEST[PSNG_COMPRESS_SITEMAP]) ? TRUE : FALSE;

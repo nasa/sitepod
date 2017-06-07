@@ -219,21 +219,25 @@ namespace Sitepod;
         function output($return = true, $compress = false, $sendHeaders = false)
         {
             $xml = $this->generateXml();
-            if ($compress)
+            if ($compress) {
                 $compress = function_exists($this->compressFunc);
+            }
 
-            if ($compress)
+            if ($compress) {
                 $xml = $this->compress($xml);
+            }
 
             if ($return) {
                 return $xml;
             }
             else {
                 if ($sendHeaders) {
-                    if ($compress)
+                    if ($compress) {
                         $mime = 'application/x-gzip';
-                    else
+                    }
+                    else {
                         $mime = 'text/xml';
+                    }
 
                     header('Content-type: ' . $mime);
                     header('Content-length: ' . strlen($xml));
@@ -304,8 +308,9 @@ namespace Sitepod;
         {
             $func = $this->compressFunc;
 
-            if (strlen($func) == 0 || !function_exists($func))
+            if (strlen($func) == 0 || !function_exists($func)) {
                 return null;
+            }
 
             return $func($string);
         }
@@ -327,8 +332,9 @@ namespace Sitepod;
             static $trans;
             if (!isset($trans)) {
                 $trans = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
-                foreach ($trans as $key => $value)
-                    $trans[$key] = '&#'.ord($key).';';
+                foreach ($trans as $key => $value) {
+                    $trans[$key] = '&#' . ord($key) . ';';
+                }
                 // dont translate the '&' in case it is part of &xxx;
                 $trans[chr(38)] = '&';
             }

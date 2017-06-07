@@ -112,8 +112,12 @@ class LayoutEngine {
     }
     
     function addText($msg, $title = "", $css_class="") {
-    	if ($css_class != "") $css_class = ' class="'.$css_class.'"';
-    	if ($title != "") $title = '<h4'.$css_class.'>'.$title.'</h4>';
+    	if ($css_class != "") {
+    	    $css_class = ' class="'.$css_class.'"';
+        }
+    	if ($title != "") {
+    	    $title = '<h4'.$css_class.'>'.$title.'</h4>';
+        }
     	$tmp = $title.'<div'.$css_class.'>'.$msg.'</div>';
     	if ($this->buffering) {
     		$this->content['body'][] = $tmp;
@@ -152,9 +156,11 @@ class LayoutEngine {
     
     
     function getFooterLayout() {
-    	if ($this->buffering) return '';
+    	if ($this->buffering) {
+    	    return '';
+        }
     	$res = '';
-		if(($this->content['content_footer'] != "") && count($this->content['content_footer']) > 0) {		
+		if(($this->content['content_footer'] != "") && count($this->content['content_footer']) > 0) {
 	    	foreach ($this->content['content_footer'] as $id => $line) {
 	    		$res .= '<div class="content_footer">'.$line.'</div>'. "\n";
 	    	}
@@ -166,7 +172,9 @@ class LayoutEngine {
     }
 
     function getHeaderLayout() {
-    	if ($this->buffering) return '';
+    	if ($this->buffering) {
+    	    return '';
+        }
     	$res = '<html><head>'."\n";
 		$res .= '<meta http-equiv="Content-Type" content="text/html; charset='.$this->content['charset'].'">'."\n";
     	$res .= '<title>'.$this->static_title .' ' . $this->content['title'].'</title>'."\n";
