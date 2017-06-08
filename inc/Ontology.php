@@ -74,6 +74,7 @@ define("PSNG_PUBLIC_URL", 'public_url');
 
 define("PSNG_SITEMAP_URL", 'sitemap_url');
 define("PSNG_SITEMAP_FILE", 'sitemap_file');
+define("PSNG_TXTSITEMAP_URL", 'txtsitemap_url');
 define("PSNG_TXTSITEMAP_FILE", 'txtsitemap_file');
 
 define("PSNG_LASTMOD", 'lastmod');
