@@ -5,6 +5,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/nasa/sitepod/v/unstable)](https://packagist.org/packages/nasa/sitepod)
 [![License](https://poser.pugx.org/nasa/sitepod/license)](https://packagist.org/packages/nasa/sitepod)
 [![composer.lock](https://poser.pugx.org/nasa/sitepod/composerlock)](https://packagist.org/packages/nasa/sitepod)
+[![Travis](https://img.shields.io/travis/nasa/podaacpy.svg?maxAge=2592000?style=plastic)](https://www.travis-ci.org/nasa/sitepod)
 
 Sitepod; A Sitemap Generator written in PHP
 
