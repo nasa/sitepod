@@ -51,11 +51,6 @@ $SETTINGS[PSNG_FILE_FILES] =        'settings/files.inc.php';
 
 include_once(dirname(__FILE__).'/../'.$SETTINGS[PSNG_FILE_SETTINGS]);
 
-//echo $_SERVER[SCRIPT_NAME]."<br>\n";
-/*if ($_SERVER['SCRIPT_URL'] != '' && (strpos($_SERVER['SCRIPT_URL'], 'index.php') !== FALSE || strpos($_SERVER['SCRIPT_URL'], 'cron.php') !== FALSE)) {
-    $SETTINGS[PSNG_SCRIPT] = $_SERVER['SCRIPT_URL'];
-} else
-*/
 if ($_SERVER['SCRIPT_NAME'] != '' && (strpos($_SERVER['SCRIPT_NAME'], 'index.php') !== FALSE || strpos($_SERVER['SCRIPT_NAME'], 'cron.php') !== FALSE)) {
     $SETTINGS[PSNG_SCRIPT] = $_SERVER['SCRIPT_NAME'];
 } elseif ($_SERVER['PATH_INFO'] != '') {
@@ -73,7 +68,6 @@ $SETTINGS[PSNG_TIMEOUT_AUTOMATIC] = ($timeout_after === $timeout_before);
 if ($SETTINGS[PSNG_TIMEOUT] != PSNG_TIMEOUT_NONE) {
     $SETTINGS[PSNG_TIMEOUT_TIME_START] = microtime_float();
     $SETTINGS[PSNG_TIMEOUT_TIME_SHUTDOWN] = 3;
-//  $SETTINGS[PSNG_TIMEOUT_TIME_DURATION] = ($timeout_after != 0)?$timeout_after : 30;
     $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE] = $SETTINGS[PSNG_TIMEOUT_TIME_START] + $SETTINGS[PSNG_TIMEOUT_TIME_DURATION] - $SETTINGS[PSNG_TIMEOUT_TIME_SHUTDOWN];
 }
 ?>

@@ -52,8 +52,6 @@ class Crawler {
         $this->url = $this->protocol.'://'.$this->host.'/';
         $this->todo[] = $this->url;
         $this->deadline = $deadline;
-
-//      debug('', 'Crawler created for host '.$this->host.' with protocol '.$this->protocol);
     }
 
     /**
@@ -155,16 +153,13 @@ class Crawler {
     function _getFilesForURL($url) {
         $this->visitedUrls[] = $url;
 
-//      debug($url, '<b>Scanning url</b>');
         // if allready in list of files, return
         if (array_key_exists($url, $this->files)) {
-//          debug($url, "File already in list of files");
             return false;
         }
 
         // check for non local file links that refers to another host
         if (!($this->_isLocal($url))) {
-//          debug($url, 'The url does not match the current host '.$this->host.', only relative links are allowed at the moment!');
             return false;
         }
 
@@ -185,12 +180,9 @@ class Crawler {
             $info['file'] = $url;
             $this->files[$url] = $info;
             $this->fileCounter++;
-//          debug($url, 'Successful added url');
         } elseif ($info['location'] == '') {
-//          debug($url, "File already in list of files");
             return false;
         } else {
-//          debug($url, "Url is only a redirect (http 302)");
         }
 
         // check location tag (when got a 302 response from webserver)
@@ -219,7 +211,6 @@ class Crawler {
         }
 
         // contribution by vvkov
-//      preg_match_all("/<[Aa][ \r\n\t]{1}[^>]*[Hh][Rr][Ee][Ff][^=]*=[ '\"\n\r\t]*([^ \"'>]+)[^>]*>/",$res ,$urls);
         preg_match_all("/<[Aa][^>]*[Hh][Rr][Ee][Ff]=['\"]([^\"'>]+)[^>]*>/",$res ,$urls); // update by TK, 2005-07-27
         $urls_count = count( $urls[1] );
 
@@ -237,10 +228,8 @@ class Crawler {
             if ('#' == $thisurl{0}) {
                 continue;
             }
-            // debug('_'.$thisurl.'_','Extracted url');
 
             $absUrl1 = $this->_absolute($thisurl, $url);
-            //debug('_'.$absUrl1.'_', 'After _absolute');
             $absUrl2 = $this->_removeForbiddenKeys($absUrl1);
 
             // remove "//"
@@ -250,7 +239,6 @@ class Crawler {
                 $end = strlen($absUrl2);
             }
             $absUrl = substr($absUrl2, 0, $start).str_replace('//', '/', substr($absUrl2, $start, ($end - $start))).substr($absUrl2, $end);
-            //debug($absUrl, "Computed absUrl");
 
             if ($this->_isLocal($absUrl)) {
                 $result[] = $absUrl;
@@ -274,7 +262,6 @@ class Crawler {
                 if ($this->checkDirectoryName($file)) {
                     continue;
                 }
-                //debug($file, 'Adding URL to todo list');
 
                 // add file to todo list
                 array_push($this->todo, $file);
@@ -297,7 +284,6 @@ class Crawler {
 
         $retproto = (substr($curentDir, 0, strlen($startDir)) == $startDir);
 
-        // debug if (!$retproto) echo ($url["host"] . $url["path"] . "!=" . $this->host . $this->path . "<br>");
         return $retproto;
     }
 
@@ -316,15 +302,6 @@ class Crawler {
                     continue;
                 }
                 $pos = strpos($filename, $file);
-                /*              $file_search = '';
-                                if (!(($as = strpos($file, '*')) === FALSE)) {
-                                    $file_search = str_replace('*', '', $file);
-                                    if ($as == 0) $pos = @strpos($filename, $file_search, (strlen($filename)-strlen($file_search)));
-                                    if ($as == strlen($file_search)) $pos = (@strpos($filename, $file_search) != 0);
-                                } else {
-                                    $pos = ($filename === $file);
-                                }
-                */
                 if ($pos === FALSE) {
                     continue;
                 }
@@ -342,15 +319,6 @@ class Crawler {
                     continue;
                 }
                 $pos = strpos($directory, $dir);
-                /*              $dir_search = '';
-                                if (!(($as = strpos($dir, '*')) === FALSE)) {
-                                    $dir_search = str_replace('*', '', $dir);
-                                    if ($as == 0) $pos = @strpos($directory, $dir_search, (strlen($directory)-strlen($dir_search)));
-                                    if ($as == strlen($dir_search)) $pos = (@strpos($directory, $dir_search) != 0);
-                                } else {
-                                    $pos = ($directory === $dir);
-                                }
-                */ // echo "directory: $directory, dir: $dir, dir_search: $dir_search, pos: $pos<br>\n";
                 if ($pos === FALSE) {
                     continue;
                 }
@@ -392,10 +360,7 @@ class Crawler {
                         $cookie_name = $p[0];
                     }
                 }
-/*              echo "got cookie: ";
-                print_r($cookie);
-                echo "<br>\n";
-*/              // add cookie if not already set
+                // add cookie if not already set
                 if (!isset($this->cookies[$cookie_name])) {
                     $this->cookies[$cookie_name] = $cookie;
                     $this->forbiddenKeys[] = $cookie_name;
@@ -414,13 +379,6 @@ class Crawler {
         if ($res['date'] != '' && $res['lastmod'] == '') {
             $res['lastmod'] = $res['date'];
         }
-//      debug($header, 'Header');
-//      debug($res, 'Extracted information from headers');
-/*
-        echo "final cookies: ";
-        print_r($this->cookies);
-        echo "<br>\n";
-*/
         return $res;
     }
 
@@ -444,7 +402,6 @@ class Crawler {
             }
         }
         // remove anchor links : beginning with # to the end of the url
-        // echo "$url<br>\n";
         if (strpos($url, '#') !== FALSE) {
             $url = substr($url, 0, strpos($url, '#'));
         }
@@ -478,7 +435,6 @@ class Crawler {
                 $cookie_string = 'Cookie: ' . $cookie_string ."\r\n";
             }
         }
-//      echo "Sending cookie_string: $cookie_string<br>\n";
 
         if ($url_port == '') {
             if ($url_scheme == 'https') {
@@ -487,7 +443,6 @@ class Crawler {
                 $url_port = "80";
             }
         }
-        //      debug($url, 'Parsed URL');
         $fp = fsockopen($url_host, $url_port, $errno, $errstr, $this->timeout);
         if ($fp === FALSE) {
             debug($errstr, 'Could not open connection for '.$urlString.' (host: '.$url_host.', port:'.$url_port.'), Errornumber: '.$errno);
@@ -549,7 +504,6 @@ class Crawler {
         // get content
         $res = '';
         while ($chunk != 0 && !feof($fp)) {
-            // echo "chunking...<br>\n";
             if ($chunk > 0) {
                  $part = fread($fp, $chunk);
                  $chunk -= strlen($part);
@@ -590,148 +544,6 @@ class Crawler {
      * Modified by Marjolein Katsma to support links with only a fragment id
      * or with only GET parameters.
      */
-/*  function _absolute($relative, $absolute) {
-
-        // Link ist schon absolut
-        if (preg_match(',^(https?://|ftp://|mailto:|news:|javascript:|telnet:|callto:),i', $relative))
-        {
-            // hostname is not the same (with/without www) than the one used in the link
-            if (substr($relative, 0, 4) == 'http')
-            {
-                $url = parse_url($relative);
-                if ($url['host'] != $this->host
-                        && (
-                            (("www.".$url['host']) == $this->host)
-                            && $this->withWWW == TRUE
-                            || ($url['host'] == ("www.".$this->host))
-                            && $this->withWWW == FALSE
-                        )
-                    )
-                {
-                    $r = $relative;                                                 # @@@ not used mk/2005-11-13
-                    $relative = str_replace($url['host'], $this->host, $relative); // replace hostname that differs from local
-                }
-                // is pure hostname without path - so add a /
-                if (!isset($url['path']) || ($url['path'] == '' && substr($relative, -1) != '/'))
-                {
-                    $relative .= '/';
-                }
-            }
-            return $relative;
-        }
-
-        // parse_url() nimmt die URL auseinander
-        // @@@ does not take into account that parse_url() may return FALSE on error! mk/2005-11-13
-        $url = parse_url($absolute);
-        // dirname() erkennt auf / endende URLs nicht
-        if ($url['path'] {(strlen($url['path'])- 1)} == '/')
-            $dir = substr($url['path'], 0, strlen($url['path']) - 1);
-        else
-            $dir = dirname($url['path']);
-
-        // absoluter Link auf dem gleichen Server
-        if ($relative{0} == '/') {
-            $relative = substr($relative, 1);
-            $dir = '';
-        }
-
-        // set it to default host // TK
-        /* - assumed $url['host'] is set - not necessarily true for all schemes! condition added
-         * - corrected tests for return value of strpos (result 0 is a match!!)
-         * mk/2005-11-13
-         * /
-        if (isset($url['host']))
-        {
-            if ($url['host'] != $this->host &&
-                (strpos($url['host'], $this->host) !== FALSE || strpos($this->host, $url['host']) !== FALSE))
-            {
-                $url['host'] = $this->host;
-            }
-        }
-
-        /* GET-parameter links: replace any existing GET
-         * parameters or append to (sanitized) $absolute
-         * mk/2005-11-13
-         * /
-        if ('?' == $relative{0})
-        {
-            // prepare for building new URL
-            $query = $relative;
-echo 'Crawler _absolute: '.'query '.$query.'<br/>';
-        }
-        /* fragment-id links: should be appended to (sanitized) $absolute
-         * mk/2005-11-13
-         * /
-        elseif ('#' == $relative{0})
-        {
-            // prepare for building new URL
-            $fragment = $relative;
-echo 'Crawler _absolute: '.'fragment '.$fragment.'<br/>';
-        }
-        // other relative link: build a new path from current directory/path and $relative
-        else
-        {
-            // dirname() erkennt auf / endende URLs nicht
-            // assumes $url['path'] is set - not necessarily true! condition added mk/2005-11-13
-            if (isset($url['path']))
-            {
-                if ('/' == substr($url['path'], -1))
-                {
-                    $dir = substr($url['path'], 0, strlen($url['path']) - 1);
-echo 'Crawler _absolute: '.'path '.$url['path'].' ends in / - dir: '.$dir.'<br/>';
-                }
-                else
-                {
-                    $dir = dirname($url['path']);
-echo 'Crawler _absolute: '.'path '.$url['path'].' does NOT end in / - dir: '.$dir.'<br/>';
-                }
-            }
-            else
-            {
-                $dir = '/';                                                         # minimal dir to use in URL path
-            }
-
-            // absoluter Link auf dem gleichen Server == absolute link to same server/host
-            # @@@ mk/2005-11-13 no / between host and relative??
-            if ($relative{0} == '/') {
-echo 'Crawler _absolute: '.'absolute link to '.$relative.'<br/>';
-                $relative = substr($relative, 1);
-                $dir = '/';
-            } else {
-                // Link f�ngt mit ./ an
-                if (substr($relative, 0, 2) == './')
-                {
-                    $relative = substr($relative, 2);
-                }
-                // Referenzen auf h�her liegende Verzeichnisse aufl�sen
-                else
-                {
-                    while (substr($relative, 0, 3) == '../') {
-                        $relative = substr($relative, 3);
-                        $dir = substr($dir, 0, strrpos($dir, '/'));
-                    }
-                }
-            }
-
-            // now construct new path mk/2005-11-13
-            $path = $dir.$relative;
-echo 'Crawler _absolute: '.'new path '.$path.'<br/>';
-        }
-
-        // volle URL zur�ckgeben
-        // did not support all parts or a URL! - corrected mk/2005-11-13
-        $abs  = ('file' == $url['scheme']) ? $url['scheme'].':///' : $url['scheme'].'://';
-        $abs .= (isset($url['user'])) ? $abs .= $url['user'].( (isset($url['pass'])) ? ':'.$url['pass'] : '' ).'@' : '';
-        $abs .= (isset($url['host'])) ? $url['host'] : '';
-        $abs .= (isset($url['port'])) ? ':'.$url['port'] : '';
-        $abs .= (isset($path)) ? $path : (isset($url['path']) ? $url['path'] : '/');    # maintain existing path if we didn't build a new one; make sure we have at least a '/'
-        $abs .= (isset($query)) ? $query : '';                                          # append specified query link
-        $abs .= (isset($fragment)) ? $fragment : '';                                    # append specified fragment link
-
-//mecho 'Crawler _absolute: '.'new url '.$abs.'<br/>';
-        return $abs;
-    }
-*/
     function _absolute($relative, $absolute) {
         // Link ist schon absolut
         if (preg_match(',^(https?://|ftp://|mailto:|news:|javascript:|telnet:|callto:),i', $relative)) {
@@ -827,7 +639,6 @@ echo 'Crawler _absolute: '.'new path '.$path.'<br/>';
 
     function setForbiddenKeys($keys) {
         $this->forbiddenKeys = $keys;
-        //      if(!in_array($key, $this->forbiddenKeys)) $this->forbiddenKeys[] = $key;
     }
 }
 ?>

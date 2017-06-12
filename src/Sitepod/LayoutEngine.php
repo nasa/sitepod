@@ -17,13 +17,7 @@ class LayoutEngine {
 	var $static_title = "";
 	
     function __construct($staticTitle) {
-/*		$this->content[error] = array();
-		$this->content[warning] = array();
-		$this->content[info] = array();
-		$this->content[success] = array();
-		$this->content[text] = array();
-    	$this->content[debug][] = array();
-*/    	$this->content['content_header'] = "";
+    	$this->content['content_header'] = "";
     	$this->content['content_footer'] = "";
     	$this->content['title'] = "";
     	$this->content['charset'] = "";
