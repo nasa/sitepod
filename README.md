@@ -7,6 +7,7 @@
 [![composer.lock](https://poser.pugx.org/nasa/sitepod/composerlock)](https://packagist.org/packages/nasa/sitepod)
 [![Travis](https://img.shields.io/travis/nasa/podaacpy.svg?maxAge=2592000?style=plastic)](https://www.travis-ci.org/nasa/sitepod)
 [![Requirements Status](https://requires.io/github/nasa/sitepod/requirements.svg?branch=master)](https://requires.io/github/nasa/sitepod/requirements/?branch=master)
+[![Quality Gate](https://sonarqube.com/api/badges/gate?key=nasa:sitepod)](https://sonarcloud.io/dashboard?id=nasa:sitepod)
 
 Sitepod; A Sitemap Generator written in PHP
 
