@@ -18,12 +18,11 @@
 print $LAYOUT->getFooterLayout();
 // check and maybe remove timeout stuff
 if ($SETTINGS[PSNG_TIMEOUT] == PSNG_TIMEOUT_NONE || $SETTINGS[PSNG_TIMEOUT_IS] !== TRUE) {
-//	echo ('Removing timeout information(done, todo, file, file_lastrun)!');
-	unset($SETTINGS[PSNG_TIMEOUT_DONE]);
-	unset($SETTINGS[PSNG_TIMEOUT_TODO]);
-	unset($SETTINGS[PSNG_TIMEOUT_FILE]);
-	unset($SETTINGS[PSNG_TIMEOUT_FILE_LASTRUN]);
-	unset($SETTINGS[PSNG_TIMEOUT_ACTION]);	
+    unset($SETTINGS[PSNG_TIMEOUT_DONE]);
+    unset($SETTINGS[PSNG_TIMEOUT_TODO]);
+    unset($SETTINGS[PSNG_TIMEOUT_FILE]);
+    unset($SETTINGS[PSNG_TIMEOUT_FILE_LASTRUN]);
+    unset($SETTINGS[PSNG_TIMEOUT_ACTION]);
 } else {
     $timeout = true;
 }
@@ -36,6 +35,6 @@ unset($SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
 
 $_SESSION[PSNG_SETTINGS] = $SETTINGS;
 if ($timeout) {
-	echo '<script type="text/javascript">window.location.href="'.$SETTINGS['script'].'?action=parse";</script>';
+    echo '<script type="text/javascript">window.location.href="'.$SETTINGS['script'].'?action=parse";</script>';
 }
 ?>
