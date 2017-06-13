@@ -151,7 +151,7 @@ function init() {
         $SETTINGS = array_merge($_SESSION[PSNG_SETTINGS],$SETTINGS);
     }
 
-    $LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_SCRIPT].'?action=setup" title="Edit settings">Setup</a>');
+    $LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_WEBSITE].'setup" title="Edit settings">Setup</a>');
     $LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_SCRIPT].'?action='.PSNG_ACTION_CHECK_UPDATESTATUS.'" title="Invoke an update check to get information of recent versions">Check for updates</a>');
     if (isset($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET]))
     {
