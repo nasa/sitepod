@@ -26,10 +26,11 @@ class LayoutEngine {
         $this->content['body'] = array();
         $this->static_title = $staticTitle;
     }
-    
+
     function addHeader($header) {
         $this->content['header'][] = $header;
     }
+
     function switchOffBuffer() {
         $this->buffering = false;
     }
@@ -37,7 +38,7 @@ class LayoutEngine {
     function addCss($msg) {
         $this->content['css'][] = $msg;
     }
-    
+
     function addContentHeader($msg) {
         $tmp = '<div class="content_header">'.$msg.'</div>'. "\n";
 
@@ -64,7 +65,7 @@ class LayoutEngine {
     function setCharset($msg) {
         $this->content['charset'] = $msg;
     }
-   
+
     function addError($msg, $title="") {
         if ($title != "") {
             $tmp = '<h4 class="error">Error: '.$title.'</h4>'."\n".'<div class="error">'.$msg.'</div>'."\n";
@@ -103,7 +104,7 @@ class LayoutEngine {
             print $tmp;
         }
     }
-    
+
     function addText($msg, $title = "", $css_class="") {
         if ($css_class != "") {
             $css_class = ' class="'.$css_class.'"';
@@ -194,37 +195,10 @@ class LayoutEngine {
         }
         return $res;
     }
-    
+
     function getContent() {
         if (! $this->buffering) {
-            $res = '<html><head>'."\n";
-            $res .= '<meta http-equiv="Content-Type" content="text/html; charset='.$this->content['charset'].'">'."\n";
-            $res .= '<title>'.$this->static_title .' ' . $this->content['title'].'</title>'."\n";
-            // header
-            if(($this->content['header'] != "") && count($this->content['header']) > 0) {
-                foreach ($this->content['header'] as $id => $head) {
-                    $res .= $head . "\n";
-                }
-            }
-            // css
-            $res .= '<style type="text/css">'."\n".'<!--'."\n";
-            if(($this->content['css'] != "") && count($this->content['css']) > 0) {
-                foreach ($this->content['css'] as $id => $line) {
-                    $res .= $line . "\n";
-                }
-            }
-            $res .= '-->'."\n".'</style>'."\n";
-
-            //end of head
-            $res .= '</head><body>'."\n";
-
-            $res .= '<h1>'.$this->content['title'].'</h1>';
-
-            if(($this->content['content_header'] != "") && count($this->content['content_header'])>0) {
-                foreach ($this->content['content_header'] as $id => $line) {
-                    $res .= $line . "\n";
-                }
-            }
+            $res = $this->getHeaderLayout();
 
             if(($this->content['body'] != "") && count($this->content['body']) > 0) {
                 foreach ($this->content['body'] as $id => $line) {
@@ -232,14 +206,7 @@ class LayoutEngine {
                 }
             }
 
-            if(($this->content['content_footer'] != "") && count($this->content['content_footer']) > 0) {
-                foreach ($this->content['content_footer'] as $id => $line) {
-                    $res .= '<div class="content_footer">'.$line.'</div>'. "\n";
-                }
-            }
-
-            $res .= "</body>";
-            $res .= "</html>";
+            $res .= $this->getFooterLayout();
         } else {
             $res = '';
         }
