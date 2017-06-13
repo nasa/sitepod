@@ -18,6 +18,14 @@
 
 require_once('inc/startup.php');
 
+$f3 = \Base::instance();
+
+$f3->route('GET /', function() {
+    viewSetup();
+});
+
+$f3->run();
+
 switch ($state) {
     case PSNG_ACTION_SETTINGS_RESET:
         viewSetup(TRUE);
@@ -59,7 +67,7 @@ switch ($state) {
         break;
 
     default:
-        viewSetup();
+        // See above.
         break;
 }
 
