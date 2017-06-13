@@ -37,7 +37,7 @@ class Crawler {
 
     function __construct($host, $deadline = 0) {
         $url = parse_url($host);
-        if ($url != FALSE) {
+        if ($url) {
             if ($url['scheme'] != "") {
                 $this->protocol = $url['scheme'];
             } else {
@@ -390,7 +390,7 @@ class Crawler {
                     continue; // empty key => ignore it
                 }
                 $start = strpos($url, $key, $paramsStart);
-                while ($start != FALSE) {
+                while ($start) {
                     $end = strpos($url, '&', $start);
                     if ($end !== FALSE) {
                         $url = substr($url, 0, $start).substr($url, $end);
@@ -550,7 +550,7 @@ class Crawler {
             // hostname is not the same (with/without www) than the one used in the link
             if (substr($relative, 0, 4) == 'http') {
                 $url = parse_url($relative);
-                if ($url['host'] != $this->host && ((("www.".$url['host']) == $this->host) && $this->withWWW == true || ($url['host'] == ("www.".$this->host)) && $this->withWWW == false)) {
+                if ($url['host'] != $this->host && ((("www.".$url['host']) == $this->host) && $this->withWWW || ($url['host'] == ("www.".$this->host)) && !$this->withWWW)) {
                     $relative = str_replace($url['host'], $this->host, $relative); // replace hostname that differes from local
                 }
                 // is pure hostname without path - so add a /
@@ -579,7 +579,7 @@ class Crawler {
         }
 
         // set it to default host // TK
-        if ($url['host'] != $this->host && (strpos($url['host'], $this->host) != FALSE || strpos($this->host, $url['host']) != FALSE)) {
+        if ($url['host'] != $this->host && (strpos($url['host'], $this->host) || strpos($this->host, $url['host']))) {
             $url['host'] = $this->host;
         }
 
