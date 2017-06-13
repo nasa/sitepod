@@ -270,7 +270,7 @@ function getSettings() {
         }
 	}
 	$SETTINGS[PSNG_DISALLOW_KEY] = $tmp;
-	$SETTINGS[PSNG_COMPRESS_SITEMAP] = isset($_REQUEST[PSNG_COMPRESS_SITEMAP]) ? TRUE : FALSE;
+	$SETTINGS[PSNG_COMPRESS_SITEMAP] = isset($_REQUEST[PSNG_COMPRESS_SITEMAP]);
 
 	// TODO maybe try to open sitemap file
 

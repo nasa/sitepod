@@ -125,7 +125,7 @@ function breakSession($force = FALSE) {
     }
 
 	$t2 = microtime_float();
-	if (($t2 >= $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]) || ($force == TRUE)) {
+	if (($t2 >= $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]) || $force) {
 		$header = $SETTINGS[PSNG_SCRIPT].'?'.PSNG_ACTION.'='.$SETTINGS[PSNG_SETTINGS_STATE];
 
 		$LAYOUT->addInfo('Please click <a href="'.$header.'"><b>here</b></a> to continue scanning your site.', 'Timeout occured');

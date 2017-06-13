@@ -35,7 +35,7 @@ class Util {
     }
 
     /* returns a string of all entries of array with delim */
-    function arrToStringReadable($array, $delim) {
+    static function arrToStringReadable($array, $delim) {
         $res = "";
         if (is_array($array)) {
             $i = 0;
