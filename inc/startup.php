@@ -44,7 +44,6 @@ include_once(dirname(__FILE__).'/Ontology.php');
 
 include_once(dirname(__FILE__).'/functions/functions.inc.php');
 include_once(dirname(__FILE__).'/functions/parsing.inc.php');
-include_once(dirname(__FILE__).'/functions/settings.inc.php');
 
 $SETTINGS[PSNG_FILE_SETTINGS] =     'settings/settings.inc.php';
 $SETTINGS[PSNG_FILE_FILES] =        'settings/files.inc.php';
