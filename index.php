@@ -67,14 +67,13 @@ $f3->route('POST /', function () {
         }
     }
 });
+$f3->route('POST /writeSitemapUserinput', function () {
+    writeSitemapUserinput();
+});
 
 $f3->run();
 
 switch ($state) {
-    case PSNG_ACTION_SETTINGS_WRITESITEMAP_USERINPUT:
-        writeSitemapUserinput();
-        break;
-
     case PSNG_ACTION_SETTINGS_PINGGOOGLE:
         submitPageToGoogle();
         break;

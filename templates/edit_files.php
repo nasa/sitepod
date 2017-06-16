@@ -18,9 +18,8 @@
 
 	debug($FILE, "templates/edit_files: will display following files");
 	$layout = '
-	<form action="'.$SETTINGS[PSNG_SCRIPT].'" method="post" accept-charset=utf-8>
+	<form action="'.PSNG_ACTION_SETTINGS_WRITESITEMAP_USERINPUT.'" method="post" accept-charset=utf-8>
 	<input type="submit" name="submit" value="Create file">
-	<input type="hidden" name="'.PSNG_SETTINGS_ACTION.'" value="'.PSNG_ACTION_SETTINGS_WRITESITEMAP_USERINPUT.'">
 	<table>
 		<th>Number</th>
 		<th>Filename</th>
