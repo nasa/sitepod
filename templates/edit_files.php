@@ -32,7 +32,8 @@
 	$numb = 0;
 	$count = array();
 	$count['numb'] = 5;
-	$f = $FILE[array_pop(array_keys($FILE))];
+	$keys = array_keys($FILE);
+	$f = $FILE[array_pop($keys)];
 	if ($f[PSNG_LASTMOD] == PSNG_LASTMOD_DISSABLED) {
 	    $count[numb]--;
     }

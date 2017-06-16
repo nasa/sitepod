@@ -45,22 +45,19 @@ $f3->route('GET /parse', function() {
         writeSitemap($FILE);
     }
 });
-
-$f3->run();
-
-switch ($state) {
-    case PSNG_ACTION_SETTINGS_RESET:
-        viewSetup(TRUE);
-        break;
-
-    case PSNG_ACTION_SETTINGS_GET:
+$f3->route('POST /', function () {
+    global $SETTINGS;
+    if (isset($_REQUEST[PSNG_ACTION_SETTINGS_RESET])) {
+        if ($_REQUEST[PSNG_ACTION_SETTINGS_RESET] != '') {
+            viewSetup(TRUE);
+        }
+    }
+    else {
         getSettings();
-
         $FILE = parseFilesystem();
-
         // check for timeout
         if ($SETTINGS[PSNG_TIMEOUT_ACTION] != '') {
-            break;
+            return;
         }
         // if no timeout, print result or write it
         if ($SETTINGS[PSNG_EDITRESULT] == PSNG_EDITRESULT_TRUE) {
@@ -68,8 +65,12 @@ switch ($state) {
         } else {
             writeSitemap($FILE);
         }
-        break;
+    }
+});
 
+$f3->run();
+
+switch ($state) {
     case PSNG_ACTION_SETTINGS_WRITESITEMAP_USERINPUT:
         writeSitemapUserinput();
         break;
