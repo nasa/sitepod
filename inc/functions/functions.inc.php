@@ -107,7 +107,8 @@ function init() {
     // set layout engine
     $LAYOUT = new Sitepod\LayoutEngine("Sitepod");
     $LAYOUT->setTitle("Welcome to Sitepod; a Sitemap Generator written in PHP");
-    $LAYOUT->setCharSet("iso-8859-1");
+    $LAYOUT->setBase($SETTINGS['base']);
+    $LAYOUT->setCharSet("UTF-8");
     $LAYOUT->addCss('.history, .required { background-color:#E0E0E0; }');
     $LAYOUT->addCss('.source_fs { background-color:#FF70CC; }');
     $LAYOUT->addCss('.source_website { background-color:#CCFF70; }');
@@ -151,8 +152,8 @@ function init() {
         $SETTINGS = array_merge($_SESSION[PSNG_SETTINGS],$SETTINGS);
     }
 
-    $LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_WEBSITE].'setup" title="Edit settings">Setup</a>');
-    $LAYOUT->addContentHeader('<a href="'.$SETTINGS[PSNG_SCRIPT].'?action='.PSNG_ACTION_CHECK_UPDATESTATUS.'" title="Invoke an update check to get information of recent versions">Check for updates</a>');
+    $LAYOUT->addContentHeader('<a href="'.PSNG_ACTION_SETTINGS_SETUP.'" title="Edit settings">Setup</a>');
+    $LAYOUT->addContentHeader('<a href="'.PSNG_ACTION_CHECK_UPDATESTATUS.'" title="Invoke an update check to get information of recent versions">Check for updates</a>');
     if (isset($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET]))
     {
         if ($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET]) {

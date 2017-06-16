@@ -27,6 +27,9 @@ $f3->route('GET /setup', function() {
     resetRunon();
     viewSetup();
 });
+$f3->route('GET /check_updatestatus', function() {
+    checkUpdateStatus();
+});
 
 $f3->run();
 
@@ -59,10 +62,6 @@ switch ($state) {
 
     case PSNG_ACTION_SETTINGS_PINGGOOGLE:
         submitPageToGoogle();
-        break;
-
-    case PSNG_ACTION_CHECK_UPDATESTATUS:
-        checkUpdateStatus();
         break;
 
     default:

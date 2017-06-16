@@ -15,6 +15,7 @@ class LayoutEngine {
     var $content = array();
     var $buffering = true;
     var $static_title = "";
+    private $base;
 
     function __construct($staticTitle) {
         $this->content['content_header'] = "";
@@ -146,6 +147,22 @@ class LayoutEngine {
         }
     }
 
+    /**
+     * @return string|null
+     */
+    public function getBase()
+    {
+        return $this->base;
+    }
+
+    /**
+     * @param string $base
+     */
+    public function setBase($base)
+    {
+        $this->base = $base;
+    }
+
     function getFooterLayout() {
         if ($this->buffering) {
             return '';
@@ -166,6 +183,9 @@ class LayoutEngine {
             return '';
         }
         $res = '<html><head>'."\n";
+        if ($this->getBase()) {
+            $res .= '<base href="' . $this->getBase() . '">' . "\n";
+        }
         $res .= '<meta http-equiv="Content-Type" content="text/html; charset='.$this->content['charset'].'">'."\n";
         $res .= '<title>'.$this->static_title .' ' . $this->content['title'].'</title>'."\n";
         // header
