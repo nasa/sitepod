@@ -70,19 +70,10 @@ $f3->route('POST /', function () {
 $f3->route('POST /writeSitemapUserinput', function () {
     writeSitemapUserinput();
 });
+$f3->route('POST /pinggoogle', function () {
+    submitPageToGoogle();
+});
 
 $f3->run();
 
-switch ($state) {
-    case PSNG_ACTION_SETTINGS_PINGGOOGLE:
-        submitPageToGoogle();
-        break;
-
-    default:
-        // See above.
-        break;
-}
-
 require_once('inc/shutdown.php');
-
-?>
