@@ -22,10 +22,8 @@ $f3 = \Base::instance();
 
 $f3->route('GET /', '\Sitepod\Controller\Home->viewSetup');
 $f3->route('GET /setup', '\Sitepod\Controller\Home->setup');
+$f3->route('GET /check_updatestatus', '\Sitepod\Controller\Update->checkUpdateStatus');
 
-$f3->route('GET /check_updatestatus', function() {
-    checkUpdateStatus();
-});
 $f3->route('GET /parse', function() {
     global $SETTINGS;
     $FILE = parseFilesystem();
