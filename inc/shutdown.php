@@ -35,6 +35,6 @@ unset($SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
 
 $_SESSION[PSNG_SETTINGS] = $SETTINGS;
 if ($timeout) {
-    echo '<script type="text/javascript">window.location.href="'.$SETTINGS['script'].'?action=parse";</script>';
+    echo '<script type="text/javascript">window.location.href="'. PSNG_ACTION_SETTINGS_PARSE .'";</script>';
 }
 ?>
