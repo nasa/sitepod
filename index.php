@@ -30,6 +30,21 @@ $f3->route('GET /setup', function() {
 $f3->route('GET /check_updatestatus', function() {
     checkUpdateStatus();
 });
+$f3->route('GET /parse', function() {
+    global $SETTINGS;
+    $FILE = parseFilesystem();
+
+    // check for timeout
+    if ($SETTINGS[PSNG_TIMEOUT_ACTION] != '') {
+        return;
+    }
+    // if no timeout, print result or write it
+    if ($SETTINGS[PSNG_EDITRESULT] == PSNG_EDITRESULT_TRUE) {
+        displaySitemapEdit($FILE);
+    } else {
+        writeSitemap($FILE);
+    }
+});
 
 $f3->run();
 
@@ -38,10 +53,9 @@ switch ($state) {
         viewSetup(TRUE);
         break;
 
-    case PSNG_ACTION_SETTINGS_GET: // & parse
+    case PSNG_ACTION_SETTINGS_GET:
         getSettings();
 
-    case PSNG_ACTION_SETTINGS_PARSE:
         $FILE = parseFilesystem();
 
         // check for timeout

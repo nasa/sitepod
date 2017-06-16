@@ -157,7 +157,7 @@ function init() {
     if (isset($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET]))
     {
         if ($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET]) {
-            $LAYOUT->addContentHeader('<a href="' . $SETTINGS[PSNG_SCRIPT] . '?action=parse" title="Start the scan for files">Start scan</a>');
+            $LAYOUT->addContentHeader('<a href="' . PSNG_ACTION_SETTINGS_PARSE . '" title="Start the scan for files">Start scan</a>');
         }
     }
     if (@file_exists($SETTINGS[PSNG_SITEMAP_FILE]) && ( @filesize($SETTINGS[PSNG_SITEMAP_FILE]) > 0)) {
