@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Sitepod.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 require_once('inc/startup.php');
 
 $f3 = \Base::instance();
@@ -23,50 +22,20 @@ $f3 = \Base::instance();
 $f3->route('GET /', '\Sitepod\Controller\Home->viewSetup');
 $f3->route('GET /setup', '\Sitepod\Controller\Home->setup');
 $f3->route('GET /check_updatestatus', '\Sitepod\Controller\Update->checkUpdateStatus');
-
-$f3->route('GET /parse', function() {
-    global $SETTINGS;
-    $FILE = parseFilesystem();
-
-    // check for timeout
-    if ($SETTINGS[PSNG_TIMEOUT_ACTION] != '') {
-        return;
-    }
-    // if no timeout, print result or write it
-    if ($SETTINGS[PSNG_EDITRESULT] == PSNG_EDITRESULT_TRUE) {
-        displaySitemapEdit($FILE);
-    } else {
-        writeSitemap($FILE);
-    }
-});
+$f3->route('GET /parse', '\Sitepod\Controller\SiteMap->parse');
+/** @TODO: Break it up */
 $f3->route('POST /', function () {
-    global $SETTINGS;
     if (isset($_REQUEST[PSNG_ACTION_SETTINGS_RESET])) {
         if ($_REQUEST[PSNG_ACTION_SETTINGS_RESET] != '') {
             (new \Sitepod\Controller\Home())->viewSetup(TRUE);
         }
     }
     else {
-        getSettings();
-        $FILE = parseFilesystem();
-        // check for timeout
-        if ($SETTINGS[PSNG_TIMEOUT_ACTION] != '') {
-            return;
-        }
-        // if no timeout, print result or write it
-        if ($SETTINGS[PSNG_EDITRESULT] == PSNG_EDITRESULT_TRUE) {
-            displaySitemapEdit($FILE);
-        } else {
-            writeSitemap($FILE);
-        }
+        (new \Sitepod\Controller\SiteMap())->getSettings();
     }
 });
-$f3->route('POST /writeSitemapUserinput', function () {
-    writeSitemapUserinput();
-});
-$f3->route('POST /pinggoogle', function () {
-    submitPageToGoogle();
-});
+$f3->route('POST /writeSitemapUserinput', '\Sitepod\Controller\SiteMap->writeSiteMapUserInput');
+$f3->route('POST /pinggoogle', '\Sitepod\Controller\SiteMap->submitPageToGoogle');
 
 $f3->run();
 
