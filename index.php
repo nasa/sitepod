@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * This file is part of Sitepod.
  *
  * Sitepod is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ $f3->route('POST /', function () {
     global $SETTINGS;
     if (isset($_REQUEST[PSNG_ACTION_SETTINGS_RESET])) {
         if ($_REQUEST[PSNG_ACTION_SETTINGS_RESET] != '') {
-            viewSetup(TRUE);
+            (new \Sitepod\Controller\Home())->viewSetup(TRUE);
         }
     }
     else {
