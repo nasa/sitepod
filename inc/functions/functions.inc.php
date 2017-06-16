@@ -195,19 +195,6 @@ function init() {
     return $action;
 }
 
-function resetRunon() {
-    global $SETTINGS;
-    unset($SETTINGS[PSNG_TIMEOUT_DONE]);
-    unset($SETTINGS[PSNG_TIMEOUT_TODO]);
-    unset($SETTINGS[PSNG_TIMEOUT_FILE]);
-    unset($SETTINGS[PSNG_TIMEOUT_FILE_LASTRUN]);
-    unset($SETTINGS[PSNG_TIMEOUT_ACTION]);
-    unset($SETTINGS[PSNG_TIMEOUT_IS]);
-    unset($SETTINGS[PSNG_TIMEOUT_TIME]);
-    unset($SETTINGS[PSNG_TIMEOUT_TIME_START]);
-    unset($SETTINGS[PSNG_TIMEOUT_TIME_SHUTDOWN]);
-    unset($SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
-}
 /**
  * overwrite existing filelist-file
  */

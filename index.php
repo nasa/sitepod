@@ -20,13 +20,9 @@ require_once('inc/startup.php');
 
 $f3 = \Base::instance();
 
-$f3->route('GET /', function() {
-    viewSetup();
-});
-$f3->route('GET /setup', function() {
-    resetRunon();
-    viewSetup();
-});
+$f3->route('GET /', '\Sitepod\Controller\Home->viewSetup');
+$f3->route('GET /setup', '\Sitepod\Controller\Home->setup');
+
 $f3->route('GET /check_updatestatus', function() {
     checkUpdateStatus();
 });
