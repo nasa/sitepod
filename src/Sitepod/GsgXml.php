@@ -89,7 +89,7 @@ namespace Sitepod;
          */
         var $maxURLs = 50000;
 
-		var $errorMsg = '';
+        var $errorMsg = '';
 
         /**
          * GsgXml constructor
@@ -143,12 +143,12 @@ namespace Sitepod;
         function addUrl($url, $pathOnly = false, $lastModTs = null, $lastModTsDateOnly = false,
                         $changeFreq = null, $priority = null)
         {
-			$this->errorMsg = '';
+            $this->errorMsg = '';
 
             if (count($this->urls) >= $this->maxURLs) {
-				$this->errorMsg = "Only ".$this->maxURLs . " urls are allowed within a Sitemap file.";
+                $this->errorMsg = "Only ".$this->maxURLs . " urls are allowed within a Sitemap file.";
                 return false;
-			}
+            }
 
             if ($pathOnly) {
                 $url = $this->baseUrl . $url;
@@ -157,7 +157,7 @@ namespace Sitepod;
             else if ($this->baseUrlLen > 0) {
                 // check if the added URL matches the baseUrl
                 if ($this->baseUrl != strtolower(substr($url, 0, $this->baseUrlLen))) {
-					$this->errorMsg = 'The following url does not match the base url ('.$this->baseUrl.'): ' . $url . '!';
+                    $this->errorMsg = 'The following url does not match the base url ('.$this->baseUrl.'): ' . $url . '!';
                     return false;
                 }
             }
@@ -168,11 +168,11 @@ namespace Sitepod;
                 $data['lastmod'] = (int) $lastModTs;
                 $data['lastmod_dateonly'] = (bool) $lastModTsDateOnly;
             } elseif(is_string($lastModTs)) {
-            	// ts could be a preformated string
-            	if ($lastModTs != '') {
-            		$data['lastmod'] = $lastModTs;
-            		$data['lastmod_dateonly'] = false;
-            	}
+                // ts could be a preformated string
+                if ($lastModTs != '') {
+                    $data['lastmod'] = $lastModTs;
+                    $data['lastmod_dateonly'] = false;
+                }
             }
 
             if (!is_null($changeFreq) && in_array($changeFreq, $this->changeFreqs)) {
@@ -269,16 +269,16 @@ namespace Sitepod;
                 $ret[] = '   <url>';
                 $ret[] = sprintf('      <loc>%s</loc>', $this->xmlEscape($url['url']));
                 if (isset($url['lastmod'])) {
-                	if (is_numeric($url['lastmod'])) {
+                    if (is_numeric($url['lastmod'])) {
                     $ret[] = sprintf('      <lastmod>%s</lastmod>',
                                      $url['lastmod_dateonly'] ?
                                      date($this->lastModDate, $url['lastmod']) :
                                      date($this->lastModDateTime, $url['lastmod']).
-                                     	substr(date("O", $url['lastmod']),0,3) . ":" .
-                                     	substr(date("O",$url['lastmod']),3));
-                	} elseif (is_string($url['lastmod'])) {
-                		$ret[] = sprintf('      <lastmod>%s</lastmod>',$url['lastmod']);
-                	}
+                                        substr(date("O", $url['lastmod']),0,3) . ":" .
+                                        substr(date("O",$url['lastmod']),3));
+                    } elseif (is_string($url['lastmod'])) {
+                        $ret[] = sprintf('      <lastmod>%s</lastmod>',$url['lastmod']);
+                    }
                }
                 if (isset($url['changefreq'])) {
                     $ret[] = sprintf('      <changefreq>%s</changefreq>',

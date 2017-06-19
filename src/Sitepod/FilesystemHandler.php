@@ -180,15 +180,7 @@ class FilesystemHandler {
 	    		    continue;
                 }
 	    		$pos = strpos($filename, $file);
-/*	    		$file_search = '';
-		  		if (!(($as = strpos($file, '*')) === FALSE)) {
-		  			$file_search = str_replace('*', '', $file);
-	  				if ($as == 0) $pos = @strpos($filename, $file_search, (strlen($filename)-strlen($file_search)));
-	  				if ($as == strlen($file_search)) $pos = (@strpos($filename, $file_search) != 0);
-		  		} else {
-					$pos = ($filename === $file);
-		  		}
-*/		  		if ($pos === FALSE) {
+		  		if ($pos === FALSE) {
                     continue;
                 }
 		  		return TRUE;
@@ -199,23 +191,13 @@ class FilesystemHandler {
 
 	function checkDirectoryName($directory) {
 		$directory = substr($directory, 0, strrpos($directory, '/')); // with last "/"
-				// dirname($directory); // 
 	    if (is_array($this->forbidden_dir) && count($this->forbidden_dir) > 0) {
 	    	foreach ($this->forbidden_dir as $id => $dir) {
 	    		if ($dir == '') {
 	    		    continue;
                 }
 	    		$pos = strpos($directory, $dir);
-/*	    		$dir_search = '';
-		  		if (!(($as = strpos($dir, '*')) === FALSE)) {
-		  			$dir_search = str_replace('*', '', $dir);
-	  				if ($as == 0) $pos = @strpos($directory, $dir_search, (strlen($directory)-strlen($dir_search)));
-	  				if ($as == strlen($dir_search)) $pos = (@strpos($directory, $dir_search) != 0);
-		  		} else {
-					$pos = ($directory === $dir);
-		  		}
-		  		// echo "directory: $directory, dir: $dir, dir_search: $dir_search, pos: $pos<br>\n";
-*/		  		if ($pos === FALSE) {
+		  		if ($pos === FALSE) {
                     continue;
                 }
 		  		return TRUE;

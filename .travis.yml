@@ -23,6 +23,7 @@ before_script:
   - composer install
 
 script:
+  - $TRAVIS_BUILD_DIR/vendor/bin/phpunit
   - sonar-scanner
 
 cache:

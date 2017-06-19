@@ -46,8 +46,6 @@ function viewSetup($resetSettings = FALSE) {
 	if (is_null($SETTINGS[PSNG_TXTSITEMAP_FILE])) {
 	    $SETTINGS[PSNG_TXTSITEMAP_FILE] = "/sitemap.txt";
     }
-//	if (is_null($SETTINGS[PSNG_SITEMAP_FILE])) 	$SETTINGS[PSNG_SITEMAP_FILE] 		= $SETTINGS[PSNG_PAGEROOT] . "/sitemap.xml";
-//	if (is_null($SETTINGS[PSNG_SITEMAP_URL])) 	$SETTINGS[PSNG_SITEMAP_URL] 		= $SETTINGS[PSNG_WEBSITE] ."/sitemap.xml";
 	if (is_null($SETTINGS[PSNG_TEMP_DIR])) {
 	    $SETTINGS[PSNG_TEMP_DIR] = dirname(__FILE__) . "/temp/";
     }
@@ -70,7 +68,6 @@ function viewSetup($resetSettings = FALSE) {
 	    $SETTINGS[PSNG_STORE_FILELIST] = TRUE;
     }
 
-//	if (!isset($SETTINGS[PSNG_TIMEOUT]))		$SETTINGS[PSNG_TIMEOUT] 			= PSNG_TIMEOUT_AUTOMATIC; //($SETTINGS[PSNG_TIMEOUT_AUTOMATIC] == TRUE)?PSNG_TIMEOUT_AUTOMATIC:PSNG_TIMEOUT_NONE;
 	if (!isset($SETTINGS[PSNG_TIMEOUT])) {
 	    $SETTINGS[PSNG_TIMEOUT] = PSNG_TIMEOUT_FORCE;
     }
@@ -123,7 +120,7 @@ function viewSetup($resetSettings = FALSE) {
 
 	/* list of disallowed key names */
 	if (is_null($SETTINGS[PSNG_DISALLOW_KEY])) {
-		$SETTINGS[PSNG_DISALLOW_KEY] = array();  // 'PHPSESSID', 'link', 'sid');
+		$SETTINGS[PSNG_DISALLOW_KEY] = array();
 		$SETTINGS[PSNG_DISALLOW_KEY][] = session_name();
 		$SETTINGS[PSNG_DISALLOW_KEY][] = 'sid';
 		$SETTINGS[PSNG_DISALLOW_KEY][] = 'PHPSESSID';
@@ -273,7 +270,7 @@ function getSettings() {
         }
 	}
 	$SETTINGS[PSNG_DISALLOW_KEY] = $tmp;
-	$SETTINGS[PSNG_COMPRESS_SITEMAP] = isset($_REQUEST[PSNG_COMPRESS_SITEMAP]) ? TRUE : FALSE;
+	$SETTINGS[PSNG_COMPRESS_SITEMAP] = isset($_REQUEST[PSNG_COMPRESS_SITEMAP]);
 
 	// TODO maybe try to open sitemap file
 

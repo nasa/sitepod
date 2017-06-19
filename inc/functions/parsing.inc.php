@@ -99,13 +99,11 @@ function parseFilesystem($displayResultForEditing = TRUE) {
 				}
 			}
 		}
-//		$LAYOUT->addInfo('', 'Matched '.($n_before-count($FILE)). ' directories with index files');
 
 	}
 	// if timeout - store current settings and files
 	if (breakSession()) {
 		$SETTINGS[PSNG_TIMEOUT_FILE_LASTRUN] = $FILE;
-//		$LAYOUT->addInfo('', 'Already computed ' . count($FILE) . ' files.');
 		$LAYOUT->addInfo('', 'Number of files that are in the todo list: ' . count($SETTINGS[PSNG_TIMEOUT_TODO]));
 	} else {
 		$SETTINGS[PSNG_TIMEOUT_IS] = FALSE;
@@ -127,7 +125,7 @@ function breakSession($force = FALSE) {
     }
 
 	$t2 = microtime_float();
-	if (($t2 >= $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]) || ($force == TRUE)) {
+	if (($t2 >= $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]) || $force) {
 		$header = $SETTINGS[PSNG_SCRIPT].'?'.PSNG_ACTION.'='.$SETTINGS[PSNG_SETTINGS_STATE];
 
 		$LAYOUT->addInfo('Please click <a href="'.$header.'"><b>here</b></a> to continue scanning your site.', 'Timeout occured');
@@ -308,12 +306,10 @@ function runCrawler($FILE, $FILES_CACHE) {
 				$fileinfo[PSNG_FILE_ENABLED] = '';
 				$fileinfo[PSNG_HTML_STATUS] = 'class="notfound"';
 			}
-//			info($fileinfo, 'Fileinfo from crawler');
 			// handle if the file exists on filesystem and on website
 			if (array_key_exists($fileinfo[PSNG_FILE_URL], $FILE)) {
 				$fileinfo = handleDoubleEntryFilesystemWebsite($FILE[$fileinfo[PSNG_FILE_URL]], $fileinfo);
 			}
-//			info($fileinfo, 'Fileinfo after handle double entry');
 
 			if (isset($fileinfo[PSNG_HTML_SOURCE]))
 			{
@@ -567,7 +563,6 @@ function writeSitemapUserinput() {
 	writeSitemap($files);
 
 	return TRUE;
-	//header('Content-type: application/xml; charset="utf-8"',TRUE);
 }
 
 
