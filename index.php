@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * This file is part of Sitepod.
  *
  * Sitepod is free software: you can redistribute it and/or modify
@@ -15,54 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Sitepod.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 require_once('inc/startup.php');
 
-switch ($state) {
-    case PSNG_ACTION_SETTINGS_RESET:
-        viewSetup(TRUE);
-        break;
+$f3 = \Base::instance();
 
-    case PSNG_ACTION_SETTINGS_SETUP:
-        resetRunon();
-        viewSetup();
-        break;
-
-    case PSNG_ACTION_SETTINGS_GET: // & parse
-        getSettings();
-
-    case PSNG_ACTION_SETTINGS_PARSE:
-        $FILE = parseFilesystem();
-
-        // check for timeout
-        if ($SETTINGS[PSNG_TIMEOUT_ACTION] != '') {
-            break;
+$f3->route('GET /', '\Sitepod\Controller\Home->viewSetup');
+$f3->route('GET /setup', '\Sitepod\Controller\Home->setup');
+$f3->route('GET /check_updatestatus', '\Sitepod\Controller\Update->checkUpdateStatus');
+$f3->route('GET /parse', '\Sitepod\Controller\SiteMap->parse');
+/** @TODO: Break it up */
+$f3->route('POST /', function () {
+    if (isset($_REQUEST[PSNG_ACTION_SETTINGS_RESET])) {
+        if ($_REQUEST[PSNG_ACTION_SETTINGS_RESET] != '') {
+            (new \Sitepod\Controller\Home())->viewSetup(TRUE);
         }
-        // if no timeout, print result or write it
-        if ($SETTINGS[PSNG_EDITRESULT] == PSNG_EDITRESULT_TRUE) {
-            displaySitemapEdit($FILE);
-        } else {
-            writeSitemap($FILE);
-        }
-        break;
+    }
+    else {
+        (new \Sitepod\Controller\SiteMap())->getSettings();
+    }
+});
+$f3->route('POST /writeSitemapUserinput', '\Sitepod\Controller\SiteMap->writeSiteMapUserInput');
+$f3->route('POST /pinggoogle', '\Sitepod\Controller\SiteMap->submitPageToGoogle');
 
-    case PSNG_ACTION_SETTINGS_WRITESITEMAP_USERINPUT:
-        writeSitemapUserinput();
-        break;
-
-    case PSNG_ACTION_SETTINGS_PINGGOOGLE:
-        submitPageToGoogle();
-        break;
-
-    case PSNG_ACTION_CHECK_UPDATESTATUS:
-        checkUpdateStatus();
-        break;
-
-    default:
-        viewSetup();
-        break;
-}
+$f3->run();
 
 require_once('inc/shutdown.php');
-
-?>
