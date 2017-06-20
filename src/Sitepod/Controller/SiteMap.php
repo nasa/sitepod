@@ -57,7 +57,36 @@ class SiteMap
 
     public function writeSiteMapUserInput()
     {
-        writeSitemapUserinput();
+        // TODO add deselected files from user into "blacklist" in temp directory
+        global $SETTINGS, $openFile_error, $_REQUEST, $LAYOUT;
+        $LAYOUT->setTitle('Writing sitemap');
+
+        $gsg = new \Sitepod\GsgXml($SETTINGS[PSNG_WEBSITE]);
+
+        // create the sitemap file
+        $filesGot = $_REQUEST['FILE'];
+        $files = array();
+        foreach ($filesGot as $key => $value) {
+            $files[$key] = array();
+            $files[$key][PSNG_FILE_ENABLED] = isset($value[PSNG_FILE_ENABLED]) ? '1' : '';
+            $files[$key][PSNG_FILE_URL] = $value[PSNG_FILE_URL];
+            $files[$key][PSNG_LASTMOD] = $value[PSNG_LASTMOD];
+            $files[$key][PSNG_CHANGEFREQ] = $value[PSNG_CHANGEFREQ];
+            $files[$key][PSNG_PRIORITY] = $value[PSNG_PRIORITY];
+        }
+
+        if($SETTINGS[PSNG_STORE_FILELIST] != '') {
+            $res = storeSettings($files, $SETTINGS[PSNG_FILE_FILES], "FILES");
+            if (!is_null($res)) {
+                $LAYOUT->addWarning($res, 'Filelist-Cache could not be written to file ' . $SETTINGS[PSNG_FILE_FILES] . '!');
+            } else {
+                $LAYOUT->addSuccess('', 'Filelist-Cache written to file ' . $SETTINGS[PSNG_FILE_FILES] . '!');
+            }
+        }
+
+        writeSitemap($files);
+
+        return TRUE;
     }
 
     public function submitPageToGoogle()
