@@ -53,7 +53,7 @@ if (!isset($SETTINGS[PSNG_COMPRESS_SITEMAP])) {
 	<div align="center">
 	<form name="setupExpert" action="./" method="post" accept-charset=utf-8>
 	<input type="hidden" name="'.PSNG_ACTION.'" value="'.PSNG_ACTION_SETTINGS_GET.'">
-	<fieldset style="padding: 10; width:600; border-color:#000099; border-width:2px; border-style:solid; ">
+	<fieldset style="padding: 10px; width:600px; border-color:#000099; border-width:2px; border-style:solid; ">
 	<legend style="color:#000099;"><b>Expert settings</b></legend>
 	<table border="0" cellpadding="5" cellspacing="0" width="495">
 	  <tr>
