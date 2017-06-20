@@ -454,18 +454,6 @@ function handleDoubleEntryFilesystemWebsite($fs, $website) {
 }
 
 /**
- * displays the edit page for list of files
- */
-function displaySitemapEdit($FILE) {
-	global $SETTINGS, $LAYOUT;
-	$LAYOUT->setTitle("Result of scan");
-
-	require(PSNG_FILE_TEMPLATE_EDIT_FILES);
-
-	$LAYOUT->addText($layout, 'Found '. count($FILE) .' files');
-}
-
-/**
  * writes sitemap to file
  */
 function writeSitemap($FILE) {
