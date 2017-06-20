@@ -58,10 +58,9 @@ class SiteMap
     public function writeSiteMapUserInput()
     {
         // TODO add deselected files from user into "blacklist" in temp directory
-        global $SETTINGS, $openFile_error, $_REQUEST, $LAYOUT;
-        $LAYOUT->setTitle('Writing sitemap');
-
-        $gsg = new \Sitepod\GsgXml($SETTINGS[PSNG_WEBSITE]);
+        /** @var LayoutEngine $LAYOUT */
+        global $SETTINGS, $_REQUEST, $LAYOUT;
+        \Base::instance()->set('title', 'Writing sitemap');
 
         // create the sitemap file
         $filesGot = $_REQUEST['FILE'];
@@ -86,7 +85,7 @@ class SiteMap
 
         writeSitemap($files);
 
-        return TRUE;
+        echo \Template::instance()->render('templates/sitemap.writeSiteMapUserInput.html');
     }
 
     public function submitPageToGoogle()
