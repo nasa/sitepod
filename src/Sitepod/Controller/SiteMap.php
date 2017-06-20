@@ -62,7 +62,23 @@ class SiteMap
 
     public function submitPageToGoogle()
     {
-        submitPageToGoogle();
+        global $SETTINGS;
+        \Base::instance()->set('title', 'Submit sitemap to google');
+
+        $res = fopen("http://www.google.com/webmasters/sitemaps/ping?sitemap=".urlencode($SETTINGS['website'].$SETTINGS[PSNG_SITEMAP_URL]),"r");
+        if ($res === FALSE) {
+            \Base::instance()->set('result', 'Error while submitting '.$SETTINGS[PSNG_SITEMAP_URL].'to google!');
+        }
+
+        $str = "";
+        while (!feof($res)) {
+            $str .= fread($res, 1000);
+        }
+        fclose($res);
+        \Base::instance()->set('pageTitle', 'Your sitemap file has been successfully sent to google!');
+        \Base::instance()->set('result', 'Result was: <i>'. strip_tags($str, '<br> <h2> <h1>') . '</i>');
+
+        echo \Template::instance()->render('sitemap.submitPageToGoogle.html');
     }
 
     /**
