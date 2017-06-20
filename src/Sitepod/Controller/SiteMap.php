@@ -24,7 +24,7 @@ class SiteMap
 
     public function parse()
     {
-        global $SETTINGS, $LAYOUT;
+        global $SETTINGS;
         $FILE = parseFilesystem();
 
         // check for timeout
@@ -33,9 +33,12 @@ class SiteMap
         }
         // if no timeout, print result or write it
         if ($SETTINGS[PSNG_EDITRESULT] == PSNG_EDITRESULT_TRUE) {
-            $LAYOUT->setTitle("Result of scan");
+            \Base::instance()->set('title', 'Result of scan');
+            $layout = '';
             require(PSNG_FILE_TEMPLATE_EDIT_FILES);
-            $LAYOUT->addText($layout, 'Found '. count($FILE) .' files');
+            \Base::instance()->set('pageTitle', 'Found '. count($FILE) .' files');
+            \Base::instance()->set('layout', $layout);
+            echo \Template::instance()->render('templates/sitemap.parse.html');
         } else {
             writeSitemap($FILE);
         }
