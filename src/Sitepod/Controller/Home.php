@@ -16,6 +16,8 @@
  */
 namespace Sitepod\Controller;
 
+use Sitepod\Util;
+
 class Home
 {
 
@@ -157,13 +159,33 @@ class Home
             $SETTINGS[PSNG_LASTMOD_TIMEFORMAT] = PSNG_TIMEFORMAT_LONG;
         }
 
-        $layout = '';
-        /* It works because in startup.php you added it to the include_path */
-        /** @TODO: Change it to a template system Eg.: Twig (https://twig.sensiolabs.org/) */
-        require('./templates/setup_expert.php');
-
         \Base::instance()->set('pageTitle', 'Current settings');
-        \Base::instance()->set('layout', $layout);
+        \Base::instance()->set('page_root', ((strpos($SETTINGS[PSNG_PAGEROOT],"\\") === FALSE)?$SETTINGS[PSNG_PAGEROOT]:stripslashes($SETTINGS[PSNG_PAGEROOT])));
+        \Base::instance()->set('website', $SETTINGS[PSNG_WEBSITE]);
+        \Base::instance()->set('ping_google', $SETTINGS[PSNG_PINGGOOGLE]);
+        \Base::instance()->set('gzencode_function_exists', function_exists('gzencode'));
+        \Base::instance()->set('compress_sitemap', $SETTINGS[PSNG_COMPRESS_SITEMAP]);
+        \Base::instance()->set('timeout', $SETTINGS[PSNG_TIMEOUT]);
+        \Base::instance()->set('timeout_duration', $SETTINGS[PSNG_TIMEOUT_TIME_DURATION]);
+        \Base::instance()->set('scan_local', $SETTINGS[PSNG_SCAN_LOCAL]);
+        \Base::instance()->set('scan_website', $SETTINGS[PSNG_SCAN_WEBSITE]);
+        \Base::instance()->set('crawler_url', $SETTINGS[PSNG_CRAWLER_URL]);
+        \Base::instance()->set('edit_result', $SETTINGS[PSNG_EDITRESULT]);
+        \Base::instance()->set('store_filelist', $SETTINGS[PSNG_STORE_FILELIST]);
+        \Base::instance()->set('disallow_dir', Util::arrToString($SETTINGS[PSNG_DISALLOW_DIR]));
+        \Base::instance()->set('disallow_file', Util::arrToString($SETTINGS[PSNG_DISALLOW_FILE]));
+        \Base::instance()->set('disallow_key', Util::arrToString($SETTINGS[PSNG_DISALLOW_KEY]));
+        \Base::instance()->set('sitemap_file', $SETTINGS[PSNG_SITEMAP_FILE]);
+        \Base::instance()->set('txtsitemap_file', $SETTINGS[PSNG_TXTSITEMAP_FILE]);
+        \Base::instance()->set('lastmod', $SETTINGS[PSNG_LASTMOD]);
+        \Base::instance()->set('lastmod_format', $SETTINGS[PSNG_LASTMOD_TIMEFORMAT]);
+        \Base::instance()->set('priority', $SETTINGS[PSNG_PRIORITY]);
+        \Base::instance()->set('priorityList', ['1,0', '0,9', '0,8', '0,7', '0,6', '0,5', '0,4', '0,3', '0,2', '0,1', '0,0']);
+        \Base::instance()->set('priority_fixed', $SETTINGS[PSNG_PRIORITY_FIXED]);
+        \Base::instance()->set('changefreq', $SETTINGS[PSNG_CHANGEFREQ]);
+        \Base::instance()->set('changeFreqList', ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never']);
+        \Base::instance()->set('changefreq_fixed', $SETTINGS[PSNG_CHANGEFREQ_FIXED]);
+
         echo \Template::instance()->render('templates/home.viewSetup.html');
     }
 
