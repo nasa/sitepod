@@ -34,10 +34,22 @@ class SiteMap
         // if no timeout, print result or write it
         if ($SETTINGS[PSNG_EDITRESULT] == PSNG_EDITRESULT_TRUE) {
             \Base::instance()->set('title', 'Result of scan');
-            $layout = '';
-            require(PSNG_FILE_TEMPLATE_EDIT_FILES);
+            \Base::instance()->set('files', $FILE);
+            if ($SETTINGS[PSNG_LASTMOD] != PSNG_LASTMOD_DISSABLED) {
+                \Base::instance()->set('lastModEnabled', true);
+            }
+            if ($SETTINGS[PSNG_CHANGEFREQ] != PSNG_CHANGEFREQ_DISSABLED) {
+                \Base::instance()->set('changeFreqEnabled', true);
+            }
+            if ($SETTINGS[PSNG_PRIORITY] != PSNG_PRIORITY_DISSABLED) {
+                \Base::instance()->set('priorityEnabled', true);
+            }
+            \Base::instance()->set('changeFreqList', ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never']);
+            \Base::instance()->set('priorityList', ['1,0', '0,9', '0,8', '0,7', '0,6', '0,5', '0,4', '0,3', '0,2', '0,1', '0,0']);
+
+            \Base::instance()->set('explanations', $this->getExplanations($FILE));
+
             \Base::instance()->set('pageTitle', 'Found '. count($FILE) .' files');
-            \Base::instance()->set('layout', $layout);
             echo \Template::instance()->render('templates/sitemap.parse.html');
         } else {
             writeSitemap($FILE);
@@ -90,6 +102,7 @@ class SiteMap
 
     public function submitPageToGoogle()
     {
+        /** @var array $SETTINGS */
         global $SETTINGS;
         \Base::instance()->set('title', 'Submit sitemap to google');
 
@@ -247,5 +260,25 @@ class SiteMap
         debug($SETTINGS, 'Got and computed settings');
 
         return TRUE;
+    }
+
+    private function getExplanations($FILE)
+    {
+        $explanations = [];
+        foreach ($FILE as $filename => $fileinfo) {
+            if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_FS) {
+                $explanations['source_fs'] = ['class' => 'source_fs', 'text' => 'A row with this background means that this file can found on your local filesystem'];
+            }
+            if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_WEBSITE) {
+                $explanations['source_website'] = ['class' => 'source_website', 'text' => 'A row with this background means that this file has been found with the crawler engine'];
+            }
+            if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_FS_WEBSITE) {
+                $explanations['source_fs_website'] = ['class' => 'source_fs_website', 'text' => 'A row with this background means that this file is stored on filesystem and there are links to this file.'];
+            }
+            if (isset($fileinfo[PSNG_HTML_HISTORY])) {
+                $explanations['history'] = ['class' => 'history', 'text' => 'A cell with this background means that this file is already stored in your local cached filelist'];
+            }
+        }
+        return $explanations;
     }
 }
