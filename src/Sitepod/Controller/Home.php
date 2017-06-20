@@ -16,8 +16,6 @@
  */
 namespace Sitepod\Controller;
 
-use Sitepod\LayoutEngine;
-
 class Home
 {
 
@@ -25,17 +23,15 @@ class Home
      * Show settings
      * if settings are empty, set them to usable values
      * @param bool $resetSettings
-     * @return bool
      */
     public function viewSetup($resetSettings = FALSE)
     {
         /**
          * @var array $SETTINGS
-         * @var LayoutEngine $LAYOUT
          */
-        global $SETTINGS, $LAYOUT;
+        global $SETTINGS;
 
-        $LAYOUT->setTitle('Edit settings');
+        \Base::instance()->set('title', 'Edit settings');
 
         if ($resetSettings === TRUE) {
             $SETTINGS = array();
@@ -166,8 +162,9 @@ class Home
         /** @TODO: Change it to a template system Eg.: Twig (https://twig.sensiolabs.org/) */
         require('./templates/setup_expert.php');
 
-        $LAYOUT->addText($layout, 'Current settings');
-        return TRUE;
+        \Base::instance()->set('pageTitle', 'Current settings');
+        \Base::instance()->set('layout', $layout);
+        echo \Template::instance()->render('templates/home.viewSetup.html');
     }
 
     public function setup()
