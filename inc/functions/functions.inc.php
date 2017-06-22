@@ -53,7 +53,6 @@ function openFile($filename, $writable = FALSE) {
     $filehandle = @fopen($filename, $accessLevel);
     if ($filehandle === FALSE) {
         $openFile_error = "File $filename could not be opened, don't know why";
-        @fclose($filehandle);
 
         if (!file_exists($filename)) {
             $openFile_error = "File $filename does not exist and I do not have the rights to create it!";
