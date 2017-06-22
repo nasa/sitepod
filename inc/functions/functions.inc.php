@@ -27,6 +27,9 @@ function microtime_float(){
 
 /**
  * returns a filehandle if file is accessable
+ * @param string $filename
+ * @param bool $writable
+ * @return bool|resource
  */
 function openFile($filename, $writable = FALSE) {
     global $openFile_error;
@@ -155,6 +158,8 @@ function resetFiles() {
 /**
  * checks a given filename if it exists and is writable
  * returns empty string, if okay; otherwise the error message
+ * @param string $filename
+ * @return string
  */
 function checkFile($filename) {
     $file = @ fopen($filename, "r");
@@ -227,5 +232,3 @@ function storeSettings($SETTINGS, $filename, $keyname) {
 
     return NULL;
 }
-
-?>

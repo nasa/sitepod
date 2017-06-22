@@ -338,4 +338,3 @@ namespace Sitepod;
             return preg_replace("/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,4};)/","&#38;" , strtr($str, $trans));
         }
     }
-?>

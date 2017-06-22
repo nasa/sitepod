@@ -532,4 +532,3 @@ function submitPageToGoogle() {
 	\Sitepod\Log\Logger::instance()->info('Your sitemap file has been successfuly sent to google!', ['result' => strip_tags($str, '<br> <h2> <h1>')]);
 	return TRUE;
 }
-?>

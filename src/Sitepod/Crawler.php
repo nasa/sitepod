@@ -651,4 +651,3 @@ class Crawler {
         $this->forbiddenKeys = $keys;
     }
 }
-?>
