@@ -16,6 +16,7 @@
  */
 namespace Sitepod\Controller;
 
+use Sitepod\Log\Logger;
 use Sitepod\Util;
 
 class Home
@@ -129,15 +130,16 @@ class Home
 
         /* list of disallowed key names */
         if (is_null($SETTINGS[PSNG_DISALLOW_KEY])) {
-            $SETTINGS[PSNG_DISALLOW_KEY] = array();
-            $SETTINGS[PSNG_DISALLOW_KEY][] = session_name();
-            $SETTINGS[PSNG_DISALLOW_KEY][] = 'sid';
-            $SETTINGS[PSNG_DISALLOW_KEY][] = 'PHPSESSID';
+            $SETTINGS[PSNG_DISALLOW_KEY] = [
+                session_name(),
+                'sid',
+                'PHPSESSID'
+            ];
 
             $SETTINGS[PSNG_DISALLOW_KEY] = array_unique($SETTINGS[PSNG_DISALLOW_KEY]);
         }
 
-        debug($SETTINGS[PSNG_DISALLOW_KEY], "disallow keys");
+        Logger::instance()->debug("Disallow keys:" . Util::arrToStringReadable($SETTINGS[PSNG_DISALLOW_KEY], ','));
         if (is_null($SETTINGS[PSNG_CHANGEFREQ])) {
             $SETTINGS[PSNG_CHANGEFREQ] = PSNG_CHANGEFREQ_FIXED;
         }

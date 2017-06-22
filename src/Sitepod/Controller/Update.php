@@ -16,6 +16,8 @@
  */
 namespace Sitepod\Controller;
 
+use Sitepod\Log\Logger;
+
 class Update
 {
     public function checkUpdateStatus()
@@ -29,9 +31,9 @@ class Update
         }
         else {
             $SETTINGS['last_update_time'] = time();
-            debug(PSNG_URL_UPDATESTATUS, 'Grabbing update status');
+            Logger::instance()->debug('Grabbing update status: ' . PSNG_URL_UPDATESTATUS);
             $res = file(PSNG_URL_UPDATESTATUS);
-            debug($res, 'Result of checkUpdateStatus');
+            Logger::instance()->debug('Result of checkUpdateStatus: ' . $res);
             if (count($res) == 0) {
                 \Base::instance()->set('updateMessage', "Couldn't connect to check latest version");
             }

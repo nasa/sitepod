@@ -20,6 +20,8 @@ TODO handle getting and sending of cookies
 Format - in header: "Set-Cookie: $cookie_name=$cookie_value; path=$cookie_path"
 */
 
+use Sitepod\Log\Logger;
+
 define("PSNG_CRAWLER_MAX_FILESIZE", 100000); // only 100k data will be scanned
 define("PSNG_CRAWLER_MAX_GETFILE_TIME", 5); //timeout in seconds as a float value
 class Crawler {
@@ -198,7 +200,7 @@ class Crawler {
         if ($info['location'] != '') {
             $res = '<a href="'.$info['location'].'"> </a>';
         } else {
-            info('Computing '.$url);
+            Logger::instance()->info('Computing '.$url);
         }
 
         // remove html comments
@@ -254,7 +256,7 @@ class Crawler {
 
             // just break this loop when a timeout occurs
             if (($this->deadline != 0) && (($this->deadline - $this->microtime_float()) < 0)) {
-                debug('', "global timeout");
+                Logger::instance()->debug("Global timeout");
                 break;
             }
         }
@@ -453,7 +455,7 @@ class Crawler {
         }
         $fp = fsockopen($url_host, $url_port, $errno, $errstr, $this->timeout);
         if ($fp === FALSE) {
-            debug($errstr, 'Could not open connection for '.$urlString.' (host: '.$url_host.', port:'.$url_port.'), Errornumber: '.$errno);
+            Logger::instance()->debug('Could not open connection for '.$urlString.' (host: '.$url_host.', port:'.$url_port.'), Errornumber: '.$errno . ', ' . $errstr);
             return array('header' => array(), 'content' => '');
         }
         $query_encoded = '';
@@ -477,7 +479,7 @@ class Crawler {
         $get .= "Referer: ".$url_scheme.'://'.$url_host.$url_path."\r\n";
         $get .= $cookie_string;
         $get .= "Connection: close\r\n\r\n";
-        debug(str_replace("\n", "<br>\n", $get), 'GET-Query');
+        Logger::instance()->debug('GET-Query: ' . str_replace("\n", "<br>\n", $get));
         socket_set_blocking($fp, TRUE);
         fwrite($fp, $get);
 
@@ -504,7 +506,7 @@ class Crawler {
 
         // check file size
         if (isset($header['Content-Length']) && $header['Content-Length'] > PSNG_CRAWLER_MAX_FILESIZE) {
-            info($size, "File size ". $header['Content-Length'] . " of ".$urlString." exceeds file size limit of ".PSNG_CRAWLER_MAX_FILESIZE." byte!");
+            Logger::instance()->info("File size ". $header['Content-Length'] . " of ".$urlString." exceeds file size limit of ".PSNG_CRAWLER_MAX_FILESIZE." byte!");
             fclose($fp);
             return array('header' => $header, 'content' => '');
         }
@@ -519,7 +521,7 @@ class Crawler {
 
                  if ($chunk == 0){
                      if (fgets($fp, 1024) != "\r\n") {
-                         debug('Error in chunk-decoding');
+                         Logger::instance()->debug('Error in chunk-decoding');
                      }
                      $chunk = hexdec(fgets($fp, 1024));
                  }
