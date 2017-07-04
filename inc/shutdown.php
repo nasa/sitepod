@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Sitepod.  If not, see <http://www.gnu.org/licenses/>.
  */
-print $LAYOUT->getFooterLayout();
+
 // check and maybe remove timeout stuff
 if ($SETTINGS[PSNG_TIMEOUT] == PSNG_TIMEOUT_NONE || $SETTINGS[PSNG_TIMEOUT_IS] !== TRUE) {
     unset($SETTINGS[PSNG_TIMEOUT_DONE]);

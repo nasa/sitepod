@@ -1,0 +1,193 @@
+<include href="templates/header.html" />
+
+<h4>{{ @pageTitle }}</h4>
+<div>
+    <script type="text/javascript">
+        <!--
+        function checkSetupCompress() {
+            var sitemap_url = document.setupExpert.sitemap_url.value;
+            if(document.setupExpert.compress_sitemap.checked) {
+                if (sitemap_url.substring(sitemap_url.length - 3) !== ".gz") {
+                    document.setupExpert.sitemap_url.value = sitemap_url + ".gz";
+                }
+            } else {
+                if (sitemap_url.substring(sitemap_url.length - 3) === ".gz") {
+                    var end = sitemap_url.length - 3;
+                    document.setupExpert.sitemap_url.value = sitemap_url.substring(0,end);
+                }
+            }
+        }
+        function checkTimeoutEdit() {
+            if(document.setupExpert.timeout.checked) {
+                document.setupExpert.timeout_duration.disabled = false;
+            } else {
+                document.setupExpert.timeout_duration.disabled = true;
+            }
+        }
+        function checkCrawlerEdit() {
+            if(document.setupExpert.scan_website.checked) {
+                document.setupExpert.crawler_url.disabled = false;
+            } else {
+                document.setupExpert.crawler_url.disabled = true;
+            }
+        }
+        //-->
+    </script>
+    <div align="center">
+        <form name="setupExpert" action="./" method="post" accept-charset=utf-8>
+            <input type="hidden" name="action" value="getSettings">
+            <fieldset style="padding: 10px; width:600px; border: 2px solid #000099;">
+                <legend style="color:#000099;"><b>Expert settings</b></legend>
+                <table border="0" cellpadding="5" cellspacing="0" width="495">
+                    <tr>
+                        <td width="200" valign="top"><label for="ipage_root" accesskey="R">Page root</label></td>
+                        <td width="396">
+                            <input class="required" type="Text" name="page_root" id="ipage_root" align="LEFT" size="50" value="{{ @page_root }}"/>
+                            <br/><font size="-1">website root path on <b>local file system</b> of your webserver</font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="iwebsite" accesskey="W">Website</label></td>
+                        <td>
+                            <input class="required" type="Text" name="website" id="iwebsite" align="LEFT" size="50" value="{{ @website }}"/>
+                            <br /><font size="-1">url of your website</font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="iping" accesskey="W">Ping google</label></td>
+                        <td>
+                            <input type="checkbox" name="ping_google" id="iping" align="LEFT" size="50" value="TRUE" {{ @ping_google != '' ? 'checked' : '' }} />Ping after update<br />
+                            <font size="-1">always inform google when sitemap is created</font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="icompress" accesskey="W">Compress sitemap</label></td>
+                        <td>
+                            <input onClick="checkSetupCompress()" type="checkbox" name="compress_sitemap" id="icompress" align="LEFT" size="50" value="TRUE" {{ @compress_sitemap != '' ? 'checked' : '' }} {{ @gzencode_function_exists ? '' : 'disabled' }}/>Compress sitemap
+<check if="{{ @gzencode_function_exists }}">
+    <false>(not available within your php installation (need gzip functionality enabled)!)</false>
+</check>
+                            <br/><font size="-1">(with gzip; necessary if uncompressed sitemap is larger than 10 MB)</font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="itimeout" accesskey="O" title="stop the execution after an amount of time">Timeout</label></td>
+                        <td>
+                            <input onClick="checkTimeoutEdit()" type="checkbox" name="timeout" id="itimeout" align="LEFT" size="50" value="TRUE" {{ @timeout == 'timeout_none' ? '' : 'checked' }}/>
+                            Stop this script after this amout of time <br/><font size="-1">(will prevent timeouts in the execution, see <a href="http://enarion.net/google/phpsitemapng/usage/#timeout" target="_blank">documentation</a>)</font>
+                            <br/><input type="Text" name="timeout_duration" id="itimeout_duration" align="LEFT" size="10" value="{{ @timeout_duration }}"  {{ @timeout == 'timeout_none' ? 'disabled':''}}/> <font size="-1">execution time in seconds</font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="iscan_local" accesskey="C">Scan</label></td>
+                        <td>
+                            where to search for files<br/>
+                            <p><input type="checkbox" name="scan_local" id="iscan_local" align="LEFT" size="50" value="true" {{ @scan_local != '' ? 'checked' : '' }}/>Local file system - <font size="-1">will scan for files located on the hard disk of your webserver; will find all files that are not excluded!</font></p>
+                            <input type="checkbox" onClick="checkCrawlerEdit()" name="scan_website" id="iscan_website" align="LEFT" size="50" value="true" {{ @scan_website != '' ? 'checked' : '' }}/>Scan website - <font size="-1">will scan the website with the build-in crawler engine; might take some time if there are many urls to crawl!
+                            Optional: crawl only this url: <input type="Text" name="crawler_url" id="icrawlerurl" align="LEFT" size="50" value="{{ @crawler_url }}"/><br/>Will only crawl this url and subdirectories!</font></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="iedit_result" accesskey="E">Display edit screen after scan</label></td>
+                        <td>
+                            <input type="checkbox" name="edit_result" id="iedit_result" align="LEFT" size="50" value="TRUE" {{ @edit_result == 'edit_result_TRUE' ? 'checked' : '' }}/>Display edit screen<br />
+                            <font size="-1">setup values for each url (priority, lastmod, changefreq, enabled/disabled) - might take some time with more than 1000 urls!</font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="istore_filelist" accesskey="B">Store filelist</label></td>
+                        <td>
+                            <input type="checkbox" name="store_filelist" id="istore_filelist" align="LEFT" size="50" value="TRUE" {{ @store_filelist != '' ? 'checked' : '' }}/>Create and use filelist<br />
+                            <font size="-1">store values of created sitemap for next creation of the sitemap (values of priority, changefreq and enabled/disabled will be stored)</font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="idisallow_dir" accesskey="D">Exclude directories</label></td>
+                        <td>
+                            <font size="-1">directories containing these substrings will will not be scanned for files and will not be added to site index; use line break to separate entries</font><br />
+                            <textarea name="disallow_dir" cols="40" rows="10" id="idisallow_dir">{{ @disallow_dir }}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="idisallow_file" accesskey="F">Exclude files</label></td>
+                        <td>
+                            <font size="-1">files containing these substrings will not be crawled for further links and not added to site index; use line break to separate entries</font><br/>
+                            <textarea name="disallow_file" cols="40" rows="10" id="idisallow_file">{{ @disallow_file }}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="idisallow_key" accesskey="K">Exclude url keys</label></td>
+                        <td>
+                            <font size="-1">remove keys in urls; you should add the session key here (default: PHPSESSID)</font>
+                            <textarea name="disallow_key" cols="40" rows="10" id="idisallow_key">{{ @disallow_key }}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="isitemap_url" accesskey="S">Sitemap file</label></td>
+                        <td>
+                            <input type="Text" name="sitemap_file" id="isitemap_url" align="LEFT" size="50" value="{{ @sitemap_file }}"/><br />
+                            <font size="-1">relative to your page root; the generated sitemap will be stored to this file</font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="itxtsitemap_url" accesskey="S">TXT Sitemap file</label><br /><font size="-1">Used by Yahoo, ...</font></td>
+                        <td>
+                            <input type="Text" name="txtsitemap_file" id="itxtsitemap_url" align="LEFT" size="50" value="{{ @txtsitemap_file }}"/><br />
+                            <font size="-1">relative to your page root; the generated txt sitemap will be stored to this file</font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="ilastmod" accesskey="L">Lastmod</label></td>
+                        <td>
+                            <p>
+                                last modification date of file:<br />
+                                <input type="radio" name="lastmod" value="lastmod_dissabled" {{ @lastmod == 'lastmod_dissabled' ? 'checked' : '' }}/>Disabled, do not write it<br/>
+                                <input type="radio" name="lastmod" id="ilastmod" value="lastmod_filedate" {{ @lastmod == 'lastmod_filedate' ? 'checked':'' }}/>Get time from files<br/>
+                                <input type="radio" name="lastmod" value="lastmod_current" {{ @lastmod == 'lastmod_current' ? 'checked':'' }}/>Use current time<br/>
+                            </p><p>
+                            select timeformat to use:<br />
+                            <input type="radio" name="lastmod_format" value="long" {{ @lastmod_format == 'long' ? 'checked' : '' }}/>Long format (with time)<br/>
+                            <input type="radio" name="lastmod_format" value="short" {{ @lastmod_format == 'short' ? 'checked' : '' }}/>Short format (date only)
+                        </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="ipriority" accesskey="P">Priority</label></td>
+                        <td>
+                            relative priority of an url related to whole website <font size="-1">(value from 0.0 to 1.0, default 0.5)</font><br />
+                            <input type="radio" name="priority" value="priority_dissabled" {{ @priority == 'priority_dissabled' ? 'checked' : '' }}/>Disabled, do not write it<br/>
+                            <input type="radio" name="priority" id="ipriority" value="priority_fixed" {{ @priority == 'priority_fixed' ? 'checked' : '' }}/>Use this priority for every file
+                            <select name="priority_fixed" id="ipriority_fixed" size="1">
+<repeat group="{{ @priorityList }}" value="{{ @priorityElement }}" counter="{{ $ctr }}">
+                                <option {{ @priorityElement == @priority_fixed ? 'selected="selected"' : '' }}>{{ @priorityElement }}</option>
+</repeat>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><label for="ichangefreq" accesskey="C">Changefreq</label></td>
+                        <td>
+                            specify the update(change) frequency of the files <br/><font size="-1">(from never to always)</font><br />
+                            <input type="radio" name="changefreq" value="changefreq_dissabled" {{ @changefreq == 'changefreq_dissabled' ? 'checked' : '' }}/>Disabled, do not write it<br/>
+                            <input type="radio" name="changefreq" id="ichangefreq" value="changefreq_dynamic" {{ @changefreq == 'changefreq_dynamic' ? 'checked' : '' }}/>Calculate change frequency from last modification date<br/>
+                            <input type="radio" name="changefreq" value="changefreq_fixed" {{ @changefreq == 'changefreq_fixed' ? 'checked' : '' }}/>Use this change frequency for every file(will not overwrite stored file information):
+                            <select name="'.PSNG_CHANGEFREQ_FIXED.'" id="ichangefreq_fixed" size="1">
+<repeat group="{{ @changeFreqList }}" value="{{ @changeElement }}" counter="{{ $ctr }}">
+                                <option {{ @changeElement == @changefreq_fixed ? 'selected="selected"' : '' }}>{{ @changeElement }}</option>
+</repeat>
+                            </select><br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><input type="Submit" value="Submit Settings" name="getSettings">&nbsp;
+                            <input type="Submit" value="Reset to initial values" name="resetSettings">&nbsp;
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<include href="templates/footer.html" />

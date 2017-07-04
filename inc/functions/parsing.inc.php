@@ -454,18 +454,6 @@ function handleDoubleEntryFilesystemWebsite($fs, $website) {
 }
 
 /**
- * displays the edit page for list of files
- */
-function displaySitemapEdit($FILE) {
-	global $SETTINGS, $LAYOUT;
-	$LAYOUT->setTitle("Result of scan");
-
-	require(PSNG_FILE_TEMPLATE_EDIT_FILES);
-
-	$LAYOUT->addText($layout, 'Found '. count($FILE) .' files');
-}
-
-/**
  * writes sitemap to file
  */
 function writeSitemap($FILE) {
@@ -519,50 +507,9 @@ function writeSitemap($FILE) {
 	if (isset($SETTINGS[PSNG_TXTSITEMAP_FILE]) && strlen($SETTINGS[PSNG_TXTSITEMAP_FILE])>0) {
 	    $LAYOUT->addSuccess('Txt-Sitemap successfuly created and saved to <a href="'.$SETTINGS[PSNG_TXTSITEMAP_URL].'" target="_blank">'.basename($SETTINGS[PSNG_TXTSITEMAP_FILE]).'</a>!');
     }
-	$LAYOUT->addText('<form action="' . PSNG_ACTION_SETTINGS_PINGGOOGLE . '" method="post" accept-charset=utf-8>' ."\n".
-			'<input type="Submit" value="Submit to google" name="submit">' . "\n".
-			'</form>' . "\n");
 
 	return TRUE;
 }
-
-
-/**
- *
- */
-function writeSitemapUserinput() {
-	// TODO add deselected files from user into "blacklist" in temp directory
-	global $SETTINGS, $openFile_error, $_REQUEST, $LAYOUT;
-	$LAYOUT->setTitle('Writing sitemap');
-
-	$gsg = new Sitepod\GsgXml($SETTINGS[PSNG_WEBSITE]);
-
- // create the sitemap file
-	$filesGot = $_REQUEST['FILE'];
-	$files = array();
-	foreach ($filesGot as $key => $value) {
-		$files[$key] = array();
-		$files[$key][PSNG_FILE_ENABLED] = isset($value[PSNG_FILE_ENABLED]) ? '1' : '';
-		$files[$key][PSNG_FILE_URL] = $value[PSNG_FILE_URL];
-		$files[$key][PSNG_LASTMOD] = $value[PSNG_LASTMOD];
-		$files[$key][PSNG_CHANGEFREQ] = $value[PSNG_CHANGEFREQ];
-		$files[$key][PSNG_PRIORITY] = $value[PSNG_PRIORITY];
-	}
-
-	if($SETTINGS[PSNG_STORE_FILELIST] != '') {
-		 $res = storeSettings($files, $SETTINGS[PSNG_FILE_FILES], "FILES");
-		 if (!is_null($res)) {
-			$LAYOUT->addWarning($res, 'Filelist-Cache could not be written to file ' . $SETTINGS[PSNG_FILE_FILES] . '!');
-		} else {
-			$LAYOUT->addSuccess('', 'Filelist-Cache written to file ' . $SETTINGS[PSNG_FILE_FILES] . '!');
-		}
-	}
-
-	writeSitemap($files);
-
-	return TRUE;
-}
-
 
 /**
  * submit page to google

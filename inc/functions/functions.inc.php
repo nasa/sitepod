@@ -103,26 +103,10 @@ function init() {
 
     session_start();
 
+    Base::instance()->set('base', $SETTINGS['base']);
     // set layout engine
     $LAYOUT = new Sitepod\LayoutEngine("Sitepod");
-    $LAYOUT->setTitle("Welcome to Sitepod; a Sitemap Generator written in PHP");
-    $LAYOUT->setBase($SETTINGS['base']);
-    $LAYOUT->setCharSet("UTF-8");
-    $LAYOUT->addCss('.history, .required { background-color:#E0E0E0; }');
-    $LAYOUT->addCss('.source_fs { background-color:#FF70CC; }');
-    $LAYOUT->addCss('.source_website { background-color:#CCFF70; }');
-    $LAYOUT->addCss('.source_fs_website { background-color:#70CCFF; }');
-
-    $LAYOUT->addCss('.notfound { background-color:#FF3030; }');
-    $LAYOUT->addCss('Label {color:#000099; font-weight: bold; }');
-    $LAYOUT->addCss('h1,h2,h3 {color:#000099; }');
-    $LAYOUT->addCss('.error {color:#cc0000; font-weight: bold; }');
-    $LAYOUT->addCss('.warning {color:#000000; font-weight: italic; }');
-    $LAYOUT->addCss('.info {color:#000000; font-weight: normal; }');
-    $LAYOUT->addCss('.success {color:#009900; font-weight: bold; }');
-    $LAYOUT->addCss('body {color:#000000; font-family:helvetica; background-color:#ebb150; }');
     $LAYOUT->switchOffBuffer();
-    print $LAYOUT->getHeaderLayout();
 
 /* repair NOTICES mk/2005-11-08 */
     if (isset($_REQUEST[PSNG_DEBUG]))
@@ -151,18 +135,15 @@ function init() {
         $SETTINGS = array_merge($_SESSION[PSNG_SETTINGS],$SETTINGS);
     }
 
-    $LAYOUT->addContentHeader('<a href="'.PSNG_ACTION_SETTINGS_SETUP.'" title="Edit settings">Setup</a>');
-    $LAYOUT->addContentHeader('<a href="'.PSNG_ACTION_CHECK_UPDATESTATUS.'" title="Invoke an update check to get information of recent versions">Check for updates</a>');
     if (isset($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET]))
     {
         if ($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET]) {
-            $LAYOUT->addContentHeader('<a href="' . PSNG_ACTION_SETTINGS_PARSE . '" title="Start the scan for files">Start scan</a>');
+            Base::instance()->set('displayStartScanLink', true);
         }
     }
     if (@file_exists($SETTINGS[PSNG_SITEMAP_FILE]) && ( @filesize($SETTINGS[PSNG_SITEMAP_FILE]) > 0)) {
-        $LAYOUT->addContentHeader('<a href="' . $SETTINGS[PSNG_SITEMAP_URL] . '" target="_blank" title="View the created sitemap in a new browser window">View sitemap </a>');
+        Base::instance()->set('displayViewSiteMapLink', true);
     }
-    $LAYOUT->addContentHeader('<div align="left"><a href="https://github.com/nasa/sitepod/issues" target="_blank" title="Create a Github issue in a new browser window">Give feedback</a>');
 
     debug('version: '.PSNG_VERSION, 'This is Sitepod');
     debug($SETTINGS, 'Merged settings');

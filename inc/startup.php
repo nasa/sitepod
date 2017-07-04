@@ -58,7 +58,8 @@ if ($_SERVER['SCRIPT_NAME'] != '' && (strpos($_SERVER['SCRIPT_NAME'], 'index.php
     echo "error, couldn't extract script name!";
 }
 
-$SETTINGS['base'] = dirname($SETTINGS[PSNG_SCRIPT]). '/';
+$dirname = dirname($SETTINGS[PSNG_SCRIPT]);
+$SETTINGS['base'] = $dirname . !in_array(substr($dirname, -1), ['/', '\\']) ? '/' : '';
 
 $state = init();
 $SETTINGS[PSNG_TIMEOUT_AUTOMATIC] = ($timeout_after === $timeout_before);
