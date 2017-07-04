@@ -29,18 +29,17 @@ class Update
         if (array_key_exists('last_update_time', $SETTINGS) && (time() - $SETTINGS['last_update_time'] < 3600)) {
             \Base::instance()->set('updateMessage', 'Checking for new updates is only allowed once per hour. Last check was ' . getDateTimeISO($SETTINGS['']));
         }
-        else {
-            $SETTINGS['last_update_time'] = time();
-            Logger::instance()->debug('Grabbing update status: ' . PSNG_URL_UPDATESTATUS);
-            $res = file(PSNG_URL_UPDATESTATUS);
-            Logger::instance()->debug('Result of checkUpdateStatus: ' . $res);
-            if (count($res) == 0) {
-                \Base::instance()->set('updateMessage', "Couldn't connect to check latest version");
+        else {$SETTINGS['last_update_time'] = time();
+        Logger::instance()->debug( 'Grabbing update status:'. PSNG_URL_UPDATESTATUS);
+        $res = file(PSNG_URL_UPDATESTATUS);
+        Logger::instance()->debug( 'Result of checkUpdateStatus:'. $res);
+        if (count($res) == 0) {
+            \Base::instance()->set('updateMessage',"Couldn't connect to check latest version");
             }
-            else {
-                // current update status only supports one line of response, upcoming might support more than one
-                $stat = explode('---', trim($res[0]));
-                $currentVersion = (isset($stat[0])) ? trim($stat[0]) : '';      // this is all that's needed for version_compare() mk/2005-11-13
+        else {
+        // current update status only supports one line of response, upcoming might support more than one
+        $stat = explode('---', trim($res[0]));
+        $currentVersion = (isset($stat[0])) ? trim($stat[0]) : '';      // this is all that's needed for version_compare() mk/2005-11-13
 
                 $comparison = version_compare($currentVersion, PSNG_VERSION);
                 switch ($comparison) {
