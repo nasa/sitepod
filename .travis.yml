@@ -10,7 +10,6 @@ addons:
       secure: "guM9xtsCkiry87xKoUPil6Nw3o9Skh5dE12D4ZrEPwTjF8xBELeQMaxNJCVKTfHW0cyljhE9v96Dp0tXQP27Si+hqrcnF/XL1qqrratprnblmnofv25RdYEn8e9KWLmOrRKLcvXbRXuza2eaS0BYwjvGQcwhq3yygNUp5BcxOnwdm3puIdfazNLhix0bHYo0md3YE43T5ftLvG+gaYaf67CD+5E5cFavZItyEd4A7MooYRKhVierXKYUe6v9thP7cEpO8GtRmYqYbMOsy8yXAvkU+4BE38dpTgCrHQg64rXpkdZzfWUfv8hXcjdOoxhVGDByQJ92THxvq7Qgr8ldi18lZJ1F5izeaQsHefrzRewIoRfwM5mJpmbs6n0/KglE1QhwByGiYN8gbR0r7EuiRmUrxPq04mzOaWbKRwAfHGGmSmOAIgPeF6V+4cYveBq+nFSbw6vwFVO8XyfiWfB6OGJXRll9eSH/FCfqvmUoS2fheODkQKopyZeTkxzYPrhuRDXFnua/2x9X+L00Xc2SN/8HjPTYBsvfh1wOe+hUWGh66ESq8PaS13NUd+Y2N+XKZkqFGajvzV0NoDRrx8s7dAJIpxdimSzWxJ1mPTZKVV3yla+Q6HOjNJTDSyahyucdiFAWg3H/MYyW5LcvSxt056WIUft6klu02irQgjKdh50="
 
 php:
-  - '5.5'
   - '5.6'
   - '7.0'
   - '7.1'
