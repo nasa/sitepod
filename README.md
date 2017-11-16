@@ -9,7 +9,7 @@
 [![Requirements Status](https://requires.io/github/nasa/sitepod/requirements.svg?branch=master)](https://requires.io/github/nasa/sitepod/requirements/?branch=master)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=nasa:sitepod)](https://sonarcloud.io/dashboard?id=nasa:sitepod)
 
-Sitepod; A Sitemap Generator written in PHP. Sitepod is build using the [Fat-Free Framework](https://fatfreeframework.com), a owerful yet easy-to-use PHP micro-framework designed to build dynamic and robust web applications.
+Sitepod; A Sitemap Generator written in PHP. Sitepod is build using the [Fat-Free Framework](https://fatfreeframework.com), a powerful yet easy-to-use PHP micro-framework designed to build dynamic and robust web applications.
 
 # Installation from the Composer PHP Package Manager
 Sitemap can be installed using the [Composer](https://getcomposer.org/) 
