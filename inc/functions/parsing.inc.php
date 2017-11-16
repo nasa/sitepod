@@ -19,12 +19,12 @@
  * parse filesystem for files
  */
 function parseFilesystem($displayResultForEditing = TRUE) {
-	global $SETTINGS, $LAYOUT;
+	global $SETTINGS;
 	$FILE = array();
 
 	// search for files on local file system
 	if(is_null($SETTINGS[PSNG_PAGEROOT]) || $SETTINGS[PSNG_PAGEROOT] == "") {
-		$LAYOUT->addError('','Page root not set');
+        \Sitepod\Log\Logger::instance()->error('Page root not set');
 		return FALSE;
 	}
 	$SETTINGS[PSNG_SETTINGS_STATE] = PSNG_ACTION_SETTINGS_PARSE;
@@ -33,7 +33,7 @@ function parseFilesystem($displayResultForEditing = TRUE) {
 	if($SETTINGS[PSNG_STORE_FILELIST] != '') {
 		$FILES_CACHE = loadCachedFiles();
 		if (count($FILES_CACHE)>0) {
-			$LAYOUT->addInfo('', 'Loaded '.count($FILES_CACHE) . ' files from file cache.');
+            \Sitepod\Log\Logger::instance()->info('Loaded '.count($FILES_CACHE) . ' files from file cache.');
 		}
 	}
 
@@ -42,7 +42,7 @@ function parseFilesystem($displayResultForEditing = TRUE) {
 		if($SETTINGS[PSNG_TIMEOUT_ACTION] != PSNG_TIMEOUT_NONE && $SETTINGS[PSNG_TIMEOUT_TODO] != '') {
 			$FILE = $SETTINGS[PSNG_TIMEOUT_FILE_LASTRUN];
 			if (count($FILE) > 0) {
-				$LAYOUT->addInfo('', 'Loaded '.count($FILE) . ' files from last run before timeout occured.');
+                \Sitepod\Log\Logger::instance()->info('Loaded '.count($FILE) . ' files from last run before timeout occured.');
 			}
 		}
 	}
@@ -57,24 +57,24 @@ function parseFilesystem($displayResultForEditing = TRUE) {
 				)
 			)
 		) {
-		$LAYOUT->addInfo('', 'Scanning filesystem for files now...');
+        \Sitepod\Log\Logger::instance()->info('Scanning filesystem for files now...');
 		$SETTINGS[PSNG_TIMEOUT_ACTION] = PSNG_TIMEOUT_ACTION_FS;
 		$FILE = runFilesystemHandler($FILE, $FILES_CACHE);
 		if(count($FILE)>0) {
-		    $LAYOUT->addInfo('', 'Found '.count($FILE). ' files on local filesystem.');
+            \Sitepod\Log\Logger::instance()->info('Found '.count($FILE). ' files on local filesystem.');
         }
-		debug($FILE, "Result from filesystem scan");
+		\Sitepod\Log\Logger::instance()->debug("Result from filesystem scan: " . \Sitepod\Util::arrToStringReadable($FILE, ','));
 	}
 
 	// crawl website for (dynamic) links
 	if ((!breakSession()) && $SETTINGS[PSNG_SCAN_WEBSITE] != '' && ($SETTINGS[PSNG_TIMEOUT] == PSNG_TIMEOUT_NONE || ($SETTINGS[PSNG_TIMEOUT_ACTION] == '' || $SETTINGS[PSNG_TIMEOUT_ACTION] == PSNG_TIMEOUT_ACTION_WEBSITE))) {
-		$LAYOUT->addInfo('', 'Crawling website now...');
+        \Sitepod\Log\Logger::instance()->info('Crawling website now...');
 		$SETTINGS[PSNG_TIMEOUT_ACTION] = PSNG_TIMEOUT_ACTION_WEBSITE;
 		$FILE = runCrawler($FILE, $FILES_CACHE);
 		if(!breakSession()&&count($FILE)>0) {
-		    $LAYOUT->addInfo('', 'Found '.count($FILE). ' files on website.');
+            \Sitepod\Log\Logger::instance()->info('Found '.count($FILE). ' files on website.');
         }
-		debug($FILE, "Result from website crawler");
+        \Sitepod\Log\Logger::instance()->debug("Result from website crawler: " . \Sitepod\Util::arrToStringReadable($FILE, ','));
 	}
 
 	// link "/" to "/index.*"
@@ -89,7 +89,7 @@ function parseFilesystem($displayResultForEditing = TRUE) {
 			if (!(strpos($file, '/index.') === FALSE)) {
 				# mk/2005-11-09 fixed indents
 				if (array_key_exists(dirname($file).'/', $FILE)) {
-					debug(dirname($file).'/', 'removing file from list of files, because there exists an index file');
+                    \Sitepod\Log\Logger::instance()->debug('Removing file from list of files, because there exists an index file: ' . dirname($file).'/');
 					unset($FILE[dirname($file).'/']);
 				} else {
 					$FILE[dirname($file).'/'] = $FILE[$file];
@@ -103,7 +103,7 @@ function parseFilesystem($displayResultForEditing = TRUE) {
 	// if timeout - store current settings and files
 	if (breakSession()) {
 		$SETTINGS[PSNG_TIMEOUT_FILE_LASTRUN] = $FILE;
-		$LAYOUT->addInfo('', 'Number of files that are in the todo list: ' . count($SETTINGS[PSNG_TIMEOUT_TODO]));
+		\Sitepod\Log\Logger::instance()->info('Number of files that are in the todo list: ' . count($SETTINGS[PSNG_TIMEOUT_TODO]));
 	} else {
 		$SETTINGS[PSNG_TIMEOUT_IS] = FALSE;
 	}
@@ -115,7 +115,7 @@ function parseFilesystem($displayResultForEditing = TRUE) {
  * returns true if there is some time left
  */
 function breakSession($force = FALSE) {
-	global $SETTINGS, $LAYOUT;
+	global $SETTINGS;
 	if ($SETTINGS[PSNG_TIMEOUT] == PSNG_TIMEOUT_NONE) {
 	    return FALSE;
     }
@@ -127,9 +127,10 @@ function breakSession($force = FALSE) {
 	if (($t2 >= $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]) || $force) {
 		$header = $SETTINGS[PSNG_SCRIPT].'?'.PSNG_ACTION.'='.$SETTINGS[PSNG_SETTINGS_STATE];
 
-		$LAYOUT->addInfo('Please click <a href="'.$header.'"><b>here</b></a> to continue scanning your site.', 'Timeout occured');
+        /** @TODO: Link should be moved into view. */
+        \Sitepod\Log\Logger::instance()->info('Timeout occured: Please click <a href="'.$header.'"><b>here</b></a> to continue scanning your site.');
 		$_SESSION[PSNG_SETTINGS] = $SETTINGS;
-		debug($SETTINGS, "settings in breakSession");
+		\Sitepod\Log\Logger::instance()->debug("Settings in breakSession: " . \Sitepod\Util::arrToStringReadable($SETTINGS, ','));
 
 		$SETTINGS[PSNG_TIMEOUT_IS] = TRUE;
 
@@ -148,7 +149,7 @@ function loadCachedFiles() {
 
 	if (isset($FILES)) {
 		foreach ($FILES as $numb => $arr) {
-			debug($arr, 'Got file number '.$numb.' from file cache');
+			\Sitepod\Log\Logger::instance()->debug('Got file number '.$numb.' from file cache: ' . \Sitepod\Util::arrToStringReadable($arr, ','));
 			$file_url = $arr[PSNG_FILE_URL];
 			$FILES_CACHE[$file_url][PSNG_FILE_URL] = 		\Sitepod\Util::variableNameToString($arr[PSNG_FILE_URL]);
 			$FILES_CACHE[$file_url][PSNG_LASTMOD] = 		\Sitepod\Util::variableNameToString($arr[PSNG_LASTMOD]);
@@ -156,10 +157,10 @@ function loadCachedFiles() {
 			$FILES_CACHE[$file_url][PSNG_PRIORITY] = 		\Sitepod\Util::variableNameToString($arr[PSNG_PRIORITY]);
 			$FILES_CACHE[$file_url][PSNG_FILE_ENABLED] = 	\Sitepod\Util::variableNameToString($arr[PSNG_FILE_ENABLED]);
 		}
-		debug($FILES_CACHE, "FILES_CACHE");
+		\Sitepod\Log\Logger::instance()->debug("FILES_CACHE: " . \Sitepod\Util::arrToStringReadable($FILES_CACHE, ','));
 	} else {
 		$FILES_CACHE = array();
-		debug($FILES_CACHE, "No file-cache found!");
+		\Sitepod\Log\Logger::instance()->debug("No file-cache found!");
 	}
 
 	return $FILES_CACHE;
@@ -185,7 +186,7 @@ function runFilesystemHandler($FILE, $FILES_CACHE) {
 	global $SETTINGS;
 	// TODO improve this
 	if ($SETTINGS[PSNG_TIMEOUT] != PSNG_TIMEOUT_NONE && $SETTINGS[PSNG_TIMEOUT_DONE] != '') {
-		debug('', "Running FilesystemHandler from last point");
+		\Sitepod\Log\Logger::instance()->debug("Running FilesystemHandler from last point");
 		$fsh = new Sitepod\FilesystemHandler($SETTINGS[PSNG_PAGEROOT], $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
 		$fsh->setTodo($SETTINGS[PSNG_TIMEOUT_TODO]);
 		$fsh->setDone($SETTINGS[PSNG_TIMEOUT_DONE]);
@@ -230,7 +231,7 @@ function runFilesystemHandler($FILE, $FILES_CACHE) {
  * TODO update to new stuff
  */
 function runCrawler($FILE, $FILES_CACHE) {
-	global $SETTINGS, $LAYOUT;
+	global $SETTINGS;
 
 	$urlToCrawl = (isset($SETTINGS[PSNG_CRAWLER_URL]) && $SETTINGS[PSNG_CRAWLER_URL] != $SETTINGS[PSNG_WEBSITE])
 						? $SETTINGS[PSNG_CRAWLER_URL]
@@ -244,13 +245,13 @@ function runCrawler($FILE, $FILES_CACHE) {
 	} 
 
 	// check if we have a already started scan
-	debug($SETTINGS[PSNG_TIMEOUT], 'PSNG_TIMEOUT');
+	\Sitepod\Log\Logger::instance()->debug('PSNG_TIMEOUT: ' . $SETTINGS[PSNG_TIMEOUT]);
 	if (isset($SETTINGS[PSNG_TIMEOUT_TODO])) {
-	    debug($SETTINGS[PSNG_TIMEOUT_TODO], 'PSNG_TIMEOUT_TODO');		# !!! 'repair' may not be correct mk/2005-11-08
+	    \Sitepod\Log\Logger::instance()->debug('PSNG_TIMEOUT_TODO: ' . $SETTINGS[PSNG_TIMEOUT_TODO]);		# !!! 'repair' may not be correct mk/2005-11-08
     }
 
 	if ($SETTINGS[PSNG_TIMEOUT] != PSNG_TIMEOUT_NONE && isset($SETTINGS[PSNG_TIMEOUT_TODO])) { // check if we're running in TIMEOUT mode
-		debug('', "Running crawler engine from last point");
+		\Sitepod\Log\Logger::instance()->debug("Running crawler engine from last point");
 		$crawler = new Sitepod\Crawler($urlToCrawl, $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE]);
 		$crawler->setTodo($SETTINGS[PSNG_TIMEOUT_TODO]);
 		$crawler->setDone($SETTINGS[PSNG_TIMEOUT_DONE]);
@@ -457,8 +458,8 @@ function handleDoubleEntryFilesystemWebsite($fs, $website) {
  * writes sitemap to file
  */
 function writeSitemap($FILE) {
-	global $SETTINGS, $openFile_error, $LAYOUT;
-	$LAYOUT->setTitle("Writing sitemap");
+	global $SETTINGS, $openFile_error;
+	Base::instance()->set('title', "Writing sitemap");
 	$gsg = new Sitepod\GsgXml($SETTINGS[PSNG_WEBSITE]);
 
 	$numb = 0;
@@ -467,7 +468,7 @@ function writeSitemap($FILE) {
 	if (isset($SETTINGS[PSNG_TXTSITEMAP_FILE]) && strlen($SETTINGS[PSNG_TXTSITEMAP_FILE])>0) {
 		$txtfilehandle = openFile($SETTINGS[PSNG_PAGEROOT]. $SETTINGS[PSNG_TXTSITEMAP_FILE], TRUE);
 		if ($txtfilehandle === FALSE) {
-			$LAYOUT->addError($openFile_error, 'Could not write sitemap');
+			\Sitepod\Log\Logger::instance()->error('Could not write sitemap: ' . $openFile_error);
 			return FALSE;
 		}
 		
@@ -475,21 +476,21 @@ function writeSitemap($FILE) {
 
 	foreach ($FILE as $numb => $value) {
 		if ($value[PSNG_FILE_ENABLED] != '') {
-			debug($value, "Adding file ".$value[PSNG_FILE_URL]);
+			\Sitepod\Log\Logger::instance()->debug('Adding file ' . $value[PSNG_FILE_URL] . ': ' . $value);
 			if (isset($txtfilehandle)) {
 			    fputs($txtfilehandle, $value[PSNG_FILE_URL]."\n");
             }
 			if ($gsg->addUrl($value[PSNG_FILE_URL], FALSE, $value[PSNG_LASTMOD], FALSE, $value[PSNG_CHANGEFREQ], $value[PSNG_PRIORITY]) === FALSE) {
-				$LAYOUT->addError($value[PSNG_FILE_URL], 'Could not add file to sitemap' . $gsg->errorMsg);
+				\Sitepod\Log\Logger::instance()->error('Could not add file to sitemap' . $gsg->errorMsg, ['file_url' => $value[PSNG_FILE_URL]]);
 			}
 		} else {
-			debug($value[PSNG_FILE_URL], 'Not enabled, so not writing file to sitemap');
+			\Sitepod\Log\Logger::instance()->debug('Not enabled, so not writing file to sitemap: ' . $value[PSNG_FILE_URL]);
 		}
 	}
 
 	$filehandle = openFile($SETTINGS[PSNG_PAGEROOT]. $SETTINGS[PSNG_SITEMAP_FILE], TRUE);
 	if ($filehandle === FALSE) {
-		$LAYOUT->addError($openFile_error, 'Could not write sitemap');
+        \Sitepod\Log\Logger::instance()->error('Could not write sitemap: ' . $openFile_error);
 		return FALSE;
 	}
 	$xml = $gsg->output(TRUE, $SETTINGS[PSNG_COMPRESS_SITEMAP], FALSE);
@@ -501,11 +502,11 @@ function writeSitemap($FILE) {
     }
 
 	if ($numb > 50000) {
-		$LAYOUT->addWarning('Not implemented: split result into files with only 50000 entries','Only 50000 entries are allowed in one sitemap file at the moment!');
+		\Sitepod\Log\Logger::instance()->warning('Only 50000 entries are allowed in one sitemap file at the moment! Not implemented: split result into files with only 50000 entries');
 	}
-	$LAYOUT->addSuccess('Sitemap successfuly created and saved to <a href="'.$SETTINGS[PSNG_SITEMAP_URL].'" target="_blank">'.basename($SETTINGS[PSNG_SITEMAP_FILE]).'</a>!');
+	\Sitepod\Log\Logger::instance()->info('Sitemap successfuly created and saved to <a href="'.$SETTINGS[PSNG_SITEMAP_URL].'" target="_blank">'.basename($SETTINGS[PSNG_SITEMAP_FILE]).'</a>!');
 	if (isset($SETTINGS[PSNG_TXTSITEMAP_FILE]) && strlen($SETTINGS[PSNG_TXTSITEMAP_FILE])>0) {
-	    $LAYOUT->addSuccess('Txt-Sitemap successfuly created and saved to <a href="'.$SETTINGS[PSNG_TXTSITEMAP_URL].'" target="_blank">'.basename($SETTINGS[PSNG_TXTSITEMAP_FILE]).'</a>!');
+	    \Sitepod\Log\Logger::instance()->info('Txt-Sitemap successfuly created and saved to <a href="'.$SETTINGS[PSNG_TXTSITEMAP_URL].'" target="_blank">'.basename($SETTINGS[PSNG_TXTSITEMAP_FILE]).'</a>!');
     }
 
 	return TRUE;
@@ -515,12 +516,12 @@ function writeSitemap($FILE) {
  * submit page to google
  */
 function submitPageToGoogle() {
-	global $SETTINGS, $LAYOUT;
-	$LAYOUT->setTitle('Submit sitemap to google');
+	global $SETTINGS;
+	Base::instance()->set('title', 'Submit sitemap to google');
 
 	$res = fopen("http://www.google.com/webmasters/sitemaps/ping?sitemap=".urlencode($SETTINGS['website'].$SETTINGS[PSNG_SITEMAP_URL]),"r");
 	if ($res === FALSE) {
-		$LAYOUT->addError('', 'Error while submitting '.$SETTINGS[PSNG_SITEMAP_URL].'to google!');
+		\Sitepod\Log\Logger::instance()->error('Error while submitting '.$SETTINGS[PSNG_SITEMAP_URL].'to google!');
 	}
 
 	$str = "";
@@ -528,8 +529,6 @@ function submitPageToGoogle() {
 		$str .= fread($res, 1000);
 	}
 	fclose($res);
-	$LAYOUT->addSuccess('Result was: <i>'.	strip_tags($str, '<br> <h2> <h1>')	. '</i>',
-							 'Your sitemap file has been successfuly sent to google!');
+	\Sitepod\Log\Logger::instance()->info('Your sitemap file has been successfuly sent to google!', ['result' => strip_tags($str, '<br> <h2> <h1>')]);
 	return TRUE;
 }
-?>

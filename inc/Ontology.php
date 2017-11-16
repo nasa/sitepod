@@ -126,4 +126,4 @@ define("PSNG_FILE_FILES", 'files_file');
 
 define("PSNG_URL_UPDATESTATUS", 'http://enarion.net/google/phpsitemapng/status.php?version='.PSNG_VERSION);
 define("PSNG_URL_DOWNLOAD", 'https://github.com/nasa/sitepod');
-?>
+

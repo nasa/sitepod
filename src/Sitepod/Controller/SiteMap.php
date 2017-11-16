@@ -16,7 +16,7 @@
  */
 namespace Sitepod\Controller;
 
-use Sitepod\LayoutEngine;
+use Sitepod\Log\Logger;
 use Sitepod\Util;
 
 class SiteMap
@@ -70,8 +70,7 @@ class SiteMap
     public function writeSiteMapUserInput()
     {
         // TODO add deselected files from user into "blacklist" in temp directory
-        /** @var LayoutEngine $LAYOUT */
-        global $SETTINGS, $_REQUEST, $LAYOUT;
+        global $SETTINGS, $_REQUEST;
         \Base::instance()->set('title', 'Writing sitemap');
 
         // create the sitemap file
@@ -89,9 +88,9 @@ class SiteMap
         if($SETTINGS[PSNG_STORE_FILELIST] != '') {
             $res = storeSettings($files, $SETTINGS[PSNG_FILE_FILES], "FILES");
             if (!is_null($res)) {
-                $LAYOUT->addWarning($res, 'Filelist-Cache could not be written to file ' . $SETTINGS[PSNG_FILE_FILES] . '!');
+                Logger::instance()->warning('Filelist-Cache could not be written to file ' . $SETTINGS[PSNG_FILE_FILES] . '!', ['result' => $res]);
             } else {
-                $LAYOUT->addSuccess('', 'Filelist-Cache written to file ' . $SETTINGS[PSNG_FILE_FILES] . '!');
+                Logger::instance()->info('Filelist-Cache written to file ' . $SETTINGS[PSNG_FILE_FILES] . '!');
             }
         }
 
@@ -130,10 +129,9 @@ class SiteMap
         /**
          * @var array $_REQUEST
          * @var array $SETTINGS
-         * @var LayoutEngine $LAYOUT
          */
-        global $_REQUEST, $SETTINGS, $LAYOUT;
-        $LAYOUT->setTitle("Store settings");
+        global $_REQUEST, $SETTINGS;
+        \Base::instance()->set('title', "Store settings");
 
         // TODO check values we got from user
 
@@ -252,12 +250,12 @@ class SiteMap
         // write settings to file
         $res = storeSettings($SETTINGS, $SETTINGS[PSNG_FILE_SETTINGS], "SETTINGS");
         if (!is_null($res)) {
-            $LAYOUT->addWarning($res, 'Settings could not be written to file ' . $SETTINGS[PSNG_FILE_SETTINGS] . '!');
+            Logger::instance()->warning('Settings could not be written to file ' . $SETTINGS[PSNG_FILE_SETTINGS] . '!', ['result' => $res]);
         } else {
-            $LAYOUT->addSuccess('', 'Settings written to file ' . $SETTINGS[PSNG_FILE_SETTINGS] . '!');
+            Logger::instance()->info('Settings written to file ' . $SETTINGS[PSNG_FILE_SETTINGS] . '!');
         }
 
-        debug($SETTINGS, 'Got and computed settings');
+        Logger::instance()->debug('Got and computed settings: ' . Util::arrToStringReadable($SETTINGS, ','));
 
         return TRUE;
     }
