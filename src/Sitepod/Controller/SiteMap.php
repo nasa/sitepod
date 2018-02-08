@@ -16,7 +16,7 @@
  */
 namespace Sitepod\Controller;
 
-use Sitepod\LayoutEngine;
+use Sitepod\Log\Logger;
 use Sitepod\Util;
 
 class SiteMap
@@ -33,7 +33,24 @@ class SiteMap
         }
         // if no timeout, print result or write it
         if ($SETTINGS[PSNG_EDITRESULT] == PSNG_EDITRESULT_TRUE) {
-            displaySitemapEdit($FILE);
+            \Base::instance()->set('title', 'Result of scan');
+            \Base::instance()->set('files', $FILE);
+            if ($SETTINGS[PSNG_LASTMOD] != PSNG_LASTMOD_DISSABLED) {
+                \Base::instance()->set('lastModEnabled', true);
+            }
+            if ($SETTINGS[PSNG_CHANGEFREQ] != PSNG_CHANGEFREQ_DISSABLED) {
+                \Base::instance()->set('changeFreqEnabled', true);
+            }
+            if ($SETTINGS[PSNG_PRIORITY] != PSNG_PRIORITY_DISSABLED) {
+                \Base::instance()->set('priorityEnabled', true);
+            }
+            \Base::instance()->set('changeFreqList', ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never']);
+            \Base::instance()->set('priorityList', ['1,0', '0,9', '0,8', '0,7', '0,6', '0,5', '0,4', '0,3', '0,2', '0,1', '0,0']);
+
+            \Base::instance()->set('explanations', $this->getExplanations($FILE));
+
+            \Base::instance()->set('pageTitle', 'Found '. count($FILE) .' files');
+            echo \Template::instance()->render('templates/sitemap.parse.html');
         } else {
             writeSitemap($FILE);
         }
@@ -52,12 +69,56 @@ class SiteMap
 
     public function writeSiteMapUserInput()
     {
-        writeSitemapUserinput();
+        // TODO add deselected files from user into "blacklist" in temp directory
+        global $SETTINGS, $_REQUEST;
+        \Base::instance()->set('title', 'Writing sitemap');
+
+        // create the sitemap file
+        $filesGot = $_REQUEST['FILE'];
+        $files = array();
+        foreach ($filesGot as $key => $value) {
+            $files[$key] = array();
+            $files[$key][PSNG_FILE_ENABLED] = isset($value[PSNG_FILE_ENABLED]) ? '1' : '';
+            $files[$key][PSNG_FILE_URL] = $value[PSNG_FILE_URL];
+            $files[$key][PSNG_LASTMOD] = $value[PSNG_LASTMOD];
+            $files[$key][PSNG_CHANGEFREQ] = $value[PSNG_CHANGEFREQ];
+            $files[$key][PSNG_PRIORITY] = $value[PSNG_PRIORITY];
+        }
+
+        if($SETTINGS[PSNG_STORE_FILELIST] != '') {
+            $res = storeSettings($files, $SETTINGS[PSNG_FILE_FILES], "FILES");
+            if (!is_null($res)) {
+                Logger::instance()->warning('Filelist-Cache could not be written to file ' . $SETTINGS[PSNG_FILE_FILES] . '!', ['result' => $res]);
+            } else {
+                Logger::instance()->info('Filelist-Cache written to file ' . $SETTINGS[PSNG_FILE_FILES] . '!');
+            }
+        }
+
+        writeSitemap($files);
+
+        echo \Template::instance()->render('templates/sitemap.writeSiteMapUserInput.html');
     }
 
     public function submitPageToGoogle()
     {
-        submitPageToGoogle();
+        /** @var array $SETTINGS */
+        global $SETTINGS;
+        \Base::instance()->set('title', 'Submit sitemap to google');
+
+        $res = fopen("http://www.google.com/webmasters/sitemaps/ping?sitemap=".urlencode($SETTINGS['website'].$SETTINGS[PSNG_SITEMAP_URL]),"r");
+        if ($res === FALSE) {
+            \Base::instance()->set('result', 'Error while submitting '.$SETTINGS[PSNG_SITEMAP_URL].'to google!');
+        }
+
+        $str = "";
+        while (!feof($res)) {
+            $str .= fread($res, 1000);
+        }
+        fclose($res);
+        \Base::instance()->set('pageTitle', 'Your sitemap file has been successfully sent to google!');
+        \Base::instance()->set('result', 'Result was: <i>'. strip_tags($str, '<br> <h2> <h1>') . '</i>');
+
+        echo \Template::instance()->render('sitemap.submitPageToGoogle.html');
     }
 
     /**
@@ -68,10 +129,9 @@ class SiteMap
         /**
          * @var array $_REQUEST
          * @var array $SETTINGS
-         * @var LayoutEngine $LAYOUT
          */
-        global $_REQUEST, $SETTINGS, $LAYOUT;
-        $LAYOUT->setTitle("Store settings");
+        global $_REQUEST, $SETTINGS;
+        \Base::instance()->set('title', "Store settings");
 
         // TODO check values we got from user
 
@@ -190,13 +250,33 @@ class SiteMap
         // write settings to file
         $res = storeSettings($SETTINGS, $SETTINGS[PSNG_FILE_SETTINGS], "SETTINGS");
         if (!is_null($res)) {
-            $LAYOUT->addWarning($res, 'Settings could not be written to file ' . $SETTINGS[PSNG_FILE_SETTINGS] . '!');
+            Logger::instance()->warning('Settings could not be written to file ' . $SETTINGS[PSNG_FILE_SETTINGS] . '!', ['result' => $res]);
         } else {
-            $LAYOUT->addSuccess('', 'Settings written to file ' . $SETTINGS[PSNG_FILE_SETTINGS] . '!');
+            Logger::instance()->info('Settings written to file ' . $SETTINGS[PSNG_FILE_SETTINGS] . '!');
         }
 
-        debug($SETTINGS, 'Got and computed settings');
+        Logger::instance()->debug('Got and computed settings: ' . Util::arrToStringReadable($SETTINGS, ','));
 
         return TRUE;
+    }
+
+    private function getExplanations($FILE)
+    {
+        $explanations = [];
+        foreach ($FILE as $filename => $fileinfo) {
+            if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_FS) {
+                $explanations['source_fs'] = ['class' => 'source_fs', 'text' => 'A row with this background means that this file can found on your local filesystem'];
+            }
+            if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_WEBSITE) {
+                $explanations['source_website'] = ['class' => 'source_website', 'text' => 'A row with this background means that this file has been found with the crawler engine'];
+            }
+            if ($fileinfo[PSNG_HTML_SOURCE] == PSNG_HTML_SOURCE_FS_WEBSITE) {
+                $explanations['source_fs_website'] = ['class' => 'source_fs_website', 'text' => 'A row with this background means that this file is stored on filesystem and there are links to this file.'];
+            }
+            if (isset($fileinfo[PSNG_HTML_HISTORY])) {
+                $explanations['history'] = ['class' => 'history', 'text' => 'A cell with this background means that this file is already stored in your local cached filelist'];
+            }
+        }
+        return $explanations;
     }
 }

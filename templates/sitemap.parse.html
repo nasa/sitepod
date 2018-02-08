@@ -1,0 +1,64 @@
+<include href="templates/header.html"/>
+
+<h4>{{ @pageTitle }}</h4>
+<div>
+    <form action="writeSitemapUserinput" method="post" accept-charset=utf-8>
+        <input type="submit" name="submit" value="Create file">
+        <table>
+            <tr>
+                <th>Number</th>
+                <th>Filename</th>
+<check if="{{ @lastModEnabled }}">
+                <true><th>Last modification</th></true>
+</check>
+<check if="{{ @changeFreqEnabled }}">
+                <true><th>Change frequency</th></true>
+</check>
+<check if="{{ @priorityEnabled }}">
+                <true><th>Priority</th></true>
+</check>
+            </tr>
+<repeat group="{{ @files }}" value="{{ @file }}" counter="{{ @ctr }}">
+            <tr {{ @file['file_source'] | raw }}>
+                <td><input type="checkbox" checked name="FILE[{{ @ctr - 1 }}][file_enabled]" value="TRUE">{{ @ctr - 1 }}</td>
+                <td class="filename"><input type="hidden" name="FILE[{{ @ctr - 1 }}][file_url]" value="{{ @file['file_url'] }}">{{ @file['file_url'] }}</td>
+<check if="{{ @lastModEnabled }}">
+<true>
+                <td class="lastmod"><input class="lastmod" type="text" name="FILE[{{ @ctr - 1 }}][lastmod]" value="{{ @file['lastmod'] }}" size="24"></td>
+</true>
+</check>
+<check if="{{ @changeFreqEnabled }}">
+<true>
+                <td class="changefreq">
+                    <select name="FILE[{{ @ctr - 1 }}][changefreq]" size="1">
+<repeat group="{{ @changeFreqList }}" value="{{ @changeFreq }}" counter="{{ $ctr2 }}">
+                        <option {{ @changeFreq == @file['changefreq'] ? 'selected="selected"' : '' }}>{{ @changeFreq }}</option>
+</repeat>
+                    </select>
+                </td>
+</true>
+</check>
+<check if="{{ @priorityEnabled }}">
+<true>
+                <td class="priority">
+                    <select name="FILE[{{ @ctr - 1 }}][priority]" size="1">
+<repeat group="{{ @priorityList }}" value="{{ @priority }}" counter="{{ $ctr2 }}">
+                        <option {{ @priority == @file['priority'] ? 'selected="selected"' : '' }}>{{ @priority }}</option>
+</repeat>
+                    </select>
+                </td>
+</true>
+</check>
+            </tr>
+</repeat>
+            <tr>
+                <td colspan="5">&nbsp;</td>
+            </tr>
+<repeat group="{{ @explanations }}" value="{{ @explanation }}" counter="{{ $ctr }}">
+            <tr class="{{ @explanation['class'] }}"><td colspan="5">{{ @explanation['text'] }}</td></tr>
+</repeat>
+        </table>
+    </form>
+</div>
+
+<include href="templates/footer.html"/>

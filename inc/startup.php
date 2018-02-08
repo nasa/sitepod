@@ -58,7 +58,8 @@ if ($_SERVER['SCRIPT_NAME'] != '' && (strpos($_SERVER['SCRIPT_NAME'], 'index.php
     echo "error, couldn't extract script name!";
 }
 
-$SETTINGS['base'] = dirname($SETTINGS[PSNG_SCRIPT]). '/';
+$dirname = dirname($SETTINGS[PSNG_SCRIPT]);
+$SETTINGS['base'] = $dirname . !in_array(substr($dirname, -1), ['/', '\\']) ? '/' : '';
 
 $state = init();
 $SETTINGS[PSNG_TIMEOUT_AUTOMATIC] = ($timeout_after === $timeout_before);
@@ -69,4 +70,3 @@ if ($SETTINGS[PSNG_TIMEOUT] != PSNG_TIMEOUT_NONE) {
     $SETTINGS[PSNG_TIMEOUT_TIME_SHUTDOWN] = 3;
     $SETTINGS[PSNG_TIMEOUT_TIME_DEADLINE] = $SETTINGS[PSNG_TIMEOUT_TIME_START] + $SETTINGS[PSNG_TIMEOUT_TIME_DURATION] - $SETTINGS[PSNG_TIMEOUT_TIME_SHUTDOWN];
 }
-?>

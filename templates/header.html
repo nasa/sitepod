@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="{{ @base }}">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sitepod Welcome to Sitepod; a Sitemap Generator written in PHP</title>
+    <style type="text/css">
+        <!--
+        .history, .required { background-color:#E0E0E0; }
+        .source_fs { background-color:#FF70CC; }
+        .source_website { background-color:#CCFF70; }
+        .source_fs_website { background-color:#70CCFF; }
+        .notfound { background-color:#FF3030; }
+        Label {color:#000099; font-weight: bold; }
+        h1,h2,h3 {color:#000099; }
+        .error {color:#cc0000; font-weight: bold; }
+        .warning {color:#000000; font-weight: italic; }
+        .info {color:#000000; font-weight: normal; }
+        .success {color:#009900; font-weight: bold; }
+        body {color:#000000; font-family:helvetica; background-color:#ebb150; }
+        -->
+    </style>
+</head>
+<body>
+    <h1>Welcome to Sitepod; a Sitemap Generator written in PHP</h1>
+    <div class="content_header"><a href="setup" title="Edit settings">Setup</a></div>
+    <div class="content_header"><a href="check_updatestatus" title="Invoke an update check to get information of recent versions">Check for updates</a></div>
+<check if="{{ @displayStartScanLink }}">
+    <true><div class="content_header"><a href="parse" title="Start the scan for files">Start scan</a></div></true>
+</check>
+<check if="{{ @displayViewSiteMapLink }}">
+    <true><div class="content_header"><a href="' . $SETTINGS[PSNG_SITEMAP_URL] . '" target="_blank" title="View the created sitemap in a new browser window">View sitemap </a></div></true>
+</check>
+    <div class="content_header"><a href="https://github.com/nasa/sitepod/issues" target="_blank" title="Create a Github issue in a new browser window">Give feedback</a></div>

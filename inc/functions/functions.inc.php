@@ -15,39 +15,9 @@
  * along with Sitepod.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
+/*
  * misc functions
  */
-function info($param, $msg = '') {
-    global $LAYOUT;
-
-    if ($param == "" && $msg == "") {
-        return;
-    }
-    if (is_array($param)) {
-        $LAYOUT->addInfo(\Sitepod\Util::arrToStringReadable($param, "<br>\n"), $msg);
-    } else {
-        $LAYOUT->addInfo($param, $msg);
-    }
-}
-
-function debug($param, $msg = '') {
-    global $SETTINGS, $LAYOUT;
-
-    if (isset($_SESSION[PSNG_DEBUG]) && isset($SETTINGS[PSNG_DEBUG]))
-    {
-        if ($SETTINGS[PSNG_DEBUG] === TRUE && $_SESSION[PSNG_DEBUG] === TRUE) {
-            if ($param == "" && $msg == "") {
-                return;
-            }
-            if (is_array($param)) {
-                $LAYOUT->addDebug(\Sitepod\Util::arrToStringReadable($param, "<br>\n"),$msg);
-            } else {
-                $LAYOUT->addDebug($param, $msg);
-            }
-        }
-    }
-}
 
 // source: http://de2.php.net/microtime
 function microtime_float(){
@@ -57,6 +27,9 @@ function microtime_float(){
 
 /**
  * returns a filehandle if file is accessable
+ * @param string $filename
+ * @param bool $writable
+ * @return bool|resource
  */
 function openFile($filename, $writable = FALSE) {
     global $openFile_error;
@@ -83,7 +56,6 @@ function openFile($filename, $writable = FALSE) {
     $filehandle = @fopen($filename, $accessLevel);
     if ($filehandle === FALSE) {
         $openFile_error = "File $filename could not be opened, don't know why";
-        @fclose($filehandle);
 
         if (!file_exists($filename)) {
             $openFile_error = "File $filename does not exist and I do not have the rights to create it!";
@@ -99,30 +71,11 @@ function openFile($filename, $writable = FALSE) {
  * set and return action
  */
 function init() {
-    global $SETTINGS, $_REQUEST, $LAYOUT;
+    global $SETTINGS, $_REQUEST;
 
     session_start();
 
-    // set layout engine
-    $LAYOUT = new Sitepod\LayoutEngine("Sitepod");
-    $LAYOUT->setTitle("Welcome to Sitepod; a Sitemap Generator written in PHP");
-    $LAYOUT->setBase($SETTINGS['base']);
-    $LAYOUT->setCharSet("UTF-8");
-    $LAYOUT->addCss('.history, .required { background-color:#E0E0E0; }');
-    $LAYOUT->addCss('.source_fs { background-color:#FF70CC; }');
-    $LAYOUT->addCss('.source_website { background-color:#CCFF70; }');
-    $LAYOUT->addCss('.source_fs_website { background-color:#70CCFF; }');
-
-    $LAYOUT->addCss('.notfound { background-color:#FF3030; }');
-    $LAYOUT->addCss('Label {color:#000099; font-weight: bold; }');
-    $LAYOUT->addCss('h1,h2,h3 {color:#000099; }');
-    $LAYOUT->addCss('.error {color:#cc0000; font-weight: bold; }');
-    $LAYOUT->addCss('.warning {color:#000000; font-weight: italic; }');
-    $LAYOUT->addCss('.info {color:#000000; font-weight: normal; }');
-    $LAYOUT->addCss('.success {color:#009900; font-weight: bold; }');
-    $LAYOUT->addCss('body {color:#000000; font-family:helvetica; background-color:#ebb150; }');
-    $LAYOUT->switchOffBuffer();
-    print $LAYOUT->getHeaderLayout();
+    Base::instance()->set('base', $SETTINGS['base']);
 
 /* repair NOTICES mk/2005-11-08 */
     if (isset($_REQUEST[PSNG_DEBUG]))
@@ -131,9 +84,9 @@ function init() {
         if ($_REQUEST[PSNG_DEBUG] == 'on') {
             $SETTINGS[PSNG_DEBUG] = TRUE;
             $_SESSION[PSNG_DEBUG] = TRUE;
-            debug('', 'Debug on');
+            \Sitepod\Log\Logger::instance()->debug('Debug on');
         } elseif ($_REQUEST[PSNG_DEBUG] == 'off') {
-            debug('', 'Debug off');
+            \Sitepod\Log\Logger::instance()->debug('Debug off');
             $SETTINGS[PSNG_DEBUG] = FALSE;
             $_SESSION[PSNG_DEBUG] = FALSE;
         }
@@ -141,7 +94,7 @@ function init() {
     }
     else                                                # mk assume off
     {
-        debug('', 'Debug off');
+        \Sitepod\Log\Logger::instance()->debug( 'Debug off');
         $SETTINGS[PSNG_DEBUG] = FALSE;
         $_SESSION[PSNG_DEBUG] = FALSE;
     }
@@ -151,23 +104,20 @@ function init() {
         $SETTINGS = array_merge($_SESSION[PSNG_SETTINGS],$SETTINGS);
     }
 
-    $LAYOUT->addContentHeader('<a href="'.PSNG_ACTION_SETTINGS_SETUP.'" title="Edit settings">Setup</a>');
-    $LAYOUT->addContentHeader('<a href="'.PSNG_ACTION_CHECK_UPDATESTATUS.'" title="Invoke an update check to get information of recent versions">Check for updates</a>');
     if (isset($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET]))
     {
         if ($SETTINGS[PSNG_SETTINGS_EXECUTED][PSNG_ACTION_SETTINGS_GET]) {
-            $LAYOUT->addContentHeader('<a href="' . PSNG_ACTION_SETTINGS_PARSE . '" title="Start the scan for files">Start scan</a>');
+            Base::instance()->set('displayStartScanLink', true);
         }
     }
     if (@file_exists($SETTINGS[PSNG_SITEMAP_FILE]) && ( @filesize($SETTINGS[PSNG_SITEMAP_FILE]) > 0)) {
-        $LAYOUT->addContentHeader('<a href="' . $SETTINGS[PSNG_SITEMAP_URL] . '" target="_blank" title="View the created sitemap in a new browser window">View sitemap </a>');
+        Base::instance()->set('displayViewSiteMapLink', true);
     }
-    $LAYOUT->addContentHeader('<div align="left"><a href="https://github.com/nasa/sitepod/issues" target="_blank" title="Create a Github issue in a new browser window">Give feedback</a>');
 
-    debug('version: '.PSNG_VERSION, 'This is Sitepod');
-    debug($SETTINGS, 'Merged settings');
+    \Sitepod\Log\Logger::instance()->debug('This is Sitepod version: '.PSNG_VERSION);
+    \Sitepod\Log\Logger::instance()->debug('Merged settings: ' . \Sitepod\Util::arrToStringReadable($SETTINGS, ','));
 
-    debug($SETTINGS[PSNG_SETTINGS_STATE], 'last state');
+    \Sitepod\Log\Logger::instance()->debug('Last state: ' . $SETTINGS[PSNG_SETTINGS_STATE]);
     $action = '';
     if (isset($_REQUEST[PSNG_ACTION])) {
         $action = $_REQUEST[PSNG_ACTION];
@@ -180,7 +130,7 @@ function init() {
     }
 
     $SETTINGS[PSNG_SETTINGS_STATE] = $action;
-    debug($SETTINGS[PSNG_SETTINGS_STATE], "current state");
+    \Sitepod\Log\Logger::instance()->debug("Current state: " . $SETTINGS[PSNG_SETTINGS_STATE]);
 
 
     $SETTINGS[PSNG_SETTINGS_EXECUTED][$action] = TRUE;
@@ -208,6 +158,8 @@ function resetFiles() {
 /**
  * checks a given filename if it exists and is writable
  * returns empty string, if okay; otherwise the error message
+ * @param string $filename
+ * @return string
  */
 function checkFile($filename) {
     $file = @ fopen($filename, "r");
@@ -280,5 +232,3 @@ function storeSettings($SETTINGS, $filename, $keyname) {
 
     return NULL;
 }
-
-?>

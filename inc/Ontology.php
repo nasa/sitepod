@@ -108,9 +108,6 @@ define("PSNG_ACTION_SETTINGS_WRITESITEMAP_USERINPUT", 'writeSitemapUserinput');
 define("PSNG_ACTION_SETTINGS_PINGGOOGLE", 'pinggoogle');
 
 // file names
-define("PSNG_FILE_TEMPLATE_SETUP_EXPERT", 'templates/setup_expert.php');
-define("PSNG_FILE_TEMPLATE_SETUP_SIMPLE", 'templates/setup_simple.php');
-define("PSNG_FILE_TEMPLATE_EDIT_FILES", 'templates/edit_files.php');
 define("PSNG_FILE_INC_SHUTDOWN", 'inc/shutdown.php');
 
 // output stuff
@@ -129,4 +126,4 @@ define("PSNG_FILE_FILES", 'files_file');
 
 define("PSNG_URL_UPDATESTATUS", 'http://enarion.net/google/phpsitemapng/status.php?version='.PSNG_VERSION);
 define("PSNG_URL_DOWNLOAD", 'https://github.com/nasa/sitepod');
-?>
+
