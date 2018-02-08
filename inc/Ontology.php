@@ -16,7 +16,7 @@
  */
 
 // generic strings
-define("PSNG_VERSION", '1.5.3');
+define("PSNG_VERSION", '1.6.0');
 define("PSNG_FILE_LIMIT", 500);
 
 define("PSNG_DEBUG", 'debug');
