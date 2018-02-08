@@ -4,7 +4,7 @@
     "description": "A sitemap generator written in PHP",
     "keywords": ["sitemap-generator","search-engine","php","sitemap"],
     "homepage": "https://github.com/nasa/sitepod",
-    "license": "GPL-3.0-or-later",
+    "license": "GPL-3.0",
     "authors": [
         {
             "name": "Lewis John McGibbney",
