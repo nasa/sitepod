@@ -21,7 +21,7 @@ jdk:
   - oraclejdk8
 
 before_script:
-  - composer install
+  - composer update
 
 script:
   - $TRAVIS_BUILD_DIR/vendor/bin/phpunit
