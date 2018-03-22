@@ -44,6 +44,7 @@ class UtilTest extends TestCase
         $this->assertEquals("something with \\", Util::variableNameToString("something with \'"));
         $this->assertEquals('something with \"\"', Util::variableNameToString('something with \"\"'));
         $this->assertEquals("something with \'\\", Util::variableNameToString("something with \'\'"));
+        $this->assertEquals("something with \'\\", Util::variableNameToString("'something with \'\'"));
     }
 
     function testToArray()
