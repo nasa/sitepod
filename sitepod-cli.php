@@ -20,14 +20,14 @@
 // TODO: add verbose text, html, and quiet text flags
 $text_only = 1;
 
-ob_start (); // Start buffering output
+ob_start ();
 
 require_once (dirname ( __FILE__ ) . '/cron.php');
 
-$results = ob_get_clean (); // Put the buffered output into $results and clear the output buffer
+$results = ob_get_clean ();
 
 if ($text_only) {
-  $results = strip_tags ( $results ); // Strip HTML and PHP tags from results
+  $results = strip_tags ( $results );
 }
 
 echo $results;
