@@ -18,7 +18,7 @@ namespace Sitepod;
 
 class GeoIp
 {
-    private static $SERVER_URL = 'http://freegeoip.net/json/';
+    private static $SERVER_URL = 'http://ip-api.com/json/';
     private static $GEO_DATA = [];
 
     /**
