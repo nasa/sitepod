@@ -54,6 +54,9 @@ if ($_SERVER['SCRIPT_NAME'] != '' && (strpos($_SERVER['SCRIPT_NAME'], 'index.php
     $SETTINGS[PSNG_SCRIPT] = $_SERVER['PATH_INFO'];
 } elseif ($_SERVER['ORIG_PATH_INFO'] != '') { // only for FastCGI ?
     $SETTINGS[PSNG_SCRIPT] = $_SERVER['ORIG_PATH_INFO'];
+} elseif ($_SERVER['argv'][0] != '') { // php CLI
+    // TODO: check to see if this is safe and always true
+    $SETTINGS[PSNG_SCRIPT] = $_SERVER['argv'][0];
 } else {
     echo "error, couldn't extract script name!";
 }
