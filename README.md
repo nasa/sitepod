@@ -5,7 +5,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/nasa/sitepod/v/unstable)](https://packagist.org/packages/nasa/sitepod)
 [![License](https://poser.pugx.org/nasa/sitepod/license)](https://packagist.org/packages/nasa/sitepod)
 [![composer.lock](https://poser.pugx.org/nasa/sitepod/composerlock)](https://packagist.org/packages/nasa/sitepod)
-[![Travis](https://img.shields.io/travis/nasa/podaacpy.svg?maxAge=2592000?style=plastic)](https://www.travis-ci.org/nasa/sitepod)
+[![Build Status](https://www.travis-ci.org/nasa/sitepod.svg?branch=master)](https://www.travis-ci.org/nasa/sitepod)
 [![Requirements Status](https://requires.io/github/nasa/sitepod/requirements.svg?branch=master)](https://requires.io/github/nasa/sitepod/requirements/?branch=master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nasa%3Asitepod&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nasa%3Asitepod)
 
