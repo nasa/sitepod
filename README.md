@@ -7,9 +7,10 @@
 [![composer.lock](https://poser.pugx.org/nasa/sitepod/composerlock)](https://packagist.org/packages/nasa/sitepod)
 [![Build Status](https://www.travis-ci.org/nasa/sitepod.svg?branch=master)](https://www.travis-ci.org/nasa/sitepod)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=nasa%3Asitepod&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=nasa%3Asitepod)
+
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=nasa%3Asitepod)](https://sonarcloud.io/summary/new_code?id=nasa%3Asitepod)
 
-Sitepod; A Sitemap Generator written in PHP. Sitepod is build using the [Fat-Free Framework](https://fatfreeframework.com), a powerful yet easy-to-use PHP micro-framework designed to build dynamic and robust web applications.
+Sitepod; A Sitemap Generator written in PHP. Sitepod uses the [Fat-Free Framework](https://fatfreeframework.com), a powerful yet easy-to-use PHP micro-framework designed to build dynamic and robust web applications.
 
 # Installation from the Composer PHP Package Manager
 Sitemap can be installed using the [Composer](https://getcomposer.org/) 
